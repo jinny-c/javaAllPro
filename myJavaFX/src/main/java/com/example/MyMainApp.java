@@ -12,7 +12,9 @@ import javafx.stage.Stage;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.util.encoders.Hex;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.Security;
 
@@ -21,7 +23,7 @@ import java.security.Security;
  * @auth chaijd
  * @date 2023/5/30
  */
-public class Main extends Application {
+public class MyMainApp extends Application {
     private TextArea fileContentTextArea;
 
     @Override

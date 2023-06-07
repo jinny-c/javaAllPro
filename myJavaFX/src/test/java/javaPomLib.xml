@@ -47,7 +47,7 @@
                             <addClasspath>true</addClasspath>
                             <!--   MANIFEST.MF 中 Class-Path -->
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.example.Main</mainClass>
+                            <mainClass>com.example.MainApp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
