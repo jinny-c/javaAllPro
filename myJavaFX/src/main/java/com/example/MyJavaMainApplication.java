@@ -1,5 +1,7 @@
 package com.example;
 
+import com.example.view.Base64View;
+import com.example.view.FileDigestView;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
@@ -15,7 +17,7 @@ import javafx.stage.Stage;
  * @auth chaijd
  * @date 2023/5/30
  */
-public class MainApp extends Application {
+public class MyJavaMainApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Button openFileButton = new Button("File Processing");

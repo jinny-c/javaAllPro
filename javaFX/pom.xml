@@ -50,7 +50,7 @@
                             <addClasspath>true</addClasspath>
                             <!--   MANIFEST.MF 中 Class-Path -->
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.example.MainApp</mainClass>
+                            <mainClass>com.example.MyJavaMainApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
