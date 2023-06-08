@@ -40,6 +40,7 @@ public class FileDigestView {
         TextArea textArea = new TextArea();
         textArea.setPrefRowCount(5); // 设置首选行数
         textArea.setWrapText(true);// 自动换行
+        textArea.setEditable(false);// 输入不能编辑
 
         Button openButton = new Button("Select File To Get Cryptographic Digest");
         openButton.setPrefHeight(50);

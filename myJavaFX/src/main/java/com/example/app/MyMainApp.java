@@ -1,6 +1,7 @@
 package com.example.app;
 
 import javafx.application.Application;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -33,14 +34,16 @@ public class MyMainApp extends Application {
         // 创建一个GridPane布局来安排UI元素
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
-        grid.setVgap(5);
-        grid.setHgap(5);
+        grid.setVgap(10);
+        grid.setHgap(10);
 
         // 创建标签和文本区域来显示文件内容
         Label fileContentLabel = new Label("File content:");
         fileContentTextArea = new TextArea();
         fileContentTextArea.setEditable(false);
         fileContentTextArea.setWrapText(true);
+        //fileContentTextArea.setPrefRowCount(5);
+        //fileContentTextArea.setPrefColumnCount(16);
 
         // 将标签和文本区域添加到网格中
         grid.add(fileContentLabel, 0, 0);
@@ -48,14 +51,15 @@ public class MyMainApp extends Application {
 
         // 创建一个按钮来打开文件选择器
         Button selectButton = new Button("Select file");
+        selectButton.setPrefHeight(64);
         selectButton.setOnAction(e -> {
             // 创建一个文件选择器对话框
             FileChooser fileChooser = new FileChooser();
             fileChooser.setTitle("Open File");
-            fileChooser.getExtensionFilters().addAll(
-                    new FileChooser.ExtensionFilter("Text Files", "*.txt"),
-                    new FileChooser.ExtensionFilter("Java Files", "*.java")
-            );
+//            fileChooser.getExtensionFilters().addAll(
+//                    new FileChooser.ExtensionFilter("Text Files", "*.txt"),
+//                    new FileChooser.ExtensionFilter("Java Files", "*.java")
+//            );
 
             // 显示文件选择器对话框并等待用户选择文件
             File selectedFile = fileChooser.showOpenDialog(primaryStage);
@@ -82,15 +86,18 @@ public class MyMainApp extends Application {
 
         // 创建一个按钮，用于关闭应用程序
         Button closeButton = new Button("Close");
+        closeButton.setPrefHeight(64);
         closeButton.setOnAction(e -> primaryStage.close());
 
         // 将按钮添加到网格中
         grid.add(selectButton, 0, 0);
-        grid.add(clearButton, 1, 1);
+        //grid.add(clearButton, 1, 1);
+
+        GridPane.setHalignment(closeButton, HPos.RIGHT);
         grid.add(closeButton, 0, 2);
 
         // 创建场景并将其设置为主要舞台的场景
-        Scene scene = new Scene(grid, 600, 400);
+        Scene scene = new Scene(grid, 400, 400);
         primaryStage.setScene(scene);
 
         // 显示主要舞台
