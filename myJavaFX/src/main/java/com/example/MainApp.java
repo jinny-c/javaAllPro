@@ -54,7 +54,8 @@ public class MainApp extends Application {
         // 退出按钮
         Button exitButton = new Button("关闭窗口");
         exitButton.setPrefHeight(64);
-        exitButton.setOnAction(e -> System.exit(0));
+        //exitButton.setOnAction(e -> System.exit(0));
+        exitButton.setOnAction(e -> primaryStage.close());
 
         // 将关闭按钮放置在底部右侧
         BorderPane.setAlignment(exitButton, Pos.BOTTOM_RIGHT);
