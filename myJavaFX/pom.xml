@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>myJavaFX</artifactId>
-    <version>1.4-SNAPSHOT</version>
+    <version>1.5-SNAPSHOT</version>
     <description>jdk 1.8, javaFX in jdk</description>
 
     <properties>
@@ -16,17 +16,6 @@
     </properties>
 
     <dependencies>
-        <!--          <dependency>
-                      <groupId>org.openjfx</groupId>
-                      <artifactId>javafx-controls</artifactId>
-                      <version>11.0.2</version>
-                  </dependency>
-                  <dependency>
-                      <groupId>org.openjfx</groupId>
-                      <artifactId>javafx-fxml</artifactId>
-                      <version>11.0.2</version>
-                  </dependency>-->
-
         <!--国密加密jar包-->
         <dependency>
             <groupId>org.bouncycastle</groupId>
