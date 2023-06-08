@@ -25,8 +25,10 @@ public class Base64View {
         stage = new Stage();
         stage.setTitle("Base64 View");
         stage.initModality(Modality.APPLICATION_MODAL);
+        stage.setResizable(false); // 将窗口大小设置为固定不变
 
-        // 创建布局
+
+        // 创建布局  网格布局
         GridPane root = new GridPane();
         root.setPadding(new Insets(20));
         root.setVgap(20);
