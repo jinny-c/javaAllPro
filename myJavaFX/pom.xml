@@ -6,7 +6,7 @@
 
     <groupId>org.example</groupId>
     <artifactId>myJavaFX</artifactId>
-    <version>1.5-SNAPSHOT</version>
+    <version>1.6-SNAPSHOT</version>
     <description>jdk 1.8, javaFX in jdk</description>
 
     <properties>
