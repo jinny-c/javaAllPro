@@ -19,6 +19,7 @@ import javafx.stage.Stage;
  * @auth chaijd
  * @date 2023/5/30
  */
+@Deprecated
 public class MyJavaMainApplication extends Application {
     private double xOffset = 0;
     private double yOffset = 0;

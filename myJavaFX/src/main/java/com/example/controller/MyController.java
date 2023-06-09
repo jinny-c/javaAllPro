@@ -31,10 +31,11 @@ public class MyController {
 
     @FXML
     protected void selectButtonClick() {
+        fileContentTextArea.clear();
+
         // 创建一个文件选择器对话框
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open File");
-
         // 显示打开文件对话框
         Stage stage = (Stage) selectButton.getScene().getWindow();
         // 显示文件选择器对话框并等待用户选择文件

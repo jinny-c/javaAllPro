@@ -1,5 +1,6 @@
 package com.example.view;
 
+import com.example.utils.FileProcessing;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -51,7 +52,7 @@ public class FileDigestView {
             File file = fileChooser.showOpenDialog(stage);
             if (file != null) {
                 try {
-                    textArea.setText(getDigestSM3(file));
+                    textArea.setText(FileProcessing.getDigestSM3(file));
                 } catch (Exception e) {
                     textArea.setText(e.getMessage());
                 }
@@ -102,24 +103,4 @@ public class FileDigestView {
         stage.show();
     }
 
-    static {
-        try {
-            Security.addProvider(new BouncyCastleProvider());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static String getDigestSM3(File file) throws Exception {
-        try (InputStream fis = new FileInputStream(file)) {
-            byte buffer[] = new byte[1024];
-            MessageDigest md = MessageDigest.getInstance("SM3");
-            for (int numRead = 0; (numRead = fis.read(buffer)) > 0; ) {
-                md.update(buffer, 0, numRead);
-            }
-            return Hex.toHexString(md.digest());
-//            int num = Integer.parseInt(new String(md.digest()), 2);
-//            return Integer.toHexString(num);
-        }
-    }
 }

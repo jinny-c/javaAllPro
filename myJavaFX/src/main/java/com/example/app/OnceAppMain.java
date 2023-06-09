@@ -101,7 +101,7 @@ public class OnceAppMain extends Application {
         root.getChildren().add(closeButton);
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+//    public static void main(String[] args) {
+//        launch(args);
+//    }
 }

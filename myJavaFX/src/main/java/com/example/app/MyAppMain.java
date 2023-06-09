@@ -1,5 +1,6 @@
 package com.example.app;
 
+import com.example.utils.FileProcessing;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -136,29 +137,9 @@ public class MyAppMain extends Application {
 //        }
 
         try {
-            fileContentTextArea.setText(getDigestSM3(selectedFile));
+            fileContentTextArea.setText(FileProcessing.getDigestSM3(selectedFile));
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
-    }
-
-    static{
-        try{
-            Security.addProvider(new BouncyCastleProvider());
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-    }
-    public static String getDigestSM3(File file) throws Exception {
-        try (InputStream fis = new FileInputStream(file)) {
-            byte buffer[] = new byte[1024];
-            MessageDigest md = MessageDigest.getInstance("SM3");
-            for (int numRead = 0; (numRead = fis.read(buffer)) > 0; ) {
-                md.update(buffer, 0, numRead);
-            }
-            return Hex.toHexString(md.digest());
-//            int num = Integer.parseInt(new String(md.digest()), 2);
-//            return Integer.toHexString(num);
         }
     }
 
