@@ -27,15 +27,20 @@ import java.security.Security;
 public class MyMainApp extends Application {
     private TextArea fileContentTextArea;
 
+    private double xOffset = 0;
+    private double yOffset = 0;
+
     @Override
-    public void start(Stage primaryStage) throws Exception {
+    public void start(Stage primaryStage) {
         primaryStage.setTitle("File Viewer");
+        primaryStage.setResizable(false); // 将窗口大小设置为固定不变
 
         // 创建一个GridPane布局来安排UI元素
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(10);
         grid.setHgap(10);
+
 
         // 创建标签和文本区域来显示文件内容
         Label fileContentLabel = new Label("File content:");
@@ -99,6 +104,16 @@ public class MyMainApp extends Application {
         // 创建场景并将其设置为主要舞台的场景
         Scene scene = new Scene(grid, 400, 400);
         primaryStage.setScene(scene);
+
+        // 绑定鼠标事件
+        grid.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        grid.setOnMouseDragged(event -> {
+            primaryStage.setX(event.getScreenX() - xOffset);
+            primaryStage.setY(event.getScreenY() - yOffset);
+        });
 
         // 显示主要舞台
         primaryStage.show();

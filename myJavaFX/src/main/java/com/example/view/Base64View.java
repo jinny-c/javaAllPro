@@ -21,6 +21,9 @@ public class Base64View {
 
     private Stage stage;
 
+    private double xOffset = 0;
+    private double yOffset = 0;
+
     public Base64View() {
         stage = new Stage();
         stage.setTitle("Base64 View");
@@ -55,7 +58,14 @@ public class Base64View {
             label2.setText("处理结果：");
         });
         Button closeButton = new Button("关闭窗口");
-        closeButton.setOnAction(e -> stage.close());
+        closeButton.setOnAction(e -> {
+            //stage.close();
+            e.consume();
+            ConfirmDialog confirm = new ConfirmDialog(stage);
+            if (confirm.showAndWait().get()) {
+                stage.close();
+            }
+        });
 
         // 布局组件
         root.add(label, 0, 0);
@@ -99,6 +109,16 @@ public class Base64View {
         Scene scene = new Scene(root);
 
         stage.setScene(scene);
+
+        // 绑定鼠标事件
+        root.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        root.setOnMouseDragged(event -> {
+            stage.setX(event.getScreenX() - xOffset);
+            stage.setY(event.getScreenY() - yOffset);
+        });
     }
 
     public void show() {

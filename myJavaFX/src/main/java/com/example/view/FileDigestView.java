@@ -31,6 +31,9 @@ public class FileDigestView {
     private Stage stage;
     private FileChooser fileChooser = new FileChooser();
 
+    private double xOffset = 0;
+    private double yOffset = 0;
+
     public FileDigestView() {
         stage = new Stage();
         stage.setTitle("File Select View");
@@ -82,10 +85,21 @@ public class FileDigestView {
         Scene scene = new Scene(vbox, 500, 300);
 
         stage.setScene(scene);
+
+        // 绑定鼠标事件
+        vbox.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        vbox.setOnMouseDragged(event -> {
+            stage.setX(event.getScreenX() - xOffset);
+            stage.setY(event.getScreenY() - yOffset);
+        });
     }
 
     public void show() {
-        stage.showAndWait();
+        //stage.showAndWait(); //阻塞式 打开窗口，关闭该窗口后才能 后续操作
+        stage.show();
     }
 
     static {
