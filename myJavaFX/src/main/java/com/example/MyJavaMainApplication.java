@@ -1,8 +1,8 @@
 package com.example;
 
-import com.example.app.MyMainApp;
+import com.example.app.MyAppMain;
+import com.example.app.MyControllerAppMain;
 import com.example.view.Base64View;
-import com.example.view.ConfirmDialog;
 import com.example.view.FileDigestView;
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -31,8 +31,6 @@ public class MyJavaMainApplication extends Application {
             try {
                 FileDigestView view = new FileDigestView();
                 view.show();
-
-
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -47,8 +45,18 @@ public class MyJavaMainApplication extends Application {
         Button aloneWindowButton = new Button("Independent Processing");
         aloneWindowButton.setPrefHeight(64);
         aloneWindowButton.setOnAction(event -> {
-                MyMainApp myMainApp = new MyMainApp();
+            MyAppMain myMainApp = new MyAppMain();
+            myMainApp.start(new Stage());
+        });
+
+        Button fxmlWindowButton = new Button(".fxml Processing");
+        fxmlWindowButton.setPrefHeight(64);
+        fxmlWindowButton.setOnAction(event -> {
+            try {
+                MyControllerAppMain myMainApp = new MyControllerAppMain();
                 myMainApp.start(new Stage());
+            } catch (Exception e) {
+            }
         });
 
         // 创建一个一个流式布局容器
@@ -57,7 +65,7 @@ public class MyJavaMainApplication extends Application {
         flowPane.setHgap(20);
         flowPane.setVgap(20);
         flowPane.setOrientation(Orientation.VERTICAL); // 将 orientation 设置为垂直
-        flowPane.getChildren().addAll(openFileButton, base64Button, aloneWindowButton);
+        flowPane.getChildren().addAll(openFileButton, base64Button, aloneWindowButton, fxmlWindowButton);
 
         // 创建一个边框布局容器
         BorderPane borderPane = new BorderPane();

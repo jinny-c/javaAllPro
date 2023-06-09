@@ -7,7 +7,7 @@ import javafx.scene.control.Label;
  * @auth chaijd
  * @date 2023/5/30
  */
-public class Controller {
+public class SampleController {
     @FXML
     private Label label;
 

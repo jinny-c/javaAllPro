@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.controller.MyJavaFxmlController">
+    <padding>
+        <Insets top="10" bottom="10" left="10" right="10"/>
+    </padding>
+    <left>
+        <FlowPane vgap="20" hgap="20" orientation="VERTICAL">
+            <padding>
+                <Insets topRightBottomLeft="20"/>
+            </padding>
+            <Button text="File Processing" prefHeight="64" onAction="#openFileButtonClick"/>
+            <Button text="Base64 Processing" prefHeight="64" onAction="#base64ButtonClick"/>
+            <Button text="Independent Processing" prefHeight="64" onAction="#aloneWindowButtonClick"/>
+            <Button text=".fxml Processing" prefHeight="64" onAction="#fxmlWindowButtonClick"/>
+        </FlowPane>
+    </left>
+
+    <bottom>
+        <Button text="Close" prefHeight="64" fx:id="closeButton" onAction="#closeButtonClick"/>
+    </bottom>
+</BorderPane>

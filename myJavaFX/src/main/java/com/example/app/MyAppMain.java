@@ -24,7 +24,7 @@ import java.security.Security;
  * @auth chaijd
  * @date 2023/5/30
  */
-public class MyMainApp extends Application {
+public class MyAppMain extends Application {
     private TextArea fileContentTextArea;
 
     private double xOffset = 0;

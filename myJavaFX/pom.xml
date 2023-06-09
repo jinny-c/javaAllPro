@@ -33,7 +33,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>com.example.MyJavaMainApplication</mainClass>
+                            <mainClass>com.example.MyJavaFxmlApplication</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

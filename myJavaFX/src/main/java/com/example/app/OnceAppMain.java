@@ -20,7 +20,7 @@ import java.io.IOException;
  * @auth chaijd
  * @date 2023/6/7
  */
-public class OnceMainApp extends Application {
+public class OnceAppMain extends Application {
     private Stage primaryStage;
     private TextArea fileContentArea;
 

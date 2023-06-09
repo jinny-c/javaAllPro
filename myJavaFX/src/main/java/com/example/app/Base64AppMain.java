@@ -18,7 +18,7 @@ import java.util.Base64;
  */
 
 
-public class Base64MainApp extends Application {
+public class Base64AppMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         // 创建布局
