@@ -25,6 +25,7 @@ import java.security.Security;
  * @auth chaijd
  * @date 2023/5/30
  */
+@Deprecated
 public class MyAppMain extends Application {
     private TextArea fileContentTextArea;
 

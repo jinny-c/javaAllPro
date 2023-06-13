@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.app.MyAppMain;
 import com.example.app.MyControllerAppMain;
+import com.example.app.calculator.CalculatorApplication;
 import com.example.view.Base64View;
 import com.example.view.FileDigestView;
 import javafx.fxml.FXML;
@@ -40,8 +41,11 @@ public class MyJavaFxmlController {
 
     @FXML
     protected void aloneWindowButtonClick() {
-        MyAppMain myMainApp = new MyAppMain();
-        myMainApp.start(new Stage());
+        try {
+            CalculatorApplication myMainApp = new CalculatorApplication();
+            myMainApp.start(new Stage());
+        } catch (Exception e) {
+        }
     }
 
     @FXML
