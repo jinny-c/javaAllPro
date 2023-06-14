@@ -1,0 +1,10 @@
+/* JFXButton样式 */
+.primary-button {
+    -fx-background-color: #2196f3;
+    -fx-text-fill: white;
+}
+
+/* JFXTextField样式 */
+.jfx-text-field {
+    -jfx-focus-color: #2196f3;
+}

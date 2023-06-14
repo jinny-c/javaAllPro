@@ -24,22 +24,17 @@
             <Label GridPane.rowIndex="0" GridPane.columnIndex="0" text="期数："/>
             <ComboBox GridPane.rowIndex="0" GridPane.columnIndex="1" fx:id="comboBox"/>
             <Button GridPane.rowIndex="0" GridPane.columnIndex="2" text="查询结果" prefHeight="64" onAction="#selectButtonClick"/>
-<!--
             <TextArea GridPane.rowIndex="1" GridPane.columnIndex="1" editable="false" wrapText="true"
                       prefRowCount="6" prefColumnCount="16" fx:id="contentTextArea"/>
             <TextField GridPane.rowIndex="1" GridPane.columnIndex="2" fx:id="contentTextField"/>
-            <Label GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="contentTextLabel"/>-->
+            <Label GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="contentTextLabel"/>
 
         </GridPane>
-        <TilePane>
 
-            <TextArea editable="false" wrapText="true"
-                      prefRowCount="6" prefColumnCount="16" fx:id="contentTextArea"/>
-            <TextField fx:id="contentTextField"/>
-            <Label fx:id="contentTextLabel"/>
-        </TilePane>
+
     </center>
 
+    <Button text="查询结果" prefHeight="64" onAction="#selectButtonClick"/>
     <bottom>
         <Button text="Close" prefHeight="64" fx:id="closeButton" onAction="#closeButtonClick"/>
     </bottom>

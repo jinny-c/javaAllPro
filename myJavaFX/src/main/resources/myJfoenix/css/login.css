@@ -1,0 +1,39 @@
+.body{
+    -fx-background-color: white;
+}
+.leftpane{
+    -fx-background-color: #262626;
+    -fx-background-repeat: stretch;
+    -fx-background-size: auto;
+    -fx-background-position: center center;
+}
+.login_username_input{
+    /*去除默认样式*/
+    -fx-background-insets: 0;
+    -fx-background-color: #fff;
+}
+.login_password_input{
+    /*去除默认样式*/
+    -fx-background-insets: 0;
+    -fx-background-color: #fff;
+}
+.login_username{
+    -fx-background-image: url("../img/loginIcon.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: -58px -4px;
+}
+.login_password{
+    -fx-background-image: url("../img/loginIcon.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: -28px -3px;
+}
+.login_btn{
+    -fx-background-insets: 0;
+    -fx-background-color: rgb(3, 197, 255);
+    -fx-fill:#fff;
+}
+.login_jump{
+    -fx-background-image: url("../img/loginIcon.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: -52px -37px;
+}

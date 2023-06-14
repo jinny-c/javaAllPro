@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<BorderPane minHeight="-Infinity" minWidth="-Infinity" stylesheets="@css/login.css"
+            xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.controller.MyJfoenixController">
+    <left>
+        <Pane maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" styleClass="leftpane"
+              BorderPane.alignment="CENTER">
+            <children>
+                <BorderPane prefHeight="600.0" prefWidth="800.0">
+                    <center>
+                        <ImageView fitWidth="500.0" pickOnBounds="true" preserveRatio="true"
+                                   BorderPane.alignment="CENTER">
+                            <image>
+                                <Image url="@img.png"/>
+                            </image>
+                        </ImageView>
+                    </center>
+                </BorderPane>
+            </children>
+        </Pane>
+    </left>
+    <right>
+        <Pane prefHeight="600.0" prefWidth="500.0" styleClass="body" BorderPane.alignment="CENTER">
+            <children>
+                <VBox alignment="CENTER" prefHeight="300.0" prefWidth="250.0" translateX="125.0" translateY="130.0">
+                    <opaqueInsets>
+                        <Insets/>
+                    </opaqueInsets>
+                    <children>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                            <children>
+                                <ImageView fitHeight="40.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                        <Image url="@img.png"/>
+                                    </image>
+                                    <cursor>
+                                        <Cursor fx:constant="DEFAULT"/>
+                                    </cursor>
+                                </ImageView>
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                            <children>
+                                <Label contentDisplay="BOTTOM" prefHeight="40.0" text="账号登录" textFill="#00bdff">
+                                    <font>
+                                        <Font size="16.0"/>
+                                    </font>
+                                </Label>
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                            <children>
+                                <BorderPane prefHeight="200.0" prefWidth="100.0">
+                                    <left>
+                                        <Label prefHeight="24.0" prefWidth="20.0" styleClass="login_username"
+                                               BorderPane.alignment="CENTER">
+                                            <opaqueInsets>
+                                                <Insets/>
+                                            </opaqueInsets>
+                                            <BorderPane.margin>
+                                                <Insets/>
+                                            </BorderPane.margin>
+                                        </Label>
+                                    </left>
+                                    <right>
+                                        <TextField prefHeight="30.0" prefWidth="250.0" promptText="用户名/手机号/邮箱"
+                                                   styleClass="login_username_input" BorderPane.alignment="CENTER"/>
+                                    </right>
+                                    <bottom>
+                                        <Line endX="115.0" startX="-150.0" stroke="#e7e7e7"
+                                              BorderPane.alignment="CENTER">
+                                            <BorderPane.margin>
+                                                <Insets/>
+                                            </BorderPane.margin>
+                                        </Line>
+                                    </bottom>
+                                </BorderPane>
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                            <children>
+                                <BorderPane prefHeight="200.0" prefWidth="200.0">
+                                    <bottom>
+                                        <Line endX="115.0" startX="-150.0" stroke="#e7e7e7"
+                                              BorderPane.alignment="CENTER"/>
+                                    </bottom>
+                                    <left>
+                                        <Label prefHeight="24.0" prefWidth="20.0" styleClass="login_password"
+                                               BorderPane.alignment="CENTER">
+                                            <opaqueInsets>
+                                                <Insets/>
+                                            </opaqueInsets>
+                                        </Label>
+                                    </left>
+                                    <right>
+                                        <PasswordField prefHeight="37.0" prefWidth="250.0" promptText="密码"
+                                                       styleClass="login_password_input" BorderPane.alignment="CENTER"/>
+                                    </right>
+                                </BorderPane>
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="0.0" prefWidth="100.0">
+                            <children>
+                                <Hyperlink text="忘记密码？" textFill="#00bdff">
+                                    <padding>
+                                        <Insets left="200.0"/>
+                                    </padding>
+                                </Hyperlink>
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0" top="10.0"/>
+                            </padding>
+                        </VBox>
+                        <VBox>
+                            <children>
+                                <Button fx:id="loginBtn" alignment="CENTER" contentDisplay="CENTER"
+                                        mnemonicParsing="false" onAction="#login" prefWidth="300.0"
+                                        styleClass="login_btn" text="登录" textFill="WHITE">
+                                    <padding>
+                                        <Insets bottom="15.0" top="15.0"/>
+                                    </padding>
+                                </Button>
+                            </children>
+                        </VBox>
+                        <VBox prefHeight="200.0" prefWidth="100.0">
+                            <children>
+                                <HBox prefHeight="100.0" prefWidth="200.0">
+                                    <children>
+                                        <Text fill="#909090" strokeType="OUTSIDE" strokeWidth="0.0" text="还没有聚合账号，"
+                                              textAlignment="RIGHT">
+                                            <HBox.margin>
+                                                <Insets left="95.0" top="2.0"/>
+                                            </HBox.margin>
+                                        </Text>
+                                        <Hyperlink text="立即注册" textFill="#00bdff"/>
+                                        <Label prefHeight="20.0" prefWidth="20.0" styleClass="login_jump">
+                                            <opaqueInsets>
+                                                <Insets/>
+                                            </opaqueInsets>
+                                            <HBox.margin>
+                                                <Insets top="1.0"/>
+                                            </HBox.margin>
+                                        </Label>
+                                    </children>
+                                </HBox>
+                            </children>
+                            <padding>
+                                <Insets bottom="10.0" top="10.0"/>
+                            </padding>
+                        </VBox>
+                    </children>
+                </VBox>
+            </children>
+            <BorderPane.margin>
+                <Insets/>
+            </BorderPane.margin>
+        </Pane>
+    </right>
+</BorderPane>
