@@ -3,9 +3,7 @@ package com.example.controller;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
@@ -21,6 +19,10 @@ public class LotteryController {
     private ComboBox<String> comboBox;
     @FXML
     private TextArea contentTextArea;
+    @FXML
+    private TextField contentTextField;
+    @FXML
+    private Label contentTextLabel;
 
     public void initialize() {
         BorderPane.setAlignment(closeButton, Pos.BOTTOM_RIGHT);
@@ -36,6 +38,8 @@ public class LotteryController {
     protected void selectButtonClick() {
         String periods = comboBox.getValue();
         contentTextArea.setText(periods);
+        contentTextField.setText(periods);
+        contentTextLabel.setText(periods);
     }
     @FXML
     protected void closeButtonClick() {
