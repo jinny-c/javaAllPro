@@ -2,40 +2,51 @@
 
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import java.net.URL?>
+<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.text.Text?>
 <BorderPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.controller.LotteryController">
-    <padding>
-        <Insets top="10" bottom="10" left="10" right="10"/>
-    </padding>
+            xmlns:fx="http://javafx.com/fxml" stylesheets="@css/common.css"
+            fx:controller="com.example.controller.LotteryController" styleClass="border-pane">
+<!--
+    <padding><Insets top="10" bottom="10" left="10" right="10"/></padding>
+-->
     <center>
-        <GridPane vgap="10" hgap="10">
-            <padding>
-                <Insets top="10" bottom="10" left="10" right="10"/>
-            </padding>
-            <Label GridPane.rowIndex="0" GridPane.columnIndex="0" text="期数："/>
-            <ComboBox GridPane.rowIndex="0" GridPane.columnIndex="1" fx:id="comboBox"/>
-            <Button GridPane.rowIndex="0" GridPane.columnIndex="2" text="查询结果" prefHeight="64" onAction="#selectButtonClick"/>
-            <TextArea GridPane.rowIndex="1" GridPane.columnIndex="1" editable="false" wrapText="true"
-                      prefRowCount="6" prefColumnCount="16" fx:id="contentTextArea"/>
-            <TextField GridPane.rowIndex="1" GridPane.columnIndex="2" fx:id="contentTextField"/>
-            <Label GridPane.rowIndex="1" GridPane.columnIndex="0" fx:id="contentTextLabel"/>
+        <VBox styleClass="vbox" >
+            <HBox styleClass="hbox" fillHeight="true">
+                <Text text="地址："/>
+                <TextField HBox.hgrow="ALWAYS" text="https://datachart.500.com/ssq/history/newinc/history.php" editable="false" />
+            </HBox>
 
-        </GridPane>
+            <HBox styleClass="hbox" fx:id="hbox1">
+                <Button text="查询最近3期结果" onAction="#button1Click" fx:id="button1"/>
+                <TextArea HBox.Hgrow="ALWAYS" editable="false" wrapText="true" prefRowCount="3" fx:id="textArea1"/>
+            </HBox>
 
-
+            <VBox styleClass="vbox" disable="true" fx:id="disableContent">
+                <HBox styleClass="hbox">
+                    <ComboBox fx:id="comboBox"/>
+                    <Button text="结果查询" styleClass="button" onAction="#selectButtonClick" fx:id="button2"/>
+                    <TextArea HBox.Hgrow="ALWAYS" editable="false" wrapText="true" prefRowCount="6" fx:id="textArea2"/>
+                </HBox>
+                <HBox styleClass="hbox">
+                    <Label text="统计的结果："/>
+                    <TextArea HBox.Hgrow="ALWAYS" editable="false" wrapText="true" prefRowCount="6" fx:id="textArea3"/>
+                </HBox>
+            </VBox>
+        </VBox>
     </center>
 
-    <Button text="查询结果" prefHeight="64" onAction="#selectButtonClick"/>
+    <TextField visible="false" fx:id="latestPeriods"/>
+
     <bottom>
-        <Button text="Close" prefHeight="64" fx:id="closeButton" onAction="#closeButtonClick"/>
+        <HBox alignment="BOTTOM_RIGHT" styleClass="hbox">
+            <Button text="Clear" styleClass="button" fx:id="clearButton" onAction="#clearButtonClick"/>
+            <Button text="Close" styleClass="button" fx:id="closeButton" onAction="#closeButtonClick"/>
+        </HBox>
     </bottom>
 </BorderPane>

@@ -1,0 +1,18 @@
+
+.border-pane {
+    -fx-padding: 5 5 5 5;
+}
+
+.vbox {
+    -fx-padding: 5 5 5 5;
+    -fx-spacing: 6;
+}
+
+.hbox {
+    -fx-padding: 5 5 5 5;
+    -fx-spacing: 6;
+}
+
+.button{
+    -fx-pref-height:32
+}

@@ -1,18 +1,13 @@
-package com.example.service;
+package com.example.utils;
 
 
+import com.example.bean.BallsInfo;
 import com.example.bean.GetBallReqVo;
 import com.example.bean.GetBallRespVo;
-import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.jsoup.Connection;
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.select.Elements;
 
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -22,52 +17,62 @@ import java.util.stream.Collectors;
  * @date 2023/2/13
  */
 @Slf4j
-public class BallHistoryCrawlerManage {
+public class BallHistoryCrawlerProcessing {
 
-    public GetBallRespVo crawlerBall(GetBallReqVo reqVo) {
-        if (StringUtils.isBlank(reqVo.getUrl())) {
-            reqVo.setUrl("https://datachart.500.com/ssq/history/newinc/history.php");
+    private static String BASEURL = "https://datachart.500.com/ssq/history/newinc/history.php";
+
+    public static List<BallsInfo> crawlerBall(Map<String, String> reqVo) {
+        if (null == reqVo) {
+            reqVo = new HashMap<>();
+            reqVo.put(CommonConstant.filed_url, BASEURL);
         }
-        if (StringUtils.isNoneBlank(reqVo.getStart(), reqVo.getEnd())) {
+        if (StringUtils.isBlank(reqVo.get(CommonConstant.filed_url))) {
+            reqVo.put(CommonConstant.filed_url, BASEURL);
+        }
+        if (StringUtils.isNoneBlank(reqVo.get(CommonConstant.filed_start), reqVo.get(CommonConstant.filed_end))) {
             //03001代表03年第一期彩票  21036代表21年第36期彩票
-            String url = "https://datachart.500.com/ssq/history/newinc/history.php?start=" + reqVo.getStart() + "&end=" + reqVo.getEnd();
-            reqVo.setUrl(url);
+            String url = StringUtils.join(new Object[]{BASEURL, "?start=", reqVo.get(CommonConstant.filed_start), "&end=", reqVo.get(CommonConstant.filed_end)});
+            //String url = BASEURL + "?start=" + reqVo.get(CommonConstant.filed_start) + "&end=" + reqVo.get(CommonConstant.filed_end);
+            reqVo.put(CommonConstant.filed_url, url);
         }
 
-        Document doc = getDocument(reqVo.getUrl());
+        Document doc = PageProcessing.getDocument(reqVo.get(CommonConstant.filed_url));
 
-        List<String> list = new ArrayList();
-        List<String> redList = new ArrayList();
-        List<String> blueList = new ArrayList();
-        // 获取目标HTML代码
-        Elements trs = doc.select("tbody[id=tdata]").select("tr");
-        trs.forEach(e -> {
-            Elements tds = e.select("td");
-            String date = tds.get(0).text();
-            String[] redArr = new String[]{tds.get(1).text(), tds.get(2).text(), tds.get(3).text(),
-                    tds.get(4).text(), tds.get(5).text(), tds.get(6).text()};
-            List<String> reds = Arrays.asList(redArr.clone());
-            String red = StringUtils.join(redArr, "-");
-            String blue = tds.get(7).text();
-            //list.add(StringUtils.join(date, "期，红：", red, "，蓝：", blue));
-            list.add(StringUtils.join(date, ":", red, ",", blue));
-            blueList.add(blue);
-            redList.addAll(reds);
-        });
+        List<BallsInfo> list = PageProcessing.ballsGet(doc);
+        return list;
+    }
 
-        GetBallRespVo respVo = new GetBallRespVo();
-        respVo.setUrl(reqVo.getUrl());
-        respVo.setHistoryCount(String.valueOf(list.size()));
-        Integer defNum = convertIntDef(reqVo.getDefaultNumber(), 3);
-        if (list.size() > defNum) {
-            respVo.setRecently(list.subList(0, defNum));
-        } else {
-            respVo.setRecently(list);
+    public static List<String> crawlerBallByInfo(List<BallsInfo> ballsInfos, int defCount) {
+        List<String> list = new ArrayList<>();
+        int forCount = defCount;
+        if (forCount > ballsInfos.size()) {
+            forCount = ballsInfos.size();
         }
+        for (int i = 0; i < forCount; i++) {
+            BallsInfo info = ballsInfos.get(i);
+            //date：red-red，blue
+            list.add(StringUtils.join(info.getBallDate(), "：",
+                    StringUtils.join(info.getRedBalls(), "-"), "，", info.getBlueBall()));
+        }
+        return list;
+    }
 
-        frequencyOfListQ(blueList, redList, respVo, reqVo);
+    public static Map<String, String> crawlerBallStatistics(List<BallsInfo> ballsInfos) {
+        //红
+        List<String> allRedList = ballsInfos.stream().flatMap(info -> info.getRedBalls().stream()).collect(Collectors.toList());
+        //蓝
+        List<String> allBlueList = ballsInfos.stream().map(BallsInfo::getBlueBall).collect(Collectors.toList());
+        Map<String, String> restMap = new HashMap<>();
 
-        return respVo;
+        Map<String, Long> blueMap = statisticsFrequency(allBlueList);
+        Map<String, Long> redMap = statisticsFrequency(allRedList);
+
+        //restMap.put("redMap",redMap.toString());
+        //restMap.put("blueMap",blueMap.toString());
+        restMap.put("redMap-sortByValue", "排序后：" + sortByValue(redMap, 0).toString());
+        restMap.put("blueMap-sortByValue", "排序后：" + sortByValue(blueMap, 0).toString());
+
+        return restMap;
     }
 
     private Integer convertIntDef(String val, int def) {
@@ -85,7 +90,7 @@ public class BallHistoryCrawlerManage {
      * @param falcons
      * @return
      */
-    private Map<String, Long> statisticsFrequency(List<String> falcons) {
+    private static Map<String, Long> statisticsFrequency(List<String> falcons) {
         //统计
         Map<String, Long> map = falcons.stream().collect(Collectors.groupingBy(k -> k, Collectors.counting()));
         log.info("size={}", map.size());
@@ -118,7 +123,7 @@ public class BallHistoryCrawlerManage {
      * @param intercept
      * @return
      */
-    private Map<String, Long> sortByValue(Map<String, Long> map, int intercept) {
+    private static Map<String, Long> sortByValue(Map<String, Long> map, int intercept) {
 //        Map<String, Long> sorceMap1 = new LinkedHashMap<>();
 //        map.entrySet().stream().sorted(Map.Entry.<String, Long>comparingByValue()).forEachOrdered(e->sorceMap1.put(e.getKey(),e.getValue()));
         Map<String, Long> sorceValue = new LinkedHashMap<>();
@@ -151,16 +156,4 @@ public class BallHistoryCrawlerManage {
         respVo.setRedOrderByValue(sortByValue(redMap, redIntercept).toString());
     }
 
-    @SneakyThrows
-    private Document getDocument(String url) {
-        Connection mozilla = Jsoup.connect(URLDecoder.decode(url, String.valueOf(StandardCharsets.UTF_8))).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Safari/537.36");
-        Document document = mozilla.get();
-        //Document document = mozilla.timeout(5000).get();
-        return document;
-    }
-
-    public static void main(String[] args) {
-
-        System.out.println(new BallHistoryCrawlerManage().crawlerBall(new GetBallReqVo()));
-    }
 }
