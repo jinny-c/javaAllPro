@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.app.LotteryControllerAppMain;
 import com.example.app.MyAppMain;
 import com.example.app.MyControllerAppMain;
 import com.example.app.calculator.CalculatorApplication;
@@ -52,6 +53,14 @@ public class MyJavaFxmlController {
     protected void fxmlWindowButtonClick() {
         try {
             MyControllerAppMain myMainApp = new MyControllerAppMain();
+            myMainApp.start(new Stage());
+        } catch (Exception e) {
+        }
+    }
+    @FXML
+    protected void lotteryButtonClick() {
+        try {
+            LotteryControllerAppMain myMainApp = new LotteryControllerAppMain();
             myMainApp.start(new Stage());
         } catch (Exception e) {
         }

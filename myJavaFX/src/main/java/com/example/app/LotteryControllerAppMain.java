@@ -18,7 +18,7 @@ public class LotteryControllerAppMain extends Application {
         //可移动窗口
         removableWindow(root, primaryStage);
         primaryStage.setTitle("My Lottery Processing");
-        primaryStage.setScene(new Scene(root, 900, 500));
+        primaryStage.setScene(new Scene(root, 900, 550));
         primaryStage.show();
     }
 

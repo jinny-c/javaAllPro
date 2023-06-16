@@ -132,7 +132,7 @@ public class BallHistoryCrawlerProcessing {
         //根据value排序
         if (intercept == 0 || intercept >= map.size()) {
             map.entrySet().stream().sorted(Map.Entry.<String, Long>comparingByValue().reversed()).forEachOrdered(e -> sorceValue.put(e.getKey(), e.getValue()));
-            log.info("sorceValue={}", sorceValue);
+            //log.info("sorceValue={}", sorceValue);
         } else {
             map.entrySet().stream().sorted(Map.Entry.<String, Long>comparingByValue().reversed()).limit(intercept).forEachOrdered(e -> sorceValue.put(e.getKey(), e.getValue()));
         }

@@ -1,30 +1,19 @@
 package com.example;
 
-import com.example.app.MyAppMain;
-import com.example.app.MyControllerAppMain;
-import com.example.view.Base64View;
-import com.example.view.FileDigestView;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * @description TODO
  * @auth chaijd
  * @date 2023/5/30
  */
+@SpringBootApplication
 public class MyJavaFxmlApplication extends Application {
-
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/MyJavaFxmlController.fxml"));
