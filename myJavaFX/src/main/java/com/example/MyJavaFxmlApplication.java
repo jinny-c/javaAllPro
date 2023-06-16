@@ -5,16 +5,30 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ConfigurableApplicationContext;
 
 /**
  * @description TODO
  * @auth chaijd
  * @date 2023/5/30
  */
-//@SpringBootApplication
+@SpringBootApplication
 public class MyJavaFxmlApplication extends Application {
+
+    private ConfigurableApplicationContext context;
+
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void init() throws Exception {
+        String[] args = getParameters().getRaw().toArray(new String[0]);
+        this.context = new SpringApplicationBuilder()
+                .sources(MyJavaFxmlApplication.class)
+                .run(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
         Parent root = FXMLLoader.load(getClass().getResource("/MyJavaFxmlController.fxml"));
 
         //可移动窗口
