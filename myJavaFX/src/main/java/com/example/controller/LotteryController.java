@@ -141,7 +141,14 @@ public class LotteryController {
 
     private String getStart(String latest, String val) {
         try {
-            Integer start = Integer.parseInt(latest) - Integer.parseInt(val);
+            int subtraction = Integer.parseInt(val);
+            if (subtraction % 3 == 0) {
+                subtraction = subtraction * 2;
+            }else if(subtraction % 3 == 1){
+                subtraction = subtraction * 3;
+            }
+            //Integer start = Integer.parseInt(latest) - Integer.parseInt(val);
+            Integer start = Integer.parseInt(latest) - subtraction;
             return start + "";
             //return StringUtils.leftPad(start + "", 5, "0");
         } catch (Exception e) {

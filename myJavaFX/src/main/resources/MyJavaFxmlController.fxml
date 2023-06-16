@@ -21,6 +21,7 @@
             <Button text="Independent Processing" prefHeight="32" onAction="#aloneWindowButtonClick"/>
             <Button text=".fxml Processing" prefHeight="32" onAction="#fxmlWindowButtonClick"/>
             <Button text="Lottery" prefHeight="32" onAction="#lotteryButtonClick"/>
+            <Button text="BallGet" prefHeight="32" onAction="#ballGetButtonClick"/>
         </FlowPane>
     </left>
 

@@ -11,16 +11,23 @@ import javafx.stage.Stage;
  * @auth chaijd
  * @date 2023/6/9
  */
-public class LotteryControllerAppMain extends Application {
+public class BallGetAppMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/LotteryController.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/BallGet.fxml"));
+
         //可移动窗口
         removableWindow(root, primaryStage);
-        primaryStage.setTitle("My Lottery Processing");
-        primaryStage.setScene(new Scene(root, 900, 650));
+
+        primaryStage.setTitle("BallGet Application");
+        primaryStage.setScene(new Scene(root, 800, 350));
         primaryStage.show();
     }
+
+    public static void main(String[] args) {
+        launch(args);
+    }
+
 
     private double xOffset = 0;
     private double yOffset = 0;
@@ -35,8 +42,5 @@ public class LotteryControllerAppMain extends Application {
             primaryStage.setX(event.getScreenX() - xOffset);
             primaryStage.setY(event.getScreenY() - yOffset);
         });
-    }
-    public static void main(String[] args) {
-        launch(args);
     }
 }

@@ -7,10 +7,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.fx.SampleController">
-    <padding>
-        <Insets top="10" bottom="10" left="10" right="10"/>
-    </padding>
+            fx:controller="com.example.fx.SampleController" stylesheets="@css/common.css" styleClass="border-pane">
     <left>
         <FlowPane vgap="20" hgap="20" orientation="VERTICAL">
             <padding>
@@ -18,7 +15,6 @@
             </padding>
             <Button text="File Processing" prefHeight="32" onAction="#fileDigestButtonClick"/>
             <Button text="Base64 Processing" prefHeight="32" onAction="#base64ButtonClick"/>
-            <Button text="Independent Processing" prefHeight="32" onAction="#fileReadButtonClick"/>
         </FlowPane>
     </left>
 

@@ -1,7 +1,7 @@
 package com.example.controller;
 
+import com.example.app.BallGetAppMain;
 import com.example.app.LotteryControllerAppMain;
-import com.example.app.MyAppMain;
 import com.example.app.MyControllerAppMain;
 import com.example.app.calculator.CalculatorApplication;
 import com.example.view.Base64View;
@@ -57,10 +57,20 @@ public class MyJavaFxmlController {
         } catch (Exception e) {
         }
     }
+
     @FXML
     protected void lotteryButtonClick() {
         try {
             LotteryControllerAppMain myMainApp = new LotteryControllerAppMain();
+            myMainApp.start(new Stage());
+        } catch (Exception e) {
+        }
+    }
+
+    @FXML
+    protected void ballGetButtonClick() {
+        try {
+            BallGetAppMain myMainApp = new BallGetAppMain();
             myMainApp.start(new Stage());
         } catch (Exception e) {
         }

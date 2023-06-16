@@ -7,10 +7,7 @@
 <?import javafx.scene.layout.FlowPane?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.controller.SampleController">
-    <padding>
-        <Insets top="10" bottom="10" left="10" right="10"/>
-    </padding>
+            fx:controller="com.example.fx.SampleController" stylesheets="@css/common.css" styleClass="border-pane">
     <left>
         <FlowPane vgap="20" hgap="20" orientation="VERTICAL">
             <padding>

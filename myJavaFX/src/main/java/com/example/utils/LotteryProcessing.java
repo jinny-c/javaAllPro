@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 
@@ -173,6 +174,50 @@ public class LotteryProcessing {
         } catch (Exception e) {
             log.info("===", e);
         }
+    }
+
+    public static List<String> someThings(Boolean isIn, Boolean only) {
+        List<String> rstList = new ArrayList<>();
+        try {
+            List<Integer> my = Arrays.asList(my_arr);
+            BallEnty enty1 = null;
+            BallEnty enty2 = null;
+            int count = 0;
+            while (true) {
+                if (only) {
+                    enty1 = first();
+                    enty2 = third();
+                } else {
+                    enty1 = firstInMy(my, isIn);
+                    enty2 = thirdInMy(my, isIn);
+                }
+
+                if (enty1.equals(enty2)) {
+                    log.info("enty1={},enty2={}", enty1, enty2);
+                    if (!enty1.getRed().contains(enty1.getBlue())) {
+                        break;
+                    }
+                }
+                if (enty1.getRed().equals(enty2.getRed())) {
+                    log.info("enty1={},enty2={}", enty1, enty2);
+                    if (!enty2.getRed().contains(enty2.getBlue())) {
+                        break;
+                    }
+                }
+                count++;
+                if (count % 136592 == 0) {
+                    log.info("count={}", count);
+                }
+            }
+            log.info("end count={},only={},isIn={}", count, only, isIn);
+            rstList.add(StringUtils.join("count=", count, ",only=", only, ",isIn=", isIn));
+            if (null != enty2) {
+                rstList.add(enty2.toString());
+            }
+        } catch (Exception e) {
+            log.info("===", e);
+        }
+        return rstList;
     }
 
     private static void someThings_old() {

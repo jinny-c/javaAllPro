@@ -21,7 +21,7 @@ public class MyJavaFxmlApplication extends Application {
         removableWindow(root, primaryStage);
         //窗口设置
         primaryStage.setTitle("My Java Fxml Application");
-        primaryStage.setScene(new Scene(root, 400, 400));
+        primaryStage.setScene(new Scene(root, 400, 600));
         primaryStage.show();
     }
 

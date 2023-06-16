@@ -1,13 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import java.net.URL?>
-<?import javafx.scene.text.TextFlow?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.text.Text?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml" stylesheets="@css/common.css"
@@ -35,7 +30,7 @@
                 </HBox>
                 <HBox styleClass="hbox">
                     <Label text="统计的结果："/>
-                    <TextArea HBox.Hgrow="ALWAYS" editable="false" wrapText="true" prefRowCount="6" fx:id="textArea3"/>
+                    <TextArea HBox.Hgrow="ALWAYS" editable="false" wrapText="true" fx:id="textArea3"/>
                 </HBox>
             </VBox>
         </VBox>

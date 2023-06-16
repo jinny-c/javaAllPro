@@ -1,8 +1,5 @@
 package com.example.fx;
 
-import com.example.fx.Base64View;
-import com.example.fx.FileDigestView;
-import com.example.fx.FileReadView;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -35,17 +32,6 @@ public class SampleController {
     protected void base64ButtonClick() {
         Base64View view = new Base64View();
         view.show();
-    }
-
-    @FXML
-    protected void fileReadButtonClick() {
-        FileReadView view = new FileReadView();
-        view.show();
-//        try {
-//            CalculatorApplication myMainApp = new CalculatorApplication();
-//            myMainApp.start(new Stage());
-//        } catch (Exception e) {
-//        }
     }
 
     @FXML

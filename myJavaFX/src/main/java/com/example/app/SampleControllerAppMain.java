@@ -16,7 +16,8 @@ public class SampleControllerAppMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         //Parent root = FXMLLoader.load(getClass().getResource("/SampleController.fxml"));
 
-        Parent root = FXMLLoader.load(getClass().getResource("/myJfoenix/LoginDemo.fxml"));
+//        Parent root = FXMLLoader.load(getClass().getResource("/myJfoenix/LoginDemo.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/BallGet.fxml"));
 
 
 

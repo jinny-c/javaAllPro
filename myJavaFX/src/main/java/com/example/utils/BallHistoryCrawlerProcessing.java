@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 /**
  * @description TODO
@@ -63,16 +64,34 @@ public class BallHistoryCrawlerProcessing {
         //蓝
         List<String> allBlueList = ballsInfos.stream().map(BallsInfo::getBlueBall).collect(Collectors.toList());
         Map<String, String> restMap = new HashMap<>();
+        restMap.put("AllSortByValue", textValue(allRedList, allBlueList,"all"));
 
-        Map<String, Long> blueMap = statisticsFrequency(allBlueList);
-        Map<String, Long> redMap = statisticsFrequency(allRedList);
 
-        //restMap.put("redMap",redMap.toString());
-        //restMap.put("blueMap",blueMap.toString());
-        restMap.put("redMap-sortByValue", "排序后：" + sortByValue(redMap, 0).toString());
-        restMap.put("blueMap-sortByValue", "排序后：" + sortByValue(blueMap, 0).toString());
+        Map<Integer, List<BallsInfo>> groupMap = IntStream.range(0, ballsInfos.size())
+                .boxed()
+                .collect(Collectors.groupingBy(i -> i % 3, Collectors.mapping(ballsInfos::get, Collectors.toList())));
+        for (List<BallsInfo> infos : groupMap.values()) {
+            //红
+            List<String> redList = infos.stream().flatMap(info -> info.getRedBalls().stream()).collect(Collectors.toList());
+            //蓝
+            List<String> blueList = infos.stream().map(BallsInfo::getBlueBall).collect(Collectors.toList());
+            restMap.put(infos.get(0).getBallDate() + "subSortByValue", textValue(redList, blueList, infos.get(0).getBallDate()));
+        }
+
+//        Map<String, Long> blueMap = statisticsFrequency(allBlueList);
+//        Map<String, Long> redMap = statisticsFrequency(allRedList);
+//        //restMap.put("redMap",redMap.toString());
+//        //restMap.put("blueMap",blueMap.toString());
+//        restMap.put("redMap-sortByValue", "结果排序：" + sortByValue(redMap, 0).toString());
+//        restMap.put("blueMap-sortByValue", "排序后：" + sortByValue(blueMap, 0).toString());
 
         return restMap;
+    }
+
+    private static String textValue(List<String> redList, List<String> blueList,String pre) {
+        Map<String, Long> blueMap = statisticsFrequency(blueList);
+        Map<String, Long> redMap = statisticsFrequency(redList);
+        return StringUtils.join(pre, "：\n\rredMap=", sortByValue(redMap, 0).toString(), "\n\r blueMap=", sortByValue(blueMap, 0).toString());
     }
 
     private Integer convertIntDef(String val, int def) {
@@ -93,7 +112,7 @@ public class BallHistoryCrawlerProcessing {
     private static Map<String, Long> statisticsFrequency(List<String> falcons) {
         //统计
         Map<String, Long> map = falcons.stream().collect(Collectors.groupingBy(k -> k, Collectors.counting()));
-        log.info("size={}", map.size());
+        //log.info("size={}", map.size());
         return map;
     }
 

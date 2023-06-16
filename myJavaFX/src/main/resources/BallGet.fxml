@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml" stylesheets="@css/common.css"
+            fx:controller="com.example.controller.BallGetController" styleClass="border-pane">
+
+    <center>
+        <VBox styleClass="vbox" >
+            <HBox styleClass="hbox" fillHeight="true">
+                <Text text="条件选择："/>
+                <CheckBox text="是否only随机" selected="true" onAction="#checkBox1Click" fx:id="checkBox1"/>
+                <CheckBox text="是否isIn预留数字" disable="true" fx:id="checkBox2"/>
+                <Text text="一次性查"/>
+                <ComboBox fx:id="comboBox"/>
+            </HBox>
+
+            <HBox styleClass="hbox" fx:id="hbox1">
+                <Button text="随机获取结果" onAction="#button1Click" fx:id="button1"/>
+                <TextArea HBox.Hgrow="ALWAYS" editable="false" wrapText="true" fx:id="textArea1"/>
+            </HBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="BOTTOM_RIGHT" styleClass="hbox">
+            <Button text="Stop" styleClass="button" fx:id="stopButton" onAction="#stopButtonClick"/>
+            <Button text="Clear" styleClass="button" fx:id="clearButton" onAction="#clearButtonClick"/>
+            <Button text="Close" styleClass="button" fx:id="closeButton" onAction="#closeButtonClick"/>
+        </HBox>
+    </bottom>
+</BorderPane>

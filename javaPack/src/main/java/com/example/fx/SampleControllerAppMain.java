@@ -14,14 +14,12 @@ import javafx.stage.Stage;
 public class SampleControllerAppMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        //Parent root = FXMLLoader.load(getClass().getResource("/SampleController.fxml"));
-
         Parent root = FXMLLoader.load(getClass().getResource("/SampleController.fxml"));
 
 
 
         primaryStage.setTitle("My Application");
-        primaryStage.setScene(new Scene(root, 1300, 600));
+        primaryStage.setScene(new Scene(root, 400, 600));
         primaryStage.show();
     }
 
