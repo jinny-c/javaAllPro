@@ -2,8 +2,6 @@ package com.example.utils;
 
 
 import com.example.bean.BallsInfo;
-import com.example.bean.GetBallReqVo;
-import com.example.bean.GetBallRespVo;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.nodes.Document;
@@ -22,6 +20,7 @@ public class BallHistoryCrawlerProcessing {
     private static String BASEURL = "https://datachart.500.com/ssq/history/newinc/history.php";
 
     public static List<BallsInfo> crawlerBall(Map<String, String> reqVo) {
+        log.info("crawlerBall start,reqVo={}", reqVo);
         if (null == reqVo) {
             reqVo = new HashMap<>();
             reqVo.put(CommonConstant.filed_url, BASEURL);
@@ -43,6 +42,7 @@ public class BallHistoryCrawlerProcessing {
     }
 
     public static List<String> crawlerBallByInfo(List<BallsInfo> ballsInfos, int defCount) {
+        log.info("crawlerBallByInfo start");
         List<String> list = new ArrayList<>();
         int forCount = defCount;
         if (forCount > ballsInfos.size()) {
@@ -137,23 +137,6 @@ public class BallHistoryCrawlerProcessing {
             map.entrySet().stream().sorted(Map.Entry.<String, Long>comparingByValue().reversed()).limit(intercept).forEachOrdered(e -> sorceValue.put(e.getKey(), e.getValue()));
         }
         return sorceValue;
-    }
-
-    @Deprecated
-    public void frequencyOfListQ(List<String> blueList, List<String> redList, GetBallRespVo respVo, GetBallReqVo reqVo) {
-
-        boolean show = !StringUtils.equals(reqVo.getListHide(), "1");
-        Map<String, Long> blueMap = statisticsFrequency(blueList);
-        Map<String, Long> redMap = statisticsFrequency(redList);
-        Integer blueIntercept = convertIntDef(reqVo.getBlueSize(), 0);
-        Integer redIntercept = convertIntDef(reqVo.getRedSize(), 0);
-
-        if (show) {
-            respVo.setBlueOrderByKey(sortByKey(blueMap, blueIntercept).toString());
-            respVo.setRedOrderByKey(sortByKey(redMap, redIntercept).toString());
-        }
-        respVo.setBlueOrderByValue(sortByValue(blueMap, blueIntercept).toString());
-        respVo.setRedOrderByValue(sortByValue(redMap, redIntercept).toString());
     }
 
 }
