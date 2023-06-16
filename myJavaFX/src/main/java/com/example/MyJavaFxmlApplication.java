@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @auth chaijd
  * @date 2023/5/30
  */
-@SpringBootApplication
+//@SpringBootApplication
 public class MyJavaFxmlApplication extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception{
