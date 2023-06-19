@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Text?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml" stylesheets="@css/common.css"
+            fx:controller="com.example.controller.PageContentGetController" styleClass="border-pane">
+<!--
+    <padding><Insets top="10" bottom="10" left="10" right="10"/></padding>
+-->
+    <center>
+        <VBox styleClass="vbox" >
+            <VBox styleClass="vbox">
+                <HBox styleClass="hbox" fillHeight="true">
+                    <Text text="获取网页的地址："/>
+                    <TextField HBox.hgrow="ALWAYS" text="" fx:id="textField1"/>
+                </HBox>
+                <HBox styleClass="hbox" fillHeight="true">
+                    <Text text="开始的字符："/>
+                    <TextField HBox.hgrow="ALWAYS" text="" fx:id="textField2"/>
+                    <Text text="结束的字符："/>
+                    <TextField HBox.hgrow="ALWAYS" text="" fx:id="textField3"/>
+                </HBox>
+            </VBox>
+
+            <HBox styleClass="hbox" fx:id="hbox1">
+                <Button text="查询结果" onAction="#button1Click" fx:id="button1"/>
+                <TextArea HBox.Hgrow="ALWAYS" editable="false" wrapText="true" fx:id="textArea1"/>
+            </HBox>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="BOTTOM_RIGHT" styleClass="hbox">
+            <Button text="Clear" styleClass="button" fx:id="clearButton" onAction="#clearButtonClick"/>
+            <Button text="Close" styleClass="button" fx:id="closeButton" onAction="#closeButtonClick"/>
+        </HBox>
+    </bottom>
+</BorderPane>
