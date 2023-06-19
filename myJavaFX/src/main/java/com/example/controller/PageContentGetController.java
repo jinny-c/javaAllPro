@@ -57,7 +57,7 @@ public class PageContentGetController {
                     String contentValue = PageProcessing.pagerGet(url, contentStrat, contentEnd);
                     textArea1.setText(contentValue);
                 }catch (Exception e){
-                    log.error("Exception",e);
+                    log.info("Exception",e);
                 }
                 return null;
             }
@@ -86,6 +86,7 @@ public class PageContentGetController {
         textField1.clear();
         textField2.clear();
         textField3.clear();
+        button1.setDisable(false);
         stopThread();
     }
 
