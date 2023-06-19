@@ -112,9 +112,12 @@ public class BallGetController {
         textArea1.clear();
         button1.setDisable(false);
         hbox1.setDisable(false);
+
+        //checkBox2.setSelected(false);
+        checkBox2.setDisable(true);
+
         checkBox1.setSelected(true);
-        checkBox2.setSelected(false);
-        checkBox1.setDisable(true);
+        //checkBox1.setDisable(false);
         //stopButtonClick();
     }
 
