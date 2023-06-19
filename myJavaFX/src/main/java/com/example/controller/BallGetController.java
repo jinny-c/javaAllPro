@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.StringUtils;
 
@@ -23,6 +24,8 @@ public class BallGetController {
     private Button closeButton;
     @FXML
     private Button button1;
+    @FXML
+    private HBox hbox1;
 
     @FXML
     private CheckBox checkBox1;
@@ -48,8 +51,13 @@ public class BallGetController {
     @FXML
     protected void button1Click() {
         button1.setDisable(true);
+        hbox1.setDisable(true);
         String waitVal = "等待查询结果，请稍后。。。。。。";
-        textArea1.setText(waitVal);
+        if(StringUtils.isBlank(textArea1.getText())){
+            textArea1.setText(waitVal);
+        }else {
+            textArea1.setText(textArea1.getText() + CommonConstant.line_feed + waitVal);
+        }
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
@@ -72,9 +80,11 @@ public class BallGetController {
 
         task.setOnSucceeded(evt -> {
             button1.setDisable(false);
+            hbox1.setDisable(false);
         });
         backgroundThread = new Thread(task);
         //在创建后台线程时调用了 setDaemon(true) 方法，将其设置为守护线程。这样，在 JavaFX 应用程序退出时，JVM 会自动终止该线程的执行，从而避免资源泄漏和其他问题。
+        //多窗口需关闭主窗口
         backgroundThread.setDaemon(true);
         backgroundThread.start();
     }
@@ -92,7 +102,7 @@ public class BallGetController {
 
     @FXML
     protected void closeButtonClick() {
-        //stopButtonClick();
+        stopButtonClick();
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
@@ -101,9 +111,11 @@ public class BallGetController {
     protected void clearButtonClick() {
         textArea1.clear();
         button1.setDisable(false);
+        hbox1.setDisable(false);
         checkBox1.setSelected(true);
         checkBox2.setSelected(false);
         checkBox1.setDisable(true);
+        //stopButtonClick();
     }
 
     @FXML
@@ -111,6 +123,7 @@ public class BallGetController {
         if (null != backgroundThread) {
             //backgroundThread.interrupt();
             backgroundThread.stop();
+            backgroundThread = null;
         }
     }
 

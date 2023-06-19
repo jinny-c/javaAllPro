@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Configuration;
 @Aspect
 @Configuration
 @Slf4j
-@ComponentScan("com.example.special")
+@ComponentScan("com.example")
 public class LoggerAspect {
     @Pointcut("execution(* com.example..*(..))")
     public void executionService() {

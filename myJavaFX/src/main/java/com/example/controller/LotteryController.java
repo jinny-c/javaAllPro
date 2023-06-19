@@ -44,6 +44,8 @@ public class LotteryController {
     @FXML
     private VBox disableContent;
 
+    private Thread backgroundThread = null;
+
 
     private static String[] indexArr = new String[]{"2", "4", "6", "10", "12", "18"};
 
@@ -136,7 +138,10 @@ public class LotteryController {
         task.setOnSucceeded(evt -> {
             button2.setDisable(false);
         });
-        new Thread(task).start();
+        //new Thread(task).start();
+
+        backgroundThread = new Thread(task);
+        backgroundThread.start();
     }
 
     private String getStart(String latest, String val) {
@@ -159,6 +164,7 @@ public class LotteryController {
 
     @FXML
     protected void closeButtonClick() {
+        stopThread();
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
     }
@@ -172,6 +178,14 @@ public class LotteryController {
         disableContent.setDisable(true);
         button1.setDisable(false);
         button2.setDisable(false);
+        stopThread();
     }
 
+    private void stopThread() {
+        if (null != backgroundThread) {
+            //backgroundThread.interrupt();
+            backgroundThread.stop();
+            backgroundThread = null;
+        }
+    }
 }

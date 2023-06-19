@@ -66,7 +66,20 @@ public class LotteryProcessing {
 
     public static void main(String[] args) {
         // TODO Auto-generated method stub
-        someThings();
+        //someThings();
+        BallEnty enty2 = new BallEnty();
+        List<Integer> red = new ArrayList<>();
+        red.add(2);
+        red.add(21);
+        red.add(12);
+        red.add(32);
+        red.add(3);
+        enty2.setRed(red);
+        System.out.println(enty2.getRed());
+        System.out.println(enty2);
+        Collections.sort(enty2.getRed());
+        System.out.println(enty2);
+        System.out.println(enty2.getRed());
     }
 
     private static BallEnty thirdInMy(List<Integer> my, boolean isIn) {
@@ -212,7 +225,10 @@ public class LotteryProcessing {
             log.info("end count={},only={},isIn={}", count, only, isIn);
             rstList.add(StringUtils.join("count=", count, ",only=", only, ",isIn=", isIn));
             if (null != enty2) {
-                rstList.add(enty2.toString());
+                String entyStr = enty2.toString();
+                Collections.sort(enty2.getRed());
+                String redStr = enty2.getRed().toString();
+                rstList.add(entyStr + redStr);
             }
         } catch (Exception e) {
             log.info("===", e);
