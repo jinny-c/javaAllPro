@@ -3,25 +3,22 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.text.Text?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml" stylesheets="@css/common.css"
             fx:controller="com.example.controller.PageContentGetController" styleClass="border-pane">
-<!--
-    <padding><Insets top="10" bottom="10" left="10" right="10"/></padding>
--->
+
     <center>
         <VBox styleClass="vbox" >
             <VBox styleClass="vbox">
                 <HBox styleClass="hbox" fillHeight="true">
-                    <Text text="获取网页的地址："/>
-                    <TextField HBox.hgrow="ALWAYS" text="" fx:id="textField1"/>
+                    <Label text="获取网页的地址："/>
+                    <TextField HBox.hgrow="ALWAYS" fx:id="textField1"/>
                 </HBox>
-                <HBox styleClass="hbox" fillHeight="true">
-                    <Text text="开始的字符："/>
-                    <TextField HBox.hgrow="ALWAYS" text="" fx:id="textField2"/>
-                    <Text text="结束的字符："/>
-                    <TextField HBox.hgrow="ALWAYS" text="" fx:id="textField3"/>
+                <HBox styleClass="hbox">
+                    <Label text="开始的字符："/>
+                    <TextField fx:id="textField2"/>
+                    <Label text="结束的字符："/>
+                    <TextField fx:id="textField3"/>
                 </HBox>
             </VBox>
 
