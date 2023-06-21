@@ -68,15 +68,17 @@ public class BallGetController {
                 Boolean only = checkBox1.isSelected();
                 List<Integer> lt = null;
                 String txt = textField1.getText();
-                if (StringUtils.isNotBlank(txt)) {
-                    String[] arr = txt.split(",");
-                    if (arr.length > 0) {
-                        lt = new ArrayList<>();
-                        for (String st : arr) {
-                            lt.add(Integer.parseInt(st));
+                try {
+                    if (StringUtils.isNotBlank(txt)) {
+                        String[] arr = txt.split("-");
+                        if (arr.length > 0) {
+                            lt = new ArrayList<>();
+                            for (String st : arr) {
+                                lt.add(Integer.parseInt(st));
+                            }
                         }
                     }
-                }
+                }catch (Exception e){}
                 while (true) {
                     List<String> textValues = null;
                     if (lt == null || lt.isEmpty()) {
