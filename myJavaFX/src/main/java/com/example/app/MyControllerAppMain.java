@@ -31,7 +31,7 @@ public class MyControllerAppMain extends Application {
         removableWindow(root, primaryStage);
         //窗口设置
         primaryStage.setTitle("My Application");
-        primaryStage.setScene(new Scene(root, 400, 400));
+        primaryStage.setScene(new Scene(root, 650, 450));
         primaryStage.show();
     }
 

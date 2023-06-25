@@ -90,6 +90,7 @@ public class MyJavaFxmlController {
     protected void closeButtonClick() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
         stage.close();
+        System.exit(1);
     }
 
 }

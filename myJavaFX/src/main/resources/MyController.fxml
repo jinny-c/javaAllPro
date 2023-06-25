@@ -6,18 +6,28 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.*?>
 
-<GridPane vgap="10" hgap="10" xmlns="http://javafx.com/javafx"
-          xmlns:fx="http://javafx.com/fxml"
-          fx:controller="com.example.controller.MyController">
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableView?>
+<VBox spacing="10" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.controller.MyController">
     <padding>
         <Insets top="10" bottom="10" left="10" right="10"/>
     </padding>
 
-    <Button GridPane.rowIndex="0" GridPane.columnIndex="0" text="Select file" prefHeight="64" fx:id="selectButton"
-            onAction="#selectButtonClick"/>
+    <HBox alignment="CENTER" prefHeight="40.0" spacing="20.0" BorderPane.alignment="CENTER">
+        <children>
+            <!-- fx:id跟控制层的time属性绑定 -->
+            <Label fx:id="time" alignment="CENTER" contentDisplay="CENTER" prefWidth="200.0" text="Label" />
+        </children>
+        <BorderPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+        </BorderPane.margin>
+    </HBox>
 
-    <TextArea GridPane.rowIndex="1" GridPane.columnIndex="0" editable="false" wrapText="true" fx:id="fileContentTextArea"/>
+    <TableView fx:id="tableView"/>
 
-    <Button GridPane.rowIndex="2" GridPane.columnIndex="0" text="Close" prefHeight="64" fx:id="closeButton"
+
+    <Button text="Close" prefHeight="64" fx:id="closeButton"
             onAction="#closeButtonClick"/>
-</GridPane>
+</VBox>
