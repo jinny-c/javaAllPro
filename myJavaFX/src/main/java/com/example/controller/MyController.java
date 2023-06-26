@@ -89,12 +89,12 @@ public class MyController {
                         // 删除任务，将任务从模型中删除
                         model.getTableList().removeIf(i -> i.getId() == integer);
                     }
-                }, this::executeAdd);
+                }, this::executeDetail);
 
         tableView.getColumns().addAll(selected, id, title, progress, operator);
     }
 
-    private void executeAdd() {
+    private void executeDetail() {
 
     }
 
@@ -105,6 +105,12 @@ public class MyController {
             model.getTableList().add(TableColumnModel.fromWork(i + 1, works[(int) (Math.random() * works.length)]));
         }
         tableView.setItems(model.getTableList());
+    }
+
+    @FXML
+    protected void executeWorkAdd() {
+        //Platform.exit();
+        //daemon.setDaemon(true);
     }
 
     @FXML

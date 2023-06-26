@@ -28,6 +28,6 @@
     <TableView fx:id="tableView"/>
 
 
-    <Button text="Close" prefHeight="64" fx:id="closeButton"
-            onAction="#closeButtonClick"/>
+    <Button text="Close" prefHeight="64" fx:id="closeButton" onAction="#closeButtonClick"/>
+    <Button text="Close" prefHeight="64" fx:id="addButton" onAction="#executeWorkAdd"/>
 </VBox>

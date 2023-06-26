@@ -99,7 +99,8 @@ public class MyTableColumnBuilder {
      * @param width
      * @return
      */
-    public static TableColumn operatorColumn(String text, String field, int width, Consumer<Integer> executeLoadWork, Consumer<Integer> executeDeleteWork, Runnable executeAdd) {
+    public static TableColumn operatorColumn(String text, String field, int width, Consumer<Integer> executeLoadWork, Consumer<Integer> executeDeleteWork,
+                                             Runnable executeDetail) {
         TableColumn column = new TableColumn();
         column.setText(text);
         column.setPrefWidth(width);
@@ -108,8 +109,8 @@ public class MyTableColumnBuilder {
             return new TableCell<Object, Integer>() {
                 private HBox hBox = new HBox();
                 private Button button1 = new Button("加载");
-                private Button button3 = new Button("新增");
                 private Button button2 = new Button("删除");
+                private Button button3 = new Button("详情");
 
                 {
                     button1.setOnAction(event -> {
@@ -123,7 +124,7 @@ public class MyTableColumnBuilder {
                         executeDeleteWork.accept(this.getItem());
                     });
                     button3.setOnAction(event -> {
-                        executeAdd.run();
+                        executeDetail.run();
                     });
                     hBox.getChildren().addAll(button1, button2, button3);
                 }
