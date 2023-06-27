@@ -26,11 +26,8 @@ public class BallEnty implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (o instanceof BallEnty) {
-            BallEnty ballEnty = (BallEnty) o;
-            return Objects.equals(blue, ballEnty.blue) && equalsList(red, ballEnty.red);
-        }
-        return false;
+        BallEnty ballEnty = (BallEnty) o;
+        return Objects.equals(blue, ballEnty.blue) && equalsList(red, ballEnty.red);
     }
 
     @Override

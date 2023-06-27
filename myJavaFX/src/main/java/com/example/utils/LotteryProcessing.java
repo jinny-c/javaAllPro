@@ -18,7 +18,16 @@ import java.util.List;
  */
 @Slf4j
 public class LotteryProcessing {
-    public static List<String> getBallsByCondations(Boolean isIn, List<Integer> list) {
+    /**
+     * 根据条件获取
+     *
+     * @param isIn
+     * @param red
+     * @param blue
+     * @return
+     */
+    public static List<String> getBallsByCondations(Boolean isIn, List<Integer> red, List<Integer> blue) {
+        log.info("isIn={},red={},blue={}", isIn, red, blue);
         List<String> rstList = new ArrayList<>();
         try {
             BallEnty enty1 = null;
@@ -27,18 +36,12 @@ public class LotteryProcessing {
             RandomBallsService randomBalls2 = new RandomBallsImpl3();
             int count = 0;
             while (true) {
-                enty1 = randomBalls1.getBalls(isIn, list);
-                enty2 = randomBalls2.getBalls(isIn, list);
+                enty1 = randomBalls1.getBalls(isIn, red, blue);
+                enty2 = randomBalls2.getBalls(isIn, red, blue);
 
                 if (enty1.equals(enty2)) {
                     log.info("enty1={},enty2={}", enty1, enty2);
                     if (!enty1.getRed().contains(enty1.getBlue())) {
-                        break;
-                    }
-                }
-                if (enty1.getRed().equals(enty2.getRed())) {
-                    log.info("enty1={},enty2={}", enty1, enty2);
-                    if (!enty2.getRed().contains(enty2.getBlue())) {
                         break;
                     }
                 }
@@ -59,6 +62,10 @@ public class LotteryProcessing {
             log.info("===", e);
         }
         return rstList;
+    }
+
+    public static List<String> getBallsByCondations(Boolean isIn, List<Integer> list) {
+        return getBallsByCondations(isIn, list, null);
     }
 
     public static List<String> getBallsByCondations(Boolean isIn, Boolean only) {

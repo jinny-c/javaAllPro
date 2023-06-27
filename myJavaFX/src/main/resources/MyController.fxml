@@ -15,19 +15,15 @@
         <Insets top="10" bottom="10" left="10" right="10"/>
     </padding>
 
-    <HBox alignment="CENTER" prefHeight="40.0" spacing="20.0" BorderPane.alignment="CENTER">
-        <children>
-            <!-- fx:id跟控制层的time属性绑定 -->
-            <Label fx:id="time" alignment="CENTER" contentDisplay="CENTER" prefWidth="200.0" text="Label" />
-        </children>
-        <BorderPane.margin>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-        </BorderPane.margin>
+    <HBox alignment="CENTER" prefHeight="40.0" spacing="20.0">
+        <!-- fx:id跟控制层的time属性绑定 -->
+        <Label fx:id="time" alignment="CENTER" contentDisplay="CENTER" prefWidth="200.0" text="Label"/>
     </HBox>
 
     <TableView fx:id="tableView"/>
 
-
-    <Button text="Close" prefHeight="64" fx:id="closeButton" onAction="#closeButtonClick"/>
-    <Button text="Close" prefHeight="64" fx:id="addButton" onAction="#executeWorkAdd"/>
+    <HBox spacing="20.0" >
+        <Button text="Close" prefHeight="64" fx:id="closeButton" onAction="#closeButtonClick"/>
+        <Button text="添加" prefHeight="64" fx:id="addButton" onAction="#executeWorkAdd"/>
+    </HBox>
 </VBox>

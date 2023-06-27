@@ -3,6 +3,7 @@ package com.example.service.bean;
 import com.example.service.RandomBallsService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @description TODO
@@ -10,67 +11,97 @@ import java.util.List;
  * @date 2023/6/21
  */
 public class BeanConvert {
-    public static boolean isAllInMy(List<Integer> my, BallEnty enty) {
-        if (blues(my) && reds(my)) {
-            return true;
-        }
-        // blue && red
-        if (my.contains(enty.getBlue())) {
-            if (my.containsAll(enty.getRed())) {
-                return true;
-            }
-        }
-        return false;
+    public static boolean isAllInMy(List<Integer> myDef, BallEnty enty) {
+        return isAllNotInMy(myDef, myDef, enty);
     }
 
-    public static boolean isAllNotInMy(List<Integer> my, BallEnty enty) {
-        if (blues(my) || reds(my)) {
+    public static boolean isAllNotInMy(List<Integer> myDef, BallEnty enty) {
+        return isAllNotInMy(myDef, myDef, enty);
+    }
+
+    public static boolean isAllInMy(List<Integer> red, List<Integer> blue, BallEnty enty) {
+        boolean bluesIsNotRightful = bluesIsNotRightful(blue, true);
+        boolean redsIsNotRightful = redsIsNotRightful(red, true);
+        //blue合法
+        if (!bluesIsNotRightful) {
+            //不在list里
+            if (!blue.contains(enty.getBlue())) {
+                return false;
+            }
+        }
+        //red合法
+        if (!redsIsNotRightful) {
+            //不在list里
+            if (!red.containsAll(enty.getRed())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public static boolean isAllNotInMy(List<Integer> red, List<Integer> blue, BallEnty enty) {
+        boolean bluesIsNotRightful = bluesIsNotRightful(blue, false);
+        boolean redsIsNotRightful = redsIsNotRightful(red, false);
+        //blue合法
+        if (!bluesIsNotRightful) {
+            //在list里
+            if (blue.contains(enty.getBlue())) {
+                return false;
+            }
+        }
+        //red合法
+        if (!redsIsNotRightful) {
+            //在list里
+            for (Integer e : enty.getRed()) {
+                if (red.contains(e)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 是否是不合法的
+     *
+     * @param my
+     * @return 合法：false；不合法：true
+     */
+    private static boolean bluesIsNotRightful(List<Integer> my, boolean isIn) {
+        if (my == null || my.isEmpty()) {
             return true;
         }
-        //blue || red
-        if (my.contains(enty.getBlue())) {
+        //合法list
+        List<Integer> rigntful = my.stream().filter(element -> element <= 16).collect(Collectors.toList());
+        if (rigntful.isEmpty()) {
+            return true;
+        }
+        if (isIn) {
             return false;
         }
-        for (Integer e : enty.getRed()) {
-            if (my.contains(e)) {
-                return false;
-            }
-        }
-        return true;
+        return rigntful.containsAll(RandomBallsService.BLUELIST);
     }
 
-    public static boolean blues(List<Integer> my) {
-        if (my.size() < 1) {
-            return true;
-        }
-//        if (!isIn(my, 16)) {
-//            return true;
-//        }
-        if (my.containsAll(RandomBallsService.BLUELIST)) {
-            return true;
-        }
-        return false;
-    }
 
-    public static boolean reds(List<Integer> my) {
-        if (my.size() > 27) {
+    /**
+     * 是否是不合法的
+     *
+     * @param my
+     * @return 合法：false；不合法：true
+     */
+    private static boolean redsIsNotRightful(List<Integer> my, boolean isIn) {
+        if (my == null || my.isEmpty()) {
             return true;
         }
-        if (my.size() < 6) {
+        //合法list
+        List<Integer> rigntful = my.stream().filter(element -> element <= 33).collect(Collectors.toList());
+        if (rigntful.isEmpty()) {
             return true;
         }
-//        if (!isIn(my, 33)) {
-//            return true;
-//        }
-        return false;
-    }
 
-    public static boolean isIn(List<Integer> my, Integer max) {
-        for (Integer e : my) {
-            if (e > max) {
-                return false;
-            }
+        if (isIn) {
+            return rigntful.size() < 6;
         }
-        return true;
+        return rigntful.size() > 27;
     }
 }

@@ -12,6 +12,11 @@
     -fx-padding: 5 5 5 5;
     -fx-spacing: 6;
 }
+.hbox_flex_center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+}
 
 .button{
     -fx-pref-height:32

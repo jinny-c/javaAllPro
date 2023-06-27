@@ -10,7 +10,6 @@ import javafx.stage.Stage;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -54,9 +53,9 @@ public class BallGetController {
         button1.setDisable(true);
         hbox1.setDisable(true);
         String waitVal = "等待查询结果，请稍后。。。。。。";
-        if(StringUtils.isBlank(textArea1.getText())){
+        if (StringUtils.isBlank(textArea1.getText())) {
             textArea1.setText(waitVal);
-        }else {
+        } else {
             textArea1.setText(textArea1.getText() + CommonConstant.line_feed + waitVal);
         }
         Task<Void> task = new Task<Void>() {
@@ -66,25 +65,32 @@ public class BallGetController {
                 int num = indexArr[comboBox.getSelectionModel().getSelectedIndex()];
                 Boolean isIn = checkBox2.isSelected();
                 Boolean only = checkBox1.isSelected();
-                List<Integer> lt = null;
+                List<Integer> redLt = null;
+                List<Integer> blueLt = null;
                 String txt = textField1.getText();
                 try {
                     if (StringUtils.isNotBlank(txt)) {
-                        String[] arr = txt.split("-");
+                        String[] arr = txt.split(",");
                         if (arr.length > 0) {
-                            lt = new ArrayList<>();
-                            for (String st : arr) {
-                                lt.add(Integer.parseInt(st));
+                            redLt = convertList(arr[0]);
+                            if (arr.length > 1) {
+                                blueLt = convertList(arr[1]);
                             }
                         }
+
                     }
-                }catch (Exception e){}
+                } catch (Exception e) {
+                }
                 while (true) {
                     List<String> textValues = null;
-                    if (lt == null || lt.isEmpty()) {
+                    if (redLt == null || redLt.isEmpty()) {
                         textValues = LotteryProcessing.getBallsByCondations(isIn, only);
                     } else {
-                        textValues = LotteryProcessing.getBallsByCondations(isIn, lt);
+                        if (blueLt == null || blueLt.isEmpty()) {
+                            textValues = LotteryProcessing.getBallsByCondations(isIn, redLt);
+                        } else {
+                            textValues = LotteryProcessing.getBallsByCondations(isIn, redLt, blueLt);
+                        }
                     }
                     textArea1.setText(textArea1.getText() + CommonConstant.line_feed + StringUtils.join(textValues, CommonConstant.line_feed));
                     count++;
@@ -106,6 +112,21 @@ public class BallGetController {
         //多窗口需关闭主窗口
         backgroundThread.setDaemon(true);
         backgroundThread.start();
+    }
+
+    private List<Integer> convertList(String str) {
+        if (StringUtils.isBlank(str)) {
+            return null;
+        }
+        List<Integer> lt = null;
+        String[] arr = str.split("-");
+        if (arr.length > 0) {
+            lt = new ArrayList<>();
+            for (String st : arr) {
+                lt.add(Integer.parseInt(st));
+            }
+        }
+        return lt;
     }
 
     @FXML

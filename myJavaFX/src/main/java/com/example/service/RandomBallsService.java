@@ -59,33 +59,23 @@ public interface RandomBallsService {
     BallEnty getBalls();
 
     default BallEnty getBalls(Boolean isInArr) {
-//        BallEnty enty = null;
-//        while (true) {
-//            enty = getBalls();
-//            if (isInArr) {
-//                if (BeanConvert.isAllInMy(Arrays.asList(MY_ARR), enty)) {
-//                    break;
-//                }
-//            } else {
-//                if (BeanConvert.isAllNotInMy(Arrays.asList(MY_ARR), enty)) {
-//                    break;
-//                }
-//            }
-//        }
-//        return enty;
         return getBalls(isInArr, Arrays.asList(MY_ARR));
     }
 
     default BallEnty getBalls(Boolean isInArr, List<Integer> list) {
+        return getBalls(isInArr, list, list);
+    }
+
+    default BallEnty getBalls(Boolean isInArr, List<Integer> red, List<Integer> blue) {
         BallEnty enty = null;
         while (true) {
             enty = getBalls();
             if (isInArr) {
-                if (BeanConvert.isAllInMy(list, enty)) {
+                if (BeanConvert.isAllInMy(red, blue, enty)) {
                     break;
                 }
             } else {
-                if (BeanConvert.isAllNotInMy(list, enty)) {
+                if (BeanConvert.isAllNotInMy(red, blue, enty)) {
                     break;
                 }
             }
