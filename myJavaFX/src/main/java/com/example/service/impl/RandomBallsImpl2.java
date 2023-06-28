@@ -5,6 +5,7 @@ import com.example.service.bean.BallEnty;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -32,4 +33,10 @@ public class RandomBallsImpl2 implements RandomBallsService {
         enty.setRed(new ArrayList<>(myRed));
         return enty;
     }
+
+    @Override
+    public BallEnty getBalls(Map<Integer, Double> red, Map<Integer, Double> blue) {
+        return getBalls();
+    }
+
 }

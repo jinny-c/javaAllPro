@@ -7,9 +7,7 @@ import com.example.service.impl.RandomBallsImpl3;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * @description 随机数 双色球
@@ -115,4 +113,63 @@ public class LotteryProcessing {
         }
         return rstList;
     }
+
+    /**
+     * 要根据概率随机获取给定数组中的某个值
+     * 计算所有概率的总和。
+     * 生成一个介于0和第一步计算出的总和之间的随机数。
+     * 遍历数组，从随机数中减去每个元素的概率。当随机数变小于或等于零时，返回相应的值。
+     *
+     * @param probabilities
+     * @param random
+     * @return
+     */
+
+    public static int getRandomIndex(List<Double> probabilities, Random random) {
+        //double randomNum = new Random().nextDouble() * sum;
+        double sum = probabilities.stream().mapToDouble(Double::doubleValue).sum();
+        return getRandomIndex(probabilities, sum, random);
+    }
+    public static int getRandomIndex(List<Double> probabilities, double sum, Random random) {
+        //double randomNum = new Random().nextDouble() * sum;
+        double randomNum = random.nextDouble() * sum;
+        return getIndex(probabilities, randomNum);
+    }
+
+    public static int getRandomIndex(List<Double> probabilities) {
+        double sum = probabilities.stream().mapToDouble(Double::doubleValue).sum();
+        return getRandomIndex(probabilities, sum);
+    }
+    public static int getRandomIndex(List<Double> probabilities, double sum) {
+        double randomNum = Math.random() * sum;
+        return getIndex(probabilities, randomNum);
+    }
+
+    private static int getIndex(List<Double> probabilities, double randomNum) {
+        for (int i = 0; i < probabilities.size(); i++) {
+            randomNum -= probabilities.get(i);
+            if (randomNum <= 0) {
+                return i;
+            }
+        }
+        // 概率不等于1时的默认情况
+        return 0;
+    }
+
+    public static void main(String[] args) {
+        List<Integer> values = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+                11, 12, 13, 14, 15, 16);
+
+        List<Double> probabilities = Arrays.asList(0.1, 0.05, 0.2, 0.15, 0.05, 0.1, 0.05, 0.1, 0.05, 0.05,
+                0.02, 0.01, 0.03, 0.02, 0.02, 0.02);
+
+        List<Double> probabilities2 = Collections.nCopies(16, 0.0625);
+
+        for (int i = 0; i < 10; i++) {
+            int randomIndex = getRandomIndex(probabilities);
+            int randomValue = values.get(randomIndex);
+            System.out.println("randomValue：" + randomValue);
+        }
+    }
+
 }

@@ -2,11 +2,10 @@ package com.example.service.impl;
 
 import com.example.service.RandomBallsService;
 import com.example.service.bean.BallEnty;
+import com.example.utils.LotteryProcessing;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @description TODO
@@ -34,6 +33,37 @@ public class RandomBallsImpl3 implements RandomBallsService {
         BallEnty enty = new BallEnty();
         enty.setBlue(myBlue);
         enty.setRed(new ArrayList<>(myRed));
+        return enty;
+    }
+
+    @Override
+    public BallEnty getBalls(Map<Integer, Double> red, Map<Integer, Double> blue) {
+        Map<Integer, Double> redMap = REDLIST.stream().collect(Collectors.toMap(key -> key, key -> RED_PROBABILITIES));
+        Map<Integer, Double> blueMap = BLUELIST.stream().collect(Collectors.toMap(key -> key, key -> BLUE_PROBABILITIES));
+        if (null != red) {
+            redMap.putAll(red);
+        }
+        if (null != blue) {
+            blueMap.putAll(blue);
+        }
+        //概率
+        List<Double> blueProbabilities = new ArrayList<>(blueMap.values());
+        List<Double> redProbabilities = new ArrayList<>(redMap.values());
+
+        List<Integer> reds = new ArrayList<>(REDLIST);
+        List<Integer> my = new ArrayList<>();
+        while (true) {
+            int l = LotteryProcessing.getRandomIndex(redProbabilities);
+            my.add(reds.get(l));
+            reds.remove(l);
+            redProbabilities.remove(l);
+            if (my.size() > 5) {
+                break;
+            }
+        }
+        BallEnty enty = new BallEnty();
+        enty.setBlue(BLUELIST.get(LotteryProcessing.getRandomIndex(blueProbabilities)));
+        enty.setRed(my);
         return enty;
     }
 }

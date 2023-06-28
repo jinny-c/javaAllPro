@@ -65,6 +65,7 @@ public class BeanConvert {
      * 是否是不合法的
      *
      * @param my
+     * @param isIn
      * @return 合法：false；不合法：true
      */
     private static boolean bluesIsNotRightful(List<Integer> my, boolean isIn) {
@@ -87,6 +88,7 @@ public class BeanConvert {
      * 是否是不合法的
      *
      * @param my
+     * @param isIn
      * @return 合法：false；不合法：true
      */
     private static boolean redsIsNotRightful(List<Integer> my, boolean isIn) {
