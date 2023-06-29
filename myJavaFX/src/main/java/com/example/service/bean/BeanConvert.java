@@ -106,4 +106,5 @@ public class BeanConvert {
         }
         return rigntful.size() > 27;
     }
+
 }

@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.utils.CommonConstant;
 import com.example.utils.LotteryProcessing;
+import com.google.common.base.Splitter;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -11,6 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * @description TODO
@@ -33,6 +36,8 @@ public class BallGetController {
     private TextArea textArea1;
     @FXML
     private TextField textField1;
+    @FXML
+    private TextField textField2;
 
     @FXML
     private ComboBox<String> comboBox;
@@ -68,6 +73,10 @@ public class BallGetController {
                 List<Integer> redLt = null;
                 List<Integer> blueLt = null;
                 String txt = textField1.getText();
+
+                Map<Integer, Double> redMp = null;
+                Map<Integer, Double> blueMp = null;
+                String txt2 = textField2.getText();
                 try {
                     if (StringUtils.isNotBlank(txt)) {
                         String[] arr = txt.split(",");
@@ -79,19 +88,22 @@ public class BallGetController {
                         }
 
                     }
+
+                    if (StringUtils.isNotBlank(txt2)) {
+                        String[] arr = txt.split("-");
+                        if (arr.length > 0) {
+                            redMp = convertMap(arr[0], 33);
+                            if (arr.length > 1) {
+                                blueMp = convertMap(arr[1], 16);
+                            }
+                        }
+
+                    }
                 } catch (Exception e) {
                 }
                 while (true) {
-                    List<String> textValues = null;
-                    if (redLt == null || redLt.isEmpty()) {
-                        textValues = LotteryProcessing.getBallsByCondations(isIn, only);
-                    } else {
-                        if (blueLt == null || blueLt.isEmpty()) {
-                            textValues = LotteryProcessing.getBallsByCondations(isIn, redLt);
-                        } else {
-                            textValues = LotteryProcessing.getBallsByCondations(isIn, redLt, blueLt);
-                        }
-                    }
+                    List<String> textValues = convertValue(only, isIn, redLt, blueLt, redMp, blueMp);
+
                     textArea1.setText(textArea1.getText() + CommonConstant.line_feed + StringUtils.join(textValues, CommonConstant.line_feed));
                     count++;
                     if (count > num) {
@@ -129,14 +141,63 @@ public class BallGetController {
         return lt;
     }
 
+    private Map<Integer, Double> convertMap(String str, Integer length) {
+        if (StringUtils.isBlank(str)) {
+            return null;
+        }
+        Splitter.MapSplitter smsp = Splitter.on(",").withKeyValueSeparator("=");
+        Map<String, String> smspMp = smsp.split(str);
+
+
+        // 使用Stream和Lambda表达式进行类型转换
+        Map<Integer, Double> mp = smspMp.entrySet()
+                .stream()
+                .collect(Collectors.toMap(
+                        entry -> Integer.parseInt(entry.getKey()),
+                        entry -> Double.parseDouble(entry.getValue()) / length
+                ));
+
+        return mp;
+    }
+
+    private List<String> convertValue(boolean only, Boolean isIn, List<Integer> redLt, List<Integer> blueLt,
+                                      Map<Integer, Double> redMp, Map<Integer, Double> blueMp) {
+        if(only){
+            return LotteryProcessing.getBallsByCondations(isIn, only);
+        }
+        //在预留
+        if(isIn){
+            //预留数为空
+            if (redLt == null || redLt.isEmpty()) {
+                return LotteryProcessing.getBallsByCondations(isIn, redLt, blueLt, redMp, blueMp);
+            }
+            //预留不为空
+            //概率为空
+            if (redMp == null || redMp.isEmpty()) {
+                return LotteryProcessing.getBallsByCondations(isIn, redLt, blueLt);
+            }
+            //预留 概率都不为空
+            return LotteryProcessing.getBallsByCondations(isIn, redLt, blueLt, redMp, blueMp);
+        }
+        //不在预留
+        //预留数为空
+        if (redLt == null || redLt.isEmpty()) {
+            return LotteryProcessing.getBallsByCondations(isIn, only);
+        }
+        //预留不为空
+        return LotteryProcessing.getBallsByCondations(isIn, redLt, blueLt, redMp, blueMp);
+    }
+
     @FXML
     protected void checkBox1Click() {
         if (checkBox1.isSelected()) {
             checkBox2.setDisable(true);
             textField1.setDisable(true);
+            textField2.setDisable(true);
         } else {
             checkBox2.setDisable(false);
             textField1.setDisable(false);
+            textField2.setDisable(false);
         }
     }
 
@@ -157,7 +218,9 @@ public class BallGetController {
         //checkBox2.setSelected(false);
         checkBox2.setDisable(true);
         textField1.setDisable(true);
+        textField2.setDisable(true);
         textField1.clear();
+        textField2.clear();
 
         checkBox1.setSelected(true);
         //checkBox1.setDisable(false);

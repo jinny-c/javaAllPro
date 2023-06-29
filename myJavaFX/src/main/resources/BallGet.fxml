@@ -12,9 +12,14 @@
         <VBox styleClass="vbox" >
             <HBox styleClass="hbox" fillHeight="true" fx:id="hbox1">
                 <Text text="条件选择："/>
-                <CheckBox text="only随机" selected="true" onAction="#checkBox1Click" fx:id="checkBox1"/>
-                <CheckBox text="isIn预留数字" disable="true" fx:id="checkBox2"/>
-                <TextField promptText="预留数字，用,分开" disable="true" fx:id="textField1"/>
+                <VBox styleClass="vbox">
+                    <CheckBox text="only随机" selected="true" onAction="#checkBox1Click" fx:id="checkBox1"/>
+                    <HBox styleClass="hbox">
+                        <CheckBox text="isIn预留数字：" disable="true" fx:id="checkBox2"/>
+                        <TextField promptText="例：1-11-21-31,1-11" disable="true" fx:id="textField1"/>
+                    </HBox>
+                    <TextField promptText="概率：02=2,26=2,17=2,08=2-06=1,09=1" disable="true" fx:id="textField2"/>
+                </VBox>
                 <Text text="查询次数："/>
                 <ComboBox fx:id="comboBox"/>
             </HBox>

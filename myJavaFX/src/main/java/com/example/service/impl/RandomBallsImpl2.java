@@ -3,10 +3,7 @@ package com.example.service.impl;
 import com.example.service.RandomBallsService;
 import com.example.service.bean.BallEnty;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @description TODO
@@ -36,6 +33,11 @@ public class RandomBallsImpl2 implements RandomBallsService {
 
     @Override
     public BallEnty getBalls(Map<Integer, Double> red, Map<Integer, Double> blue) {
+        return getBalls();
+    }
+
+    @Override
+    public BallEnty getBalls(List<Integer> red, List<Integer> blue, Map<Integer, Double> redMap, Map<Integer, Double> blueMap) {
         return getBalls();
     }
 

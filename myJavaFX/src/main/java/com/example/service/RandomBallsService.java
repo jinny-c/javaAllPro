@@ -4,6 +4,7 @@ import com.example.service.bean.BallEnty;
 import com.example.service.bean.BeanConvert;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @description TODO
@@ -17,10 +18,39 @@ public interface RandomBallsService {
 
     List<Integer> REDLIST = new ArrayList<Integer>() {
         {
-            add(1);add(2);add(3);add(4);add(5);add(6);add(7);add(8);add(9);add(10);
-            add(11);add(12);add(13);add(14);add(15);add(16);add(17);add(18);add(19);add(20);
-            add(21);add(22);add(23);add(24);add(25);add(26);add(27);add(28);add(29);add(30);
-            add(31);add(32);add(33);
+            add(1);
+            add(2);
+            add(3);
+            add(4);
+            add(5);
+            add(6);
+            add(7);
+            add(8);
+            add(9);
+            add(10);
+            add(11);
+            add(12);
+            add(13);
+            add(14);
+            add(15);
+            add(16);
+            add(17);
+            add(18);
+            add(19);
+            add(20);
+            add(21);
+            add(22);
+            add(23);
+            add(24);
+            add(25);
+            add(26);
+            add(27);
+            add(28);
+            add(29);
+            add(30);
+            add(31);
+            add(32);
+            add(33);
         }
     };
     Double RED_PROBABILITIES = (1.0 / 33);
@@ -32,6 +62,8 @@ public interface RandomBallsService {
     BallEnty getBalls();
 
     BallEnty getBalls(Map<Integer, Double> red, Map<Integer, Double> blue);
+
+    BallEnty getBalls(List<Integer> red, List<Integer> blue, Map<Integer, Double> redMap, Map<Integer, Double> blueMap);
 
     default BallEnty getBalls(Boolean isInArr) {
         return getBalls(isInArr, Arrays.asList(MY_ARR));
@@ -58,4 +90,36 @@ public interface RandomBallsService {
         return enty;
     }
 
+    default BallEnty getBalls(Boolean isIn, List<Integer> redLt, List<Integer> blueLt, Map<Integer, Double> redMp, Map<Integer, Double> blueMp) {
+        List<Integer> reds = null;
+        List<Integer> blues = null;
+        if (isIn) {
+            reds = new ArrayList<>(Arrays.asList(MY_ARR));
+
+            blues = new ArrayList<>(Arrays.asList(MY_ARR));
+            blues.removeIf(e -> !BLUELIST.contains(e));
+        } else {
+            reds = new ArrayList<>(REDLIST);
+            reds.removeIf(redLt::contains);
+
+            blues = new ArrayList<>(BLUELIST);
+            blues.removeIf(blueLt::contains);
+        }
+        if (redMp == null) {
+            redMp = new HashMap<>();
+        }
+        List<Integer> finalReds = reds;
+        Map<Integer, Double> filteredRedMap = redMp.entrySet()
+                .stream().filter(entry -> finalReds.contains(entry.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        if (blueMp == null) {
+            blueMp = new HashMap<>();
+        }
+        List<Integer> finalBlues = blues;
+        Map<Integer, Double> filteredBluedMap = blueMp.entrySet()
+                .stream().filter(entry -> finalBlues.contains(entry.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        return getBalls(reds, blues, filteredRedMap, filteredBluedMap);
+    }
 }

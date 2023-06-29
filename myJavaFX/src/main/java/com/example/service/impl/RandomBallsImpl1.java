@@ -67,4 +67,9 @@ public class RandomBallsImpl1 implements RandomBallsService {
         enty.setRed(my);
         return enty;
     }
+
+    @Override
+    public BallEnty getBalls(List<Integer> red, List<Integer> blue, Map<Integer, Double> redMap, Map<Integer, Double> blueMap) {
+        return getBalls();
+    }
 }

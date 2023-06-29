@@ -66,4 +66,36 @@ public class RandomBallsImpl3 implements RandomBallsService {
         enty.setRed(my);
         return enty;
     }
+
+    @Override
+    public BallEnty getBalls(List<Integer> redLt, List<Integer> blueLt, Map<Integer, Double> redMp, Map<Integer, Double> blueMp) {
+        Map<Integer, Double> redMap = redLt.stream().collect(Collectors.toMap(key -> key, key -> RED_PROBABILITIES));
+        Map<Integer, Double> blueMap = blueLt.stream().collect(Collectors.toMap(key -> key, key -> BLUE_PROBABILITIES));
+        if (null != redMp) {
+            redMap.putAll(redMp);
+        }
+        if (null != blueMp) {
+            blueMap.putAll(blueMp);
+        }
+
+        //概率
+        List<Double> blueProbabilities = new ArrayList<>(blueMap.values());
+        List<Double> redProbabilities = new ArrayList<>(redMap.values());
+
+        List<Integer> reds = new ArrayList<>(redLt);
+        List<Integer> my = new ArrayList<>();
+        while (true) {
+            int l = LotteryProcessing.getRandomIndex(redProbabilities);
+            my.add(reds.get(l));
+            reds.remove(l);
+            redProbabilities.remove(l);
+            if (my.size() > 5) {
+                break;
+            }
+        }
+        BallEnty enty = new BallEnty();
+        enty.setBlue(blueLt.get(LotteryProcessing.getRandomIndex(blueProbabilities)));
+        enty.setRed(my);
+        return enty;
+    }
 }
