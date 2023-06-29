@@ -103,6 +103,7 @@ public class LotteryProcessing {
     }
 
     public static List<String> getBallsByCondations(Boolean isIn, Boolean only) {
+        log.info("isIn={},only={}", isIn, only);
         List<String> rstList = new ArrayList<>();
         try {
             BallEnty enty1 = null;

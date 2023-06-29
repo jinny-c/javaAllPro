@@ -53,7 +53,7 @@ public class BallHistoryCrawlerProcessing {
             BallsInfo info = ballsInfos.get(i);
             //date：red-red，blue
             list.add(StringUtils.join(info.getBallDate(), "：",
-                    StringUtils.join(info.getRedBalls(), "-"), "，", info.getBlueBall()));
+                    StringUtils.join(info.getRedBalls(), "-"), ",", info.getBlueBall()));
         }
         return list;
     }

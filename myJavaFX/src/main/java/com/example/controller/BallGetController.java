@@ -38,6 +38,8 @@ public class BallGetController {
     private TextField textField1;
     @FXML
     private TextField textField2;
+    @FXML
+    private TextField textField3;
 
     @FXML
     private ComboBox<String> comboBox;
@@ -75,31 +77,25 @@ public class BallGetController {
                 String txt = textField1.getText();
 
                 Map<Integer, Double> redMp = null;
-                Map<Integer, Double> blueMp = null;
                 String txt2 = textField2.getText();
-                try {
-                    if (StringUtils.isNotBlank(txt)) {
-                        String[] arr = txt.split(",");
-                        if (arr.length > 0) {
-                            redLt = convertList(arr[0]);
-                            if (arr.length > 1) {
-                                blueLt = convertList(arr[1]);
-                            }
-                        }
+                Map<Integer, Double> blueMp = null;
+                String txt3 = textField3.getText();
 
+                if (StringUtils.isNotBlank(txt)) {
+                    String[] arr = txt.split(",");
+                    if (arr.length > 0) {
+                        redLt = convertList(arr[0]);
+                        if (arr.length > 1) {
+                            blueLt = convertList(arr[1]);
+                        }
                     }
 
-                    if (StringUtils.isNotBlank(txt2)) {
-                        String[] arr = txt.split("-");
-                        if (arr.length > 0) {
-                            redMp = convertMap(arr[0], 33);
-                            if (arr.length > 1) {
-                                blueMp = convertMap(arr[1], 16);
-                            }
-                        }
-
-                    }
-                } catch (Exception e) {
+                }
+                if (StringUtils.isNotBlank(txt2)) {
+                    redMp = convertMap(txt2, 33);
+                }
+                if (StringUtils.isNotBlank(txt3)) {
+                    blueMp = convertMap(txt3, 16);
                 }
                 while (true) {
                     List<String> textValues = convertValue(only, isIn, redLt, blueLt, redMp, blueMp);
@@ -130,13 +126,18 @@ public class BallGetController {
         if (StringUtils.isBlank(str)) {
             return null;
         }
+
         List<Integer> lt = null;
-        String[] arr = str.split("-");
-        if (arr.length > 0) {
-            lt = new ArrayList<>();
-            for (String st : arr) {
-                lt.add(Integer.parseInt(st));
+        try {
+            String[] arr = str.split("-");
+            if (arr.length > 0) {
+                lt = new ArrayList<>();
+                for (String st : arr) {
+                    lt.add(Integer.parseInt(st.trim()));
+                }
             }
+        } catch (Exception e) {
+
         }
         return lt;
     }
@@ -145,28 +146,39 @@ public class BallGetController {
         if (StringUtils.isBlank(str)) {
             return null;
         }
-        Splitter.MapSplitter smsp = Splitter.on(",").withKeyValueSeparator("=");
-        Map<String, String> smspMp = smsp.split(str);
+        try {
+            if (StringUtils.startsWith(str, "{")) {
+                str = StringUtils.substringAfter(str, "{");
+            }
+            if (StringUtils.endsWith(str, "}")) {
+                str = StringUtils.substringBefore(str, "}");
+            }
 
+            Splitter.MapSplitter smsp = Splitter.on(",").withKeyValueSeparator("=");
+            Map<String, String> smspMp = smsp.split(str);
+            // 使用Stream和Lambda表达式进行类型转换
+            Map<Integer, Double> mp = smspMp.entrySet()
+                    .stream()
+                    .collect(Collectors.toMap(
+                            entry -> Integer.parseInt(entry.getKey().trim()),
+                            entry -> Double.parseDouble(entry.getValue().trim()) / length
+                    ));
 
-        // 使用Stream和Lambda表达式进行类型转换
-        Map<Integer, Double> mp = smspMp.entrySet()
-                .stream()
-                .collect(Collectors.toMap(
-                        entry -> Integer.parseInt(entry.getKey()),
-                        entry -> Double.parseDouble(entry.getValue()) / length
-                ));
+            return mp;
+        } catch (Exception e) {
 
-        return mp;
+        }
+        return null;
     }
+
 
     private List<String> convertValue(boolean only, Boolean isIn, List<Integer> redLt, List<Integer> blueLt,
                                       Map<Integer, Double> redMp, Map<Integer, Double> blueMp) {
-        if(only){
+        if (only) {
             return LotteryProcessing.getBallsByCondations(isIn, only);
         }
         //在预留
-        if(isIn){
+        if (isIn) {
             //预留数为空
             if (redLt == null || redLt.isEmpty()) {
                 return LotteryProcessing.getBallsByCondations(isIn, redLt, blueLt, redMp, blueMp);
@@ -184,6 +196,9 @@ public class BallGetController {
         if (redLt == null || redLt.isEmpty()) {
             return LotteryProcessing.getBallsByCondations(isIn, only);
         }
+        if (blueLt == null || blueLt.isEmpty()) {
+            return LotteryProcessing.getBallsByCondations(isIn, redLt);
+        }
         //预留不为空
         return LotteryProcessing.getBallsByCondations(isIn, redLt, blueLt, redMp, blueMp);
     }
@@ -194,10 +209,12 @@ public class BallGetController {
             checkBox2.setDisable(true);
             textField1.setDisable(true);
             textField2.setDisable(true);
+            textField3.setDisable(true);
         } else {
             checkBox2.setDisable(false);
             textField1.setDisable(false);
             textField2.setDisable(false);
+            textField3.setDisable(false);
         }
     }
 
@@ -219,8 +236,10 @@ public class BallGetController {
         checkBox2.setDisable(true);
         textField1.setDisable(true);
         textField2.setDisable(true);
+        textField3.setDisable(true);
         textField1.clear();
         textField2.clear();
+        textField3.clear();
 
         checkBox1.setSelected(true);
         //checkBox1.setDisable(false);

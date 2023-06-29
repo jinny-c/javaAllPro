@@ -18,7 +18,8 @@
                         <CheckBox text="isIn预留数字：" disable="true" fx:id="checkBox2"/>
                         <TextField promptText="例：1-11-21-31,1-11" disable="true" fx:id="textField1"/>
                     </HBox>
-                    <TextField promptText="概率：02=2,26=2,17=2,08=2-06=1,09=1" disable="true" fx:id="textField2"/>
+                    <TextField promptText="red概率：02=2,26=2,17=2,08=2-06" disable="true" fx:id="textField2"/>
+                    <TextField promptText="blue概率：04=2,14=1,15=1,10=1" disable="true" fx:id="textField3"/>
                 </VBox>
                 <Text text="查询次数："/>
                 <ComboBox fx:id="comboBox"/>

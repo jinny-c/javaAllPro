@@ -66,12 +66,16 @@ public interface RandomBallsService {
     BallEnty getBalls(List<Integer> red, List<Integer> blue, Map<Integer, Double> redMap, Map<Integer, Double> blueMap);
 
     default BallEnty getBalls(Boolean isInArr) {
-        return getBalls(isInArr, Arrays.asList(MY_ARR));
+        if(isInArr){
+            List<Integer> list = Arrays.asList(MY_ARR);
+            return getBalls(isInArr, list, list);
+        }
+        return getBalls();
     }
 
-    default BallEnty getBalls(Boolean isInArr, List<Integer> list) {
-        return getBalls(isInArr, list, list);
-    }
+//    default BallEnty getBalls(Boolean isInArr, List<Integer> list) {
+//        return getBalls(isInArr, list, list);
+//    }
 
     default BallEnty getBalls(Boolean isInArr, List<Integer> red, List<Integer> blue) {
         BallEnty enty = null;

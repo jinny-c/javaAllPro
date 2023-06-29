@@ -20,7 +20,7 @@ public class BallGetAppMain extends Application {
         removableWindow(root, primaryStage);
 
         primaryStage.setTitle("BallGet Application");
-        primaryStage.setScene(new Scene(root, 800, 350));
+        primaryStage.setScene(new Scene(root, 800, 450));
         primaryStage.show();
     }
 
