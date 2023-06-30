@@ -40,6 +40,8 @@ public class LotteryController {
     private TextArea textArea3;
     @FXML
     private TextField latestPeriods;
+    @FXML
+    private TextField textField1;
 
     @FXML
     private VBox disableContent;
@@ -65,7 +67,7 @@ public class LotteryController {
         comboBox.getItems();
         //comboBox.setValue("2");
         comboBox.getSelectionModel().select(1); // 将索引为1（即"2"）的选项设置为默认选项
-
+        textField1.setText("4");
     }
 
     @FXML
@@ -95,12 +97,20 @@ public class LotteryController {
         //button1.setDisable(false);
     }
 
+
+    @FXML
+    protected void comboBoxClick() {
+        String val = indexArr[comboBox.getSelectionModel().getSelectedIndex()];
+        textField1.setText(val);
+    }
+
     @FXML
     protected void selectButtonClick() {
         //String periods = comboBox.getValue();
         //comboBox.getSelectionModel().getSelectedItem();
         String val = indexArr[comboBox.getSelectionModel().getSelectedIndex()];
         String latest = latestPeriods.getText();
+        String val1 = textField1.getText();
         button2.setDisable(true);
         textArea2.setText("等待查询结果，请稍后。。。。。。");
 
@@ -110,7 +120,7 @@ public class LotteryController {
                 //hbox1.setDisable(true);
                 Map<String, String> reqMap = new HashMap<>();
                 reqMap.put(CommonConstant.filed_end, latest);
-                reqMap.put(CommonConstant.filed_start, getStart(latest, val));
+                reqMap.put(CommonConstant.filed_start, getStart(latest, val, val1));
                 List<BallsInfo> ballsInfos = BallHistoryCrawlerProcessing.crawlerBall(reqMap);
                 if (null == ballsInfos || ballsInfos.isEmpty()) {
                     return null;
@@ -144,14 +154,17 @@ public class LotteryController {
         backgroundThread.start();
     }
 
-    private String getStart(String latest, String val) {
+    private String getStart(String latest, String val, String val1) {
         try {
             int subtraction = Integer.parseInt(val);
-            if (subtraction % 3 == 0) {
-                subtraction = subtraction * 2;
-            }else if(subtraction % 3 == 1){
-                subtraction = subtraction * 3;
+            if (StringUtils.isNotBlank(val1)) {
+                subtraction = Integer.parseInt(val1);
             }
+//            if (subtraction % 3 == 0) {
+//                subtraction = subtraction * 2;
+//            }else if(subtraction % 3 == 1){
+//                subtraction = subtraction * 3;
+//            }
             //Integer start = Integer.parseInt(latest) - Integer.parseInt(val);
             Integer start = Integer.parseInt(latest) - subtraction;
             return start + "";

@@ -24,7 +24,10 @@
 
             <VBox styleClass="vbox" disable="true" fx:id="disableContent">
                 <HBox styleClass="hbox">
-                    <ComboBox fx:id="comboBox"/>
+                    <VBox styleClass="vbox">
+                        <ComboBox fx:id="comboBox" onAction="#comboBoxClick"/>
+                        <TextField prefWidth="20" fx:id="textField1"/>
+                    </VBox>
                     <Button text="结果查询" styleClass="button" onAction="#selectButtonClick" fx:id="button2"/>
                     <TextArea HBox.Hgrow="ALWAYS" editable="false" wrapText="true" prefRowCount="6" fx:id="textArea2"/>
                 </HBox>
