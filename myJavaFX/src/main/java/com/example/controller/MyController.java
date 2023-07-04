@@ -1,5 +1,7 @@
 package com.example.controller;
 
+import com.example.app.sub.AddView;
+import com.example.app.sub.JfoenixDeatilMain;
 import com.example.bean.TableColumnModel;
 import com.example.bean.TableModel;
 import com.example.view.MyTableColumnBuilder;
@@ -10,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.stage.Stage;
+import lombok.val;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -66,7 +69,7 @@ public class MyController {
         TableColumn<TableColumnModel, Integer> id = MyTableColumnBuilder.textColumn("ID", "id", 60);
         TableColumn<TableColumnModel, String> title = MyTableColumnBuilder.textColumn("名称", "title", 180);
         TableColumn<TableColumnModel, Double> progress = MyTableColumnBuilder.progressColumn("进度", "progress", 150);
-        TableColumn<TableColumnModel, Integer> operator = MyTableColumnBuilder.operatorColumn("操作", "id", 160,
+        val operator = MyTableColumnBuilder.operatorColumn("操作", "id", 160,
                 integer -> {
                     // 处理任务加载，进度更新
                     Optional<TableColumnModel> opt = model.getTableList().stream().filter(i -> i.getId() == integer).findFirst();
@@ -95,7 +98,11 @@ public class MyController {
     }
 
     private void executeDetail() {
-
+        try {
+            JfoenixDeatilMain subMain = new JfoenixDeatilMain();
+            subMain.setColumnModel(TableColumnModel.fromWork(12, "测试页面"));
+            subMain.start(new Stage());
+        }catch (Exception e){}
     }
 
     public void loadTestTableList() {
@@ -111,6 +118,10 @@ public class MyController {
     protected void executeWorkAdd() {
         //Platform.exit();
         //daemon.setDaemon(true);
+        AddView addView = new AddView();
+        addView.show();
+
+        tableView.getItems().add(addView.getColumnModel());
     }
 
     @FXML
