@@ -54,16 +54,17 @@ public class PageProcessing {
     }
 
     public static String pagerGet(String url, String startKey, String endKey) {
+        log.info("startKey={},endKey={}", startKey, endKey);
         Document document = getDocument(url);
         String allValue = document.text();
         //String betweenValue = StringUtils.substringBetween(allValue, startKey, endKey);
         String subValue = allValue;
         if (StringUtils.isNotBlank(startKey)) {
-            subValue = StringUtils.substringAfter(allValue, startKey);
+            subValue = StringUtils.substringAfter(subValue, startKey);
 
         }
         if (StringUtils.isNotBlank(endKey)) {
-            subValue = StringUtils.substringBefore(allValue, endKey);
+            subValue = StringUtils.substringBefore(subValue, endKey);
 
         }
         return subValue;
