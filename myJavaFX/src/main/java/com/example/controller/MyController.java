@@ -120,8 +120,9 @@ public class MyController {
         //daemon.setDaemon(true);
         AddView addView = new AddView();
         addView.show();
-
-        tableView.getItems().add(addView.getColumnModel());
+        if (null != addView.getColumnModel()) {
+            tableView.getItems().add(addView.getColumnModel());
+        }
     }
 
     @FXML
