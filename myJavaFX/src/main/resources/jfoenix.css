@@ -8,3 +8,12 @@
 .jfx-text-field {
     -jfx-focus-color: #2196f3;
 }
+
+.custom-text-field {
+    -jfx-focus-color: #0066cc;
+    -jfx-unfocus-color: #999999;
+    -jfx-text-fill: #333333;
+    -fx-background-color: #f5f5f5;
+    -fx-prompt-text-fill: #999999;
+    -fx-font-size: 14px;
+}
