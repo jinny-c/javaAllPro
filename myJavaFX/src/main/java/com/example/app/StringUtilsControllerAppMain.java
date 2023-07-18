@@ -1,4 +1,4 @@
-package com.example;
+package com.example.app;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -6,23 +6,19 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-
 /**
  * @description TODO
  * @auth chaijd
- * @date 2023/5/30
+ * @date 2023/6/9
  */
-public class MyJavaFxmlApplication extends Application {
-
+public class StringUtilsControllerAppMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/MyJavaFxmlController.fxml"));
-
+        Parent root = FXMLLoader.load(getClass().getResource("/StringUtils.fxml"));
         //可移动窗口
         removableWindow(root, primaryStage);
-        //窗口设置
-        primaryStage.setTitle("My Java Fxml Application");
-        primaryStage.setScene(new Scene(root, 450, 400));
+        primaryStage.setTitle("Page Content Get Processing");
+        primaryStage.setScene(new Scene(root, 800, 400));
         primaryStage.show();
     }
 
@@ -40,9 +36,7 @@ public class MyJavaFxmlApplication extends Application {
             primaryStage.setY(event.getScreenY() - yOffset);
         });
     }
-
     public static void main(String[] args) {
         launch(args);
     }
-
 }

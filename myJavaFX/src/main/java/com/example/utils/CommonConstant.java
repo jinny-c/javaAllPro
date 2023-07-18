@@ -11,4 +11,6 @@ public interface CommonConstant {
     String filed_end = "end";
 
     String line_feed = "\n\r";
+
+    String content_pattern = "\r\n|\n|\r";
 }

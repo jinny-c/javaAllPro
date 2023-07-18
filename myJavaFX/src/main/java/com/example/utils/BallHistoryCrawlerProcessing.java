@@ -88,10 +88,10 @@ public class BallHistoryCrawlerProcessing {
         return restMap;
     }
 
-    private static String textValue(List<String> redList, List<String> blueList,String pre) {
+    public static String textValue(List<String> redList, List<String> blueList, String pre) {
         Map<String, Long> blueMap = statisticsFrequency(blueList);
         Map<String, Long> redMap = statisticsFrequency(redList);
-        return StringUtils.join(pre, "：\n\rredMap=", sortByValue(redMap, 0).toString(), "\n\r blueMap=", sortByValue(blueMap, 0).toString());
+        return StringUtils.join(pre, "：\n\r redMap=", sortByValue(redMap, 0).toString(), "\n\r blueMap=", sortByValue(blueMap, 0).toString());
     }
 
     private Integer convertIntDef(String val, int def) {

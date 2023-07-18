@@ -70,13 +70,13 @@ public class PageProcessing {
         return subValue;
     }
 
-    public static void main(String[] args) {
-        String url = "https://www.sdk.cn/details/9pPQD6wqK0Jo8ozvNy#title-8";
-        url = "https://blog.csdn.net/lansefangzhou/article/details/81091407";
-        String startKey = "登陆界面";
-        String endKey = "关注";
-//        System.out.println(getDocument(url));
-        System.out.println(pagerGet(url, startKey, endKey));
-    }
+//    public static void main(String[] args) {
+//        String url = "https://www.sdk.cn/details/9pPQD6wqK0Jo8ozvNy#title-8";
+//        url = "https://blog.csdn.net/lansefangzhou/article/details/81091407";
+//        String startKey = "登陆界面";
+//        String endKey = "关注";
+////        System.out.println(getDocument(url));
+//        System.out.println(pagerGet(url, startKey, endKey));
+//    }
 
 }

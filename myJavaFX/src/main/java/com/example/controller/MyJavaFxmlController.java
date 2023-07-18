@@ -1,9 +1,6 @@
 package com.example.controller;
 
-import com.example.app.BallGetAppMain;
-import com.example.app.LotteryControllerAppMain;
-import com.example.app.MyControllerAppMain;
-import com.example.app.PageContentGetControllerAppMain;
+import com.example.app.*;
 import com.example.app.calculator.CalculatorApplication;
 import com.example.view.Base64View;
 import com.example.view.FileDigestView;
@@ -81,6 +78,14 @@ public class MyJavaFxmlController {
     protected void pageContentGetButtonClick() {
         try {
             PageContentGetControllerAppMain myMainApp = new PageContentGetControllerAppMain();
+            myMainApp.start(new Stage());
+        } catch (Exception e) {
+        }
+    }
+    @FXML
+    protected void contentProcessingButtonClick() {
+        try {
+            StringUtilsControllerAppMain myMainApp = new StringUtilsControllerAppMain();
             myMainApp.start(new Stage());
         } catch (Exception e) {
         }

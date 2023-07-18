@@ -23,6 +23,7 @@
             <Button text="Lottery" prefHeight="32" onAction="#lotteryButtonClick"/>
             <Button text="BallGet" prefHeight="32" onAction="#ballGetButtonClick"/>
             <Button text="PageContentGet" prefHeight="32" onAction="#pageContentGetButtonClick"/>
+            <Button text="ContentProcessing" prefHeight="32" onAction="#contentProcessingButtonClick"/>
         </FlowPane>
     </left>
 

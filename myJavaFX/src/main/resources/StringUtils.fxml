@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<BorderPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml" stylesheets="@css/common.css"
+            fx:controller="com.example.controller.StringUtilsController" styleClass="border-pane">
+
+    <center>
+        <VBox styleClass="vbox" >
+            <TextArea HBox.Hgrow="ALWAYS" editable="true" wrapText="true" fx:id="textArea1"/>
+            <Button text="数据处理" onAction="#button1Click" fx:id="button1"/>
+            <TextArea HBox.Hgrow="ALWAYS" editable="false" wrapText="true" fx:id="textArea2"/>
+        </VBox>
+    </center>
+
+    <bottom>
+        <HBox alignment="BOTTOM_RIGHT" styleClass="hbox">
+            <Button text="Clear" styleClass="button" fx:id="clearButton" onAction="#clearButtonClick"/>
+            <Button text="Close" styleClass="button" fx:id="closeButton" onAction="#closeButtonClick"/>
+        </HBox>
+    </bottom>
+</BorderPane>
