@@ -28,10 +28,16 @@ public class BallGetController {
     @FXML
     private HBox hbox1;
 
+//    @FXML
+//    private CheckBox checkBox1;
+//    @FXML
+//    private CheckBox checkBox2;
+
     @FXML
-    private CheckBox checkBox1;
+    private ToggleButton toggleButton1;
     @FXML
-    private CheckBox checkBox2;
+    private ToggleButton toggleButton2;
+
     @FXML
     private TextArea textArea1;
     @FXML
@@ -72,8 +78,10 @@ public class BallGetController {
             protected Void call() throws Exception {
                 int count = 1;
                 int num = indexArr[comboBox.getSelectionModel().getSelectedIndex()];
-                Boolean isIn = checkBox2.isSelected();
-                Boolean only = checkBox1.isSelected();
+//                Boolean isIn = checkBox2.isSelected();
+//                Boolean only = checkBox1.isSelected();
+                Boolean isIn = toggleButton2.isSelected();
+                Boolean only = toggleButton1.isSelected();
                 List<Integer> redLt = null;
                 List<Integer> blueLt = null;
                 String txt = textField1.getText();
@@ -207,22 +215,40 @@ public class BallGetController {
         return LotteryProcessing.getBallsByCondations(isIn, redLt, blueLt, redMp, blueMp);
     }
 
+//    @FXML
+//    protected void checkBox1Click() {
+//        if (checkBox1.isSelected()) {
+//            checkBox2.setDisable(true);
+//            textField1.setDisable(true);
+//            textField11.setDisable(true);
+//            textField2.setDisable(true);
+//            textField3.setDisable(true);
+//        } else {
+//            checkBox2.setDisable(false);
+//            textField1.setDisable(false);
+//            textField11.setDisable(false);
+//            textField2.setDisable(false);
+//            textField3.setDisable(false);
+//        }
+//    }
+
     @FXML
-    protected void checkBox1Click() {
-        if (checkBox1.isSelected()) {
-            checkBox2.setDisable(true);
+    protected void toggleButton1Click(){
+        if (toggleButton1.isSelected()) {
+            toggleButton2.setDisable(true);
             textField1.setDisable(true);
             textField11.setDisable(true);
             textField2.setDisable(true);
             textField3.setDisable(true);
         } else {
-            checkBox2.setDisable(false);
+            toggleButton2.setDisable(false);
             textField1.setDisable(false);
             textField11.setDisable(false);
             textField2.setDisable(false);
             textField3.setDisable(false);
         }
     }
+
 //    @FXML
 //    protected void checkBox2Click() {
 //        if (checkBox2.isSelected()) {
@@ -248,8 +274,11 @@ public class BallGetController {
         button1.setDisable(false);
         hbox1.setDisable(false);
 
-        checkBox2.setSelected(true);
-        checkBox2.setDisable(true);
+        //checkBox2.setSelected(true);
+        //checkBox2.setDisable(true);
+        toggleButton2.setSelected(true);
+        toggleButton2.setDisable(true);
+
         textField1.setDisable(true);
         textField11.setDisable(true);
         textField2.setDisable(true);
@@ -259,7 +288,8 @@ public class BallGetController {
         textField2.clear();
         textField3.clear();
 
-        checkBox1.setSelected(true);
+        //checkBox1.setSelected(true);
+        toggleButton1.setSelected(true);
         //checkBox1.setDisable(false);
         //stopButtonClick();
     }

@@ -253,6 +253,34 @@ public class LotteryProcessing {
         return new BallEnty();
     }
 
+    public static Map<String, String> lotteryResult(String content) {
+        List<String> list = new ArrayList<>(Arrays.asList(content.split(Pattern.compile(CommonConstant.content_pattern).pattern())));
+        List<BallsInfo> ballsInfos = list.stream()
+                .map(LotteryProcessing::convertByStr2)
+                .filter(Objects::nonNull).collect(Collectors.toList());
+        //红
+        List<String> allRedList = ballsInfos.stream().flatMap(info -> info.getRedBalls().stream()).collect(Collectors.toList());
+        //蓝
+        List<String> allBlueList = ballsInfos.stream().map(BallsInfo::getBlueBall).collect(Collectors.toList());
+        Map<String, String> restMap = new HashMap<>();
+        restMap.put("red", StringUtils.join(sortAndDeDuplication(allRedList), "-"));
+        restMap.put("blue", StringUtils.join(sortAndDeDuplication(allBlueList), "-"));
+        return restMap;
+    }
+    private static BallsInfo convertByStr2(String str) {
+        try {
+            str = StringUtils.substringAfter(str, "：");
+            String[] arr = str.split(",");
+            BallsInfo info = new BallsInfo();
+            info.setBlueBall(arr[1]);
+            info.setRedBalls(Arrays.asList(arr[0].split("-")));
+            return info;
+        } catch (Exception e) {
+            log.error("Exception={}", e.getMessage());
+        }
+        return null;
+    }
+
     public static Map<String, String> lotteryStatistics(String content) {
         List<String> list = new ArrayList<>(Arrays.asList(content.split(Pattern.compile(CommonConstant.content_pattern).pattern())));
         List<String> need = list.stream().filter(e -> {

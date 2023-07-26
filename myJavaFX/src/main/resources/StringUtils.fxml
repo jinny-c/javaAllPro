@@ -10,7 +10,12 @@
     <center>
         <VBox styleClass="vbox" >
             <TextArea HBox.Hgrow="ALWAYS" editable="true" wrapText="true" fx:id="textArea1"/>
-            <Button text="数据处理" onAction="#button1Click" fx:id="button1"/>
+            <HBox styleClass="hbox">
+                <RadioButton text="随机结果处理" userData="01" fx:id="radioButton1"/>
+                <RadioButton text="统计结果处理" userData="02" fx:id="radioButton2"/>
+                <Region HBox.hgrow="ALWAYS" />
+                <Button text="数据处理" onAction="#button1Click" fx:id="button1"/>
+            </HBox>
             <TextArea HBox.Hgrow="ALWAYS" editable="false" wrapText="true" fx:id="textArea2"/>
         </VBox>
     </center>
