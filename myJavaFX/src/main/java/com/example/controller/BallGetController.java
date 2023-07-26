@@ -37,6 +37,8 @@ public class BallGetController {
     @FXML
     private TextField textField1;
     @FXML
+    private TextField textField11;
+    @FXML
     private TextField textField2;
     @FXML
     private TextField textField3;
@@ -75,21 +77,27 @@ public class BallGetController {
                 List<Integer> redLt = null;
                 List<Integer> blueLt = null;
                 String txt = textField1.getText();
+                String txt11 = textField11.getText();
 
                 Map<Integer, Double> redMp = null;
                 String txt2 = textField2.getText();
                 Map<Integer, Double> blueMp = null;
                 String txt3 = textField3.getText();
 
+//                if (StringUtils.isNotBlank(txt)) {
+//                    String[] arr = txt.split(",");
+//                    if (arr.length > 0) {
+//                        redLt = convertList(arr[0]);
+//                        if (arr.length > 1) {
+//                            blueLt = convertList(arr[1]);
+//                        }
+//                    }
+//                }
                 if (StringUtils.isNotBlank(txt)) {
-                    String[] arr = txt.split(",");
-                    if (arr.length > 0) {
-                        redLt = convertList(arr[0]);
-                        if (arr.length > 1) {
-                            blueLt = convertList(arr[1]);
-                        }
-                    }
-
+                    redLt = convertList(txt);
+                }
+                if (StringUtils.isNotBlank(txt11)) {
+                    blueLt = convertList(txt11);
                 }
                 if (StringUtils.isNotBlank(txt2)) {
                     redMp = convertMap(txt2, 33);
@@ -185,21 +193,17 @@ public class BallGetController {
             }
             //预留不为空
             //概率为空
-            if (redMp == null || redMp.isEmpty()) {
+            if (redMp == null && blueMp == null) {
                 return LotteryProcessing.getBallsByCondations(isIn, redLt, blueLt);
             }
             //预留 概率都不为空
             return LotteryProcessing.getBallsByCondations(isIn, redLt, blueLt, redMp, blueMp);
         }
         //不在预留
-        //预留数为空
-        if (redLt == null || redLt.isEmpty()) {
-            return LotteryProcessing.getBallsByCondations(isIn, only);
+        //概率为空
+        if (redMp == null && blueMp == null) {
+            return LotteryProcessing.getBallsByCondations(isIn, redLt, blueLt);
         }
-        if (blueLt == null || blueLt.isEmpty()) {
-            return LotteryProcessing.getBallsByCondations(isIn, redLt);
-        }
-        //预留不为空
         return LotteryProcessing.getBallsByCondations(isIn, redLt, blueLt, redMp, blueMp);
     }
 
@@ -208,15 +212,27 @@ public class BallGetController {
         if (checkBox1.isSelected()) {
             checkBox2.setDisable(true);
             textField1.setDisable(true);
+            textField11.setDisable(true);
             textField2.setDisable(true);
             textField3.setDisable(true);
         } else {
             checkBox2.setDisable(false);
             textField1.setDisable(false);
+            textField11.setDisable(false);
             textField2.setDisable(false);
             textField3.setDisable(false);
         }
     }
+//    @FXML
+//    protected void checkBox2Click() {
+//        if (checkBox2.isSelected()) {
+//            textField2.setDisable(true);
+//            textField3.setDisable(true);
+//        } else {
+//            textField2.setDisable(false);
+//            textField3.setDisable(false);
+//        }
+//    }
 
 
     @FXML
@@ -232,12 +248,14 @@ public class BallGetController {
         button1.setDisable(false);
         hbox1.setDisable(false);
 
-        //checkBox2.setSelected(false);
+        checkBox2.setSelected(true);
         checkBox2.setDisable(true);
         textField1.setDisable(true);
+        textField11.setDisable(true);
         textField2.setDisable(true);
         textField3.setDisable(true);
         textField1.clear();
+        textField11.clear();
         textField2.clear();
         textField3.clear();
 

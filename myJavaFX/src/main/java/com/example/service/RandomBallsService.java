@@ -104,10 +104,14 @@ public interface RandomBallsService {
             blues.removeIf(e -> !BLUELIST.contains(e));
         } else {
             reds = new ArrayList<>(REDLIST);
-            reds.removeIf(redLt::contains);
+            if (redLt != null) {
+                reds.removeIf(redLt::contains);
+            }
 
             blues = new ArrayList<>(BLUELIST);
-            blues.removeIf(blueLt::contains);
+            if (blueLt != null) {
+                blues.removeIf(blueLt::contains);
+            }
         }
         if (redMp == null) {
             redMp = new HashMap<>();
