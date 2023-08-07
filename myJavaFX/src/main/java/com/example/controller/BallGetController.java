@@ -221,9 +221,9 @@ public class BallGetController {
     private List<String> convertValue(boolean only, String type, Boolean isIn, List<Integer> redLt, List<Integer> blueLt,
                                       Map<Integer, Double> redMp, Map<Integer, Double> blueMp) {
         if (only) {
-//            if (StringUtils.isBlank(type) || StringUtils.equalsAny(type, "01", "04")) {
-//                return LotteryProcessing.getBallsByCondations(isIn, only);
-//            }
+            if (StringUtils.isBlank(type) || StringUtils.equals(type, "01")) {
+                return LotteryProcessing.getBallsByCondations(isIn, only);
+            }
             return LotteryProcessing.getBallsByCondations(type, redLt, blueLt, redMp, blueMp);
         }
         //在预留
