@@ -14,7 +14,19 @@
                 <Text text="条件选择："/>
                 <VBox styleClass="vbox">
                     <!--<CheckBox text="only随机" selected="true" onAction="#checkBox1Click" fx:id="checkBox1"/>-->
-                    <ToggleButton text="only随机" selected="true" onAction="#toggleButton1Click" fx:id="toggleButton1"/>
+                    <HBox styleClass="hbox">
+                        <ToggleButton text="only随机" selected="true" onAction="#toggleButton1Click" fx:id="toggleButton1"/>
+                        <VBox styleClass="vbox">
+                            <GridPane styleClass="grid_pane" fx:id="gridPane1">
+                                <!--<GridPane alignment="center" hgap="10" vgap="10">-->
+                                <RadioButton text="ALL" userData="01" fx:id="radioButton1" GridPane.rowIndex="0" GridPane.columnIndex="0" />
+                                <RadioButton text="DEFAULT" userData="02" fx:id="radioButton2" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                                <RadioButton text="369" userData="03" fx:id="radioButton3" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                                <RadioButton text="OTHERS" userData="04" fx:id="radioButton4" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                            </GridPane>
+                            <TextField promptText="待定，待处理" disable="true" fx:id="textField4"/>
+                        </VBox>
+                    </HBox>
                     <HBox styleClass="hbox">
                         <!--<CheckBox text="isIn预留数字：" selected="true" disable="true" fx:id="checkBox2"/>-->
                         <ToggleButton text="isIn预留数字" selected="true" disable="true" fx:id="toggleButton2"/>

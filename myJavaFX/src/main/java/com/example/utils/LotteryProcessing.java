@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -24,6 +23,39 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 public class LotteryProcessing {
+    public static List<String> getBallsByCondations(String type, List<Integer> red, List<Integer> blue,
+                                                    Map<Integer, Double> redMp, Map<Integer, Double> blueMp) {
+        log.info("type={},red={},blue={},redMp={},blueMp={}", type, red, blue, redMp, blueMp);
+        List<String> rstList = new ArrayList<>();
+        try {
+            BallEnty enty1 = null;
+            BallEnty enty2 = null;
+            RandomBallsService randomBalls = new RandomBallsImpl3();
+            int count = 0;
+            while (true) {
+                enty1 = randomBalls.getBalls(type, red, blue, redMp, blueMp);
+                enty2 = randomBalls.getBalls(type, red, blue, redMp, blueMp);
+
+                if (enty1.equals(enty2)) {
+                    log.info("enty1={},enty2={}", enty1, enty2);
+                    break;
+                }
+                count++;
+                if (count % 136592 == 0) {
+                    log.info("count={}", count);
+                }
+            }
+            log.info("end count={},type={}", count, type);
+            rstList.add(StringUtils.join("count=", count, ",type=", type));
+            String entyStr = enty2.toString();
+            Collections.sort(enty2.getRed());
+            String redStr = enty2.getRed().toString();
+            rstList.add(entyStr + redStr);
+        } catch (Exception e) {
+            log.info("===", e);
+        }
+        return rstList;
+    }
     public static List<String> getBallsByCondations(Boolean isIn, List<Integer> red, List<Integer> blue,
                                                     Map<Integer, Double> redMp, Map<Integer, Double> blueMp) {
         log.info("isIn={},red={},blue={},redMp={},blueMp={}", isIn, red, blue, redMp, blueMp);

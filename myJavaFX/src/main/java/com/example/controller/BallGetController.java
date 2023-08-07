@@ -6,6 +6,7 @@ import com.google.common.base.Splitter;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +29,9 @@ public class BallGetController {
     @FXML
     private HBox hbox1;
 
+    @FXML
+    private GridPane gridPane1;
+
 //    @FXML
 //    private CheckBox checkBox1;
 //    @FXML
@@ -37,7 +41,16 @@ public class BallGetController {
     private ToggleButton toggleButton1;
     @FXML
     private ToggleButton toggleButton2;
+    @FXML
+    private RadioButton radioButton1;
+    @FXML
+    private RadioButton radioButton2;
+    @FXML
+    private RadioButton radioButton3;
+    @FXML
+    private RadioButton radioButton4;
 
+    private ToggleGroup toggleGroup;
     @FXML
     private TextArea textArea1;
     @FXML
@@ -48,6 +61,8 @@ public class BallGetController {
     private TextField textField2;
     @FXML
     private TextField textField3;
+    @FXML
+    private TextField textField4;
 
     @FXML
     private ComboBox<String> comboBox;
@@ -60,7 +75,17 @@ public class BallGetController {
         comboBox.getItems().addAll("1次", "2次", "3次");
         comboBox.getItems();
         //comboBox.setValue("2");
-        comboBox.getSelectionModel().select(0); // 将索引为1（即"2"）的选项设置为默认选项
+        // 将索引为1（即"2"）的选项设置为默认选项
+        comboBox.getSelectionModel().select(0);
+
+        //单选框
+        toggleGroup = new ToggleGroup();
+        radioButton1.setToggleGroup(toggleGroup);
+        radioButton2.setToggleGroup(toggleGroup);
+        radioButton3.setToggleGroup(toggleGroup);
+        radioButton4.setToggleGroup(toggleGroup);
+
+        radioButton1.setSelected(true);
     }
 
     @FXML
@@ -82,6 +107,11 @@ public class BallGetController {
 //                Boolean only = checkBox1.isSelected();
                 Boolean isIn = toggleButton2.isSelected();
                 Boolean only = toggleButton1.isSelected();
+                String redioValue = "01";
+                RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
+                if (null != selectedRadioButton) {
+                    redioValue = (String) selectedRadioButton.getUserData();
+                }
                 List<Integer> redLt = null;
                 List<Integer> blueLt = null;
                 String txt = textField1.getText();
@@ -114,7 +144,7 @@ public class BallGetController {
                     blueMp = convertMap(txt3, 16);
                 }
                 while (true) {
-                    List<String> textValues = convertValue(only, isIn, redLt, blueLt, redMp, blueMp);
+                    List<String> textValues = convertValue(only, redioValue, isIn, redLt, blueLt, redMp, blueMp);
 
                     textArea1.setText(textArea1.getText() + CommonConstant.line_feed + StringUtils.join(textValues, CommonConstant.line_feed));
                     count++;
@@ -188,10 +218,13 @@ public class BallGetController {
     }
 
 
-    private List<String> convertValue(boolean only, Boolean isIn, List<Integer> redLt, List<Integer> blueLt,
+    private List<String> convertValue(boolean only, String type, Boolean isIn, List<Integer> redLt, List<Integer> blueLt,
                                       Map<Integer, Double> redMp, Map<Integer, Double> blueMp) {
         if (only) {
-            return LotteryProcessing.getBallsByCondations(isIn, only);
+//            if (StringUtils.isBlank(type) || StringUtils.equalsAny(type, "01", "04")) {
+//                return LotteryProcessing.getBallsByCondations(isIn, only);
+//            }
+            return LotteryProcessing.getBallsByCondations(type, redLt, blueLt, redMp, blueMp);
         }
         //在预留
         if (isIn) {
@@ -240,12 +273,16 @@ public class BallGetController {
             textField11.setDisable(true);
             textField2.setDisable(true);
             textField3.setDisable(true);
+
+            gridPane1.setDisable(false);
         } else {
             toggleButton2.setDisable(false);
             textField1.setDisable(false);
             textField11.setDisable(false);
             textField2.setDisable(false);
             textField3.setDisable(false);
+
+            gridPane1.setDisable(true);
         }
     }
 
@@ -290,6 +327,7 @@ public class BallGetController {
 
         //checkBox1.setSelected(true);
         toggleButton1.setSelected(true);
+        gridPane1.setDisable(false);
         //checkBox1.setDisable(false);
         //stopButtonClick();
     }

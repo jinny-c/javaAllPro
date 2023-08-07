@@ -21,3 +21,9 @@
 .button{
     -fx-pref-height:32
 }
+
+.grid_pane {
+    -fx-alignment:center;
+    -fx-hgap:10;
+    -fx-vgap:10
+}

@@ -55,9 +55,12 @@ public interface RandomBallsService {
     };
     Double RED_PROBABILITIES = (1.0 / 33);
 
-    Integer[] MY_ARR = {1, 2, 3, 5, 6, 9,
+    Integer[] MY_DEFAULT_ARR = {1, 2, 3, 5, 6, 9,
             11, 12, 13, 15, 16, 19,
             21, 22, 23, 25, 26, 29, 31, 32, 33};
+
+    Integer[] MY_369_ARR = {3, 6, 9, 12, 15, 18,
+            21, 24, 27, 30, 33};
 
     BallEnty getBalls();
 
@@ -67,7 +70,7 @@ public interface RandomBallsService {
 
     default BallEnty getBalls(Boolean isInArr) {
         if(isInArr){
-            List<Integer> list = Arrays.asList(MY_ARR);
+            List<Integer> list = Arrays.asList(MY_DEFAULT_ARR);
             return getBalls(isInArr, list, list);
         }
         return getBalls();
@@ -98,9 +101,9 @@ public interface RandomBallsService {
         List<Integer> reds = null;
         List<Integer> blues = null;
         if (isIn) {
-            reds = new ArrayList<>(Arrays.asList(MY_ARR));
+            reds = new ArrayList<>(Arrays.asList(MY_DEFAULT_ARR));
 
-            blues = new ArrayList<>(Arrays.asList(MY_ARR));
+            blues = new ArrayList<>(Arrays.asList(MY_DEFAULT_ARR));
             blues.removeIf(e -> !BLUELIST.contains(e));
         } else {
             reds = new ArrayList<>(REDLIST);
@@ -113,6 +116,58 @@ public interface RandomBallsService {
                 blues.removeIf(blueLt::contains);
             }
         }
+        if (redMp == null) {
+            redMp = new HashMap<>();
+        }
+        List<Integer> finalReds = reds;
+        Map<Integer, Double> filteredRedMap = redMp.entrySet()
+                .stream().filter(entry -> finalReds.contains(entry.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+        if (blueMp == null) {
+            blueMp = new HashMap<>();
+        }
+        List<Integer> finalBlues = blues;
+        Map<Integer, Double> filteredBluedMap = blueMp.entrySet()
+                .stream().filter(entry -> finalBlues.contains(entry.getKey()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+        return getBalls(reds, blues, filteredRedMap, filteredBluedMap);
+    }
+
+    default BallEnty getBalls(String type, List<Integer> redLt, List<Integer> blueLt, Map<Integer, Double> redMp, Map<Integer, Double> blueMp) {
+        List<Integer> reds = null;
+        List<Integer> blues = null;
+        switch (type){
+            //case "01":
+            case "02":
+                reds = new ArrayList<>(Arrays.asList(MY_DEFAULT_ARR));
+                blues = new ArrayList<>(Arrays.asList(MY_DEFAULT_ARR));
+                blues.removeIf(e -> !BLUELIST.contains(e));
+                break;
+            case "03":
+                reds = new ArrayList<>(Arrays.asList(MY_369_ARR));
+                blues = new ArrayList<>(Arrays.asList(MY_369_ARR));
+                blues.removeIf(e -> !BLUELIST.contains(e));
+                break;
+            case "04":
+                reds = new ArrayList<>(REDLIST);
+                blues = new ArrayList<>(BLUELIST);
+                if (redLt != null) {
+                    reds = redLt;
+                }
+                if (blueLt != null) {
+                    blues = blueLt;
+                    blues.removeIf(e -> !BLUELIST.contains(e));
+                }
+                break;
+            default:
+                reds = new ArrayList<>(REDLIST);
+                blues = new ArrayList<>(BLUELIST);
+                break;
+        }
+
+
+
         if (redMp == null) {
             redMp = new HashMap<>();
         }
