@@ -20,6 +20,13 @@
                     <Label text="结束的字符："/>
                     <TextField fx:id="textField3"/>
                 </HBox>
+                <HBox styleClass="hbox">
+                    <RadioButton text="content" userData="01" fx:id="radioButton1" />
+                    <RadioButton text="html" userData="02" fx:id="radioButton2" />
+                    <RadioButton text="head" userData="03" fx:id="radioButton3" />
+                    <RadioButton text="body" userData="04" fx:id="radioButton4" />
+                    <RadioButton text="unknown" userData="-1" fx:id="radioButton5" />
+                </HBox>
             </VBox>
 
             <HBox styleClass="hbox" fx:id="hbox1">

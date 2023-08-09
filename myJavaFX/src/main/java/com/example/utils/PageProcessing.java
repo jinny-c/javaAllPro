@@ -14,6 +14,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * @description TODO
@@ -54,10 +56,43 @@ public class PageProcessing {
     }
 
     public static String pagerGet(String url, String startKey, String endKey) {
+        return pagerGet(url, startKey, endKey, PageContentSelectEnums.select_content.getSelectType());
+    }
+
+    public static String pagerGet(String url, String startKey, String endKey, String type) {
         log.info("startKey={},endKey={}", startKey, endKey);
         Document document = getDocument(url);
-        String allValue = document.text();
-        //String betweenValue = StringUtils.substringBetween(allValue, startKey, endKey);
+        //String allValue = document.text();
+        String allValue = null;
+        PageContentSelectEnums selectEnums = PageContentSelectEnums.convertByType(type);
+        switch (selectEnums){
+            case select_content:
+                allValue = document.text();
+                break;
+            case select_body:
+                allValue = document.body().text();
+                break;
+            case select_head:
+                allValue = document.head().text();
+                break;
+            case select_html:
+                allValue = document.html();
+                break;
+            default:
+                //allValue = document.outerHtml();
+                String outerHtml = document.outerHtml().replaceAll("\\\\u\\w{4}", "");
+                String unicodeDecoded = unicodeDecode(outerHtml);
+                allValue = unicodeDecoded.replaceAll("<.*?>", "");
+                break;
+        }
+//        log.info("1111111=={}",document.text());
+//        log.info("2222222=={}",document.body().text());
+//        log.info("3333333=={}",document.head().text());
+//        log.info("4444444=={}",document.html());
+//        log.info("5555555=={}",document.outerHtml());
+
+        String betweenValue = StringUtils.substringBetween(allValue, startKey, endKey);
+        //String subValue = allValue.replaceAll("\\\\u\\w{4}", "");
         String subValue = allValue;
         if (StringUtils.isNotBlank(startKey)) {
             subValue = StringUtils.substringAfter(subValue, startKey);
@@ -68,6 +103,16 @@ public class PageProcessing {
 
         }
         return subValue;
+    }
+    static Pattern pattern = Pattern.compile("(\\\\u(\\p{XDigit}{4}))");
+    private static String unicodeDecode(String str) {
+        Matcher matcher = pattern.matcher(str);
+        char ch;
+        while (matcher.find()) {
+            ch = (char) Integer.parseInt(matcher.group(2), 16);
+            str = str.replace(matcher.group(1), ch + "");
+        }
+        return str;
     }
 
 //    public static void main(String[] args) {

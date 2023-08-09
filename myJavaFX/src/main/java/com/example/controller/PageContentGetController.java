@@ -3,9 +3,7 @@ package com.example.controller;
 import com.example.utils.PageProcessing;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -33,7 +31,24 @@ public class PageContentGetController {
     private TextField textField3;
 
 
+    @FXML
+    private RadioButton radioButton1, radioButton2, radioButton3, radioButton4, radioButton5;
+
+    private ToggleGroup toggleGroup;
+
     private Thread backgroundThread = null;
+
+    public void initialize() {
+        //单选框
+        toggleGroup = new ToggleGroup();
+        radioButton1.setToggleGroup(toggleGroup);
+        radioButton2.setToggleGroup(toggleGroup);
+        radioButton3.setToggleGroup(toggleGroup);
+        radioButton4.setToggleGroup(toggleGroup);
+        radioButton5.setToggleGroup(toggleGroup);
+
+        radioButton1.setSelected(true);
+    }
 
 
     @FXML
@@ -50,14 +65,19 @@ public class PageContentGetController {
             protected Void call() throws Exception {
                 try {
                     //hbox1.setDisable(true);
-                    if(StringUtils.isBlank(url)){
+                    if (StringUtils.isBlank(url)) {
                         textArea1.setText("url is null");
                         return null;
                     }
-                    String contentValue = PageProcessing.pagerGet(url, contentStrat, contentEnd);
+                    String redioValue = "01";
+                    RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
+                    if (null != selectedRadioButton) {
+                        redioValue = (String) selectedRadioButton.getUserData();
+                    }
+                    String contentValue = PageProcessing.pagerGet(url, contentStrat, contentEnd, redioValue);
                     textArea1.setText(contentValue);
-                }catch (Exception e){
-                    log.info("Exception",e);
+                } catch (Exception e) {
+                    log.info("Exception", e);
                 }
                 return null;
             }
