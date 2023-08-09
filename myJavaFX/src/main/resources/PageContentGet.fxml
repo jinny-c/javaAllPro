@@ -51,20 +51,20 @@
                     <VBox styleClass="commbox" HBox.hgrow="ALWAYS">
                         <VBox styleClass="commbox">
                             <HBox styleClass="hbox">
-                                <Label text="上一章的标签："/> <TextField fx:id="textField611" promptText="a#pager_prev"/>
-                                <Button text="上一章" onAction="#button3Click" fx:id="button41"/>
+                                <Label text="上一章的URI："/> <TextField HBox.hgrow="ALWAYS" fx:id="textField612" />
                             </HBox>
                             <HBox styleClass="hbox">
-                                <Label text="上一章的URI："/> <TextField HBox.hgrow="ALWAYS" fx:id="textField612" />
+                                <Label text="上一章的标签："/> <TextField fx:id="textField611" promptText="a#pager_prev"/>
+                                <Button text="上一章" onAction="#button3Click" fx:id="button41"/>
                             </HBox>
                         </VBox>
                         <VBox styleClass="commbox">
                             <HBox styleClass="hbox">
-                                <Label text="下一章的标签："/> <TextField fx:id="textField621" promptText="a#pager_next"/>
-                                <Button text="下一章" onAction="#button3Click" fx:id="button42"/>
+                                <Label text="下一章的URI："/> <TextField HBox.hgrow="ALWAYS"  fx:id="textField622" />
                             </HBox>
                             <HBox styleClass="hbox">
-                                <Label text="下一章的URI："/> <TextField HBox.hgrow="ALWAYS"  fx:id="textField622" />
+                                <Label text="下一章的标签："/> <TextField fx:id="textField621" promptText="a#pager_next"/>
+                                <Button text="下一章" onAction="#button3Click" fx:id="button42"/>
                             </HBox>
                         </VBox>
                     </VBox>
