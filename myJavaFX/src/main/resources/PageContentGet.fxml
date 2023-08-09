@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml" stylesheets="@css/common.css"
-            fx:controller="com.example.controller.PageContentGetController" styleClass="border-pane">
+            fx:controller="com.example.controller.PageContentGetController">
 
     <center>
         <VBox styleClass="vbox" >
@@ -15,22 +15,61 @@
                     <TextField HBox.hgrow="ALWAYS" fx:id="textField1"/>
                 </HBox>
                 <HBox styleClass="hbox">
-                    <Label text="开始的字符："/>
-                    <TextField fx:id="textField2"/>
-                    <Label text="结束的字符："/>
-                    <TextField fx:id="textField3"/>
+                    <Button text="查询&#10;结果" minHeight="64" minWidth="64" onAction="#button1Click" fx:id="button1"/>
+                    <VBox>
+                        <HBox styleClass="hbox"><Label text="开始的字符："/> <TextField fx:id="textField2"/></HBox>
+                        <HBox styleClass="hbox"><Label text="结束的字符："/> <TextField fx:id="textField3"/></HBox>
+                    </VBox>
+                    <FlowPane vgap="20" hgap="20" orientation="HORIZONTAL">
+                        <RadioButton text="content" userData="01" fx:id="radioButton1" />
+                        <RadioButton text="html" userData="02" fx:id="radioButton2" />
+                        <RadioButton text="head" userData="03" fx:id="radioButton3" />
+                        <RadioButton text="body" userData="04" fx:id="radioButton4" />
+                        <RadioButton text="unknown" userData="-1" fx:id="radioButton5" />
+                    </FlowPane>
                 </HBox>
                 <HBox styleClass="hbox">
-                    <RadioButton text="content" userData="01" fx:id="radioButton1" />
-                    <RadioButton text="html" userData="02" fx:id="radioButton2" />
-                    <RadioButton text="head" userData="03" fx:id="radioButton3" />
-                    <RadioButton text="body" userData="04" fx:id="radioButton4" />
-                    <RadioButton text="unknown" userData="-1" fx:id="radioButton5" />
+                    <Button text="查询&#10;标签" minHeight="64" minWidth="64" onAction="#button1Click" fx:id="button2"/>
+                    <HBox styleClass="hbox"><Label text="网页的内容："/> <TextField fx:id="textField4"/></HBox>
+                </HBox>
+                <HBox styleClass="hbox">
+                    <Button text="查询&#10;内容" minHeight="64" minWidth="64" onAction="#button1Click" fx:id="button3"/>
+                    <VBox>
+                        <HBox styleClass="hbox">
+                            <Label text="内容的标签："/> <TextField fx:id="textField5" promptText="div[id=content]"/>
+                            <ToggleButton text="是否换行" selected="true" fx:id="toggleButton1"/>
+                        </HBox>
+                        <Label style="-fx-text-fill: red;">
+                            <text>
+                                <![CDATA["div #link .mylink h1"：选择<div>下ID为link的元素内部的所有具有类名mylink的元素的所有<h1>子元素。]]>
+                            </text>
+                        </Label>
+                    </VBox>
+                </HBox>
+                <HBox styleClass="hbox" disable="true">
+                    <Button text="转换&#10;URL" minHeight="64" minWidth="64" onAction="#button1Click" fx:id="button4"/>
+                    <VBox styleClass="commbox">
+                        <HBox styleClass="hbox">
+                            <Label text="上一章的标签："/> <TextField fx:id="textField511" promptText="div[id=content]"/>
+                        </HBox>
+                        <HBox styleClass="hbox">
+                            <Label text="上一章的url："/> <TextField fx:id="textField512" promptText="div[id=content]"/>
+                        </HBox>
+                        <Button text="上一章" onAction="#button1Click" fx:id="button31"/>
+                    </VBox>
+                    <VBox styleClass="commbox">
+                        <HBox styleClass="hbox">
+                            <Label text="下一章的标签："/> <TextField fx:id="textField521" promptText="div[id=content]"/>
+                        </HBox>
+                        <HBox styleClass="hbox">
+                            <Label text="下一章的url："/> <TextField fx:id="textField522" promptText="div[id=content]"/>
+                        </HBox>
+                        <Button text="下一章" onAction="#button1Click" fx:id="button32"/>
+                    </VBox>
                 </HBox>
             </VBox>
 
-            <HBox styleClass="hbox" fx:id="hbox1">
-                <Button text="查询结果" onAction="#button1Click" fx:id="button1"/>
+            <HBox styleClass="hbox">
                 <TextArea HBox.Hgrow="ALWAYS" editable="false" wrapText="true" fx:id="textArea1"/>
             </HBox>
         </VBox>

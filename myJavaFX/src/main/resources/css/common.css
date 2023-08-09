@@ -3,6 +3,11 @@
     -fx-padding: 5 5 5 5;
 }
 
+.commbox {
+    -fx-padding: 5 5 5 5;
+    -fx-spacing: 6;
+}
+
 .vbox {
     -fx-padding: 5 5 5 5;
     -fx-spacing: 6;

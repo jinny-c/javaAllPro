@@ -7,7 +7,11 @@ import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
+import org.jsoup.select.NodeVisitor;
 
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -55,6 +59,45 @@ public class PageProcessing {
         return ballList;
     }
 
+    public static String pagerGetBySelect(String url, String select, boolean isLineFeed) {
+        Document document = getDocument(url);
+        Elements elements = document.select(select);
+
+        List<String> valList = new ArrayList<>();
+
+        elements.traverse(new NodeVisitor() {
+            @Override
+            public void head(Node node, int i) {
+                if (node instanceof TextNode) {
+                    String val = ((TextNode) node).text();
+                    if (StringUtils.isNotBlank(StringUtils.trim(val))) {
+                        valList.add(StringUtils.trim(val));
+                    }
+                }
+            }
+
+            @Override
+            public void tail(Node node, int i) {
+            }
+        });
+
+        return StringUtils.join(valList, isLineFeed ? CommonConstant.line_feed : StringUtils.SPACE);
+//        return elements.text();
+//        return elements.outerHtml();
+    }
+
+    public static String pagerElementsGetByContent(String url, String content) {
+        Document document = getDocument(url);
+        Elements elementsContainingText = document.getElementsContainingOwnText(content);
+
+        List<String> eleList = new ArrayList<>();
+        for (Element element : elementsContainingText) {
+            //eleList.add(element.text());
+            eleList.add(element.outerHtml());
+        }
+        return StringUtils.join(eleList, CommonConstant.line_feed);
+    }
+
     public static String pagerGet(String url, String startKey, String endKey) {
         return pagerGet(url, startKey, endKey, PageContentSelectEnums.select_content.getSelectType());
     }
@@ -65,7 +108,7 @@ public class PageProcessing {
         //String allValue = document.text();
         String allValue = null;
         PageContentSelectEnums selectEnums = PageContentSelectEnums.convertByType(type);
-        switch (selectEnums){
+        switch (selectEnums) {
             case select_content:
                 allValue = document.text();
                 break;
@@ -104,7 +147,9 @@ public class PageProcessing {
         }
         return subValue;
     }
+
     static Pattern pattern = Pattern.compile("(\\\\u(\\p{XDigit}{4}))");
+
     private static String unicodeDecode(String str) {
         Matcher matcher = pattern.matcher(str);
         char ch;
@@ -118,10 +163,16 @@ public class PageProcessing {
 //    public static void main(String[] args) {
 //        String url = "https://www.sdk.cn/details/9pPQD6wqK0Jo8ozvNy#title-8";
 //        url = "https://blog.csdn.net/lansefangzhou/article/details/81091407";
+//        url = "https://www.xpiaotian.com/book/215870/207674278.html";
 //        String startKey = "登陆界面";
 //        String endKey = "关注";
+//        String content = "下一章";
+//        String select = "a[id=pager_next]";
+//        String select1 = "div[id=content]";
 ////        System.out.println(getDocument(url));
-//        System.out.println(pagerGet(url, startKey, endKey));
+////        System.out.println(pagerElementsGetByContent(url, content));
+//        System.out.println(pagerGetBySelect(url, select));
+//        System.out.println(pagerGetBySelect(url, select1));
 //    }
 
 }
