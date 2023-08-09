@@ -20,6 +20,8 @@ public class PageContentGetController {
     private Button closeButton;
     @FXML
     private Button button1, button2, button3;
+    @FXML
+    private Button button4, button41, button42;
 
     @FXML
     private TextArea textArea1;
@@ -28,6 +30,8 @@ public class PageContentGetController {
 
     @FXML
     private TextField textField1, textField2, textField3, textField4, textField5;
+    @FXML
+    private TextField textField611, textField612, textField621, textField622;
 
 
     @FXML
@@ -114,6 +118,60 @@ public class PageContentGetController {
     }
 
     @FXML
+    protected void button3Click(ActionEvent event) {
+        allButton(true);
+        String url = textField1.getText();
+        String selectContent = textField5.getText();
+
+        Button sourceButton = (Button) event.getSource();
+        if (sourceButton == button41) {
+            url = textField612.getText();
+        } else if (sourceButton == button42) {
+            url = textField622.getText();
+        }else {
+            textArea1.setText("sourceButton is null");
+            allButton(false);
+            return;
+        }
+
+        if(StringUtils.isBlank(url)){
+            textArea1.setText("url is null");
+            allButton(false);
+            return;
+        }
+        textField1.setText(url);
+
+        if (StringUtils.isBlank(selectContent)) {
+            textArea1.setText("selectContent is null");
+            allButton(false);
+            return;
+        }
+        boolean isLineFeed = toggleButton1.isSelected();
+        textArea1.setText(PageProcessing.pagerGetBySelect(url, selectContent, isLineFeed));
+
+        button4Click();
+        allButton(false);
+    }
+
+
+    @FXML
+    protected void button4Click() {
+        allButton(true);
+
+        String url = textField1.getText();
+        String select61 = textField611.getText();
+        String select62 = textField621.getText();
+        if (StringUtils.isNotBlank(select61)) {
+            textField612.setText(PageProcessing.pagerGetBySelect(url, select61));
+        }
+        if (StringUtils.isNotBlank(select62)) {
+            textField622.setText(PageProcessing.pagerGetBySelect(url, select62));
+        }
+
+        allButton(false);
+    }
+
+    @FXML
     protected void closeButtonClick() {
         stopThread();
         Stage stage = (Stage) closeButton.getScene().getWindow();
@@ -123,7 +181,7 @@ public class PageContentGetController {
     @FXML
     protected void clearButtonClick() {
         textArea1.clear();
-        textField1.clear();
+        //textField1.clear();
         textField2.clear();
         textField3.clear();
         //button1.setDisable(false);
@@ -143,5 +201,8 @@ public class PageContentGetController {
         button1.setDisable(disable);
         button2.setDisable(disable);
         button3.setDisable(disable);
+        button4.setDisable(disable);
+        button41.setDisable(disable);
+        button42.setDisable(disable);
     }
 }

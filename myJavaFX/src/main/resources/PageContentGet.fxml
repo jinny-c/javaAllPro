@@ -46,25 +46,27 @@
                         </Label>
                     </VBox>
                 </HBox>
-                <HBox styleClass="hbox" disable="true">
-                    <Button text="转换&#10;URL" minHeight="64" minWidth="64" onAction="#button1Click" fx:id="button4"/>
-                    <VBox styleClass="commbox">
-                        <HBox styleClass="hbox">
-                            <Label text="上一章的标签："/> <TextField fx:id="textField511" promptText="div[id=content]"/>
-                        </HBox>
-                        <HBox styleClass="hbox">
-                            <Label text="上一章的url："/> <TextField fx:id="textField512" promptText="div[id=content]"/>
-                        </HBox>
-                        <Button text="上一章" onAction="#button1Click" fx:id="button31"/>
-                    </VBox>
-                    <VBox styleClass="commbox">
-                        <HBox styleClass="hbox">
-                            <Label text="下一章的标签："/> <TextField fx:id="textField521" promptText="div[id=content]"/>
-                        </HBox>
-                        <HBox styleClass="hbox">
-                            <Label text="下一章的url："/> <TextField fx:id="textField522" promptText="div[id=content]"/>
-                        </HBox>
-                        <Button text="下一章" onAction="#button1Click" fx:id="button32"/>
+                <HBox styleClass="hbox">
+                    <Button text="转换&#10;URL" minHeight="64" minWidth="64" onAction="#button4Click" fx:id="button4"/>
+                    <VBox styleClass="commbox" HBox.hgrow="ALWAYS">
+                        <VBox styleClass="commbox">
+                            <HBox styleClass="hbox">
+                                <Label text="上一章的标签："/> <TextField fx:id="textField611" promptText="a#pager_prev"/>
+                                <Button text="上一章" onAction="#button3Click" fx:id="button41"/>
+                            </HBox>
+                            <HBox styleClass="hbox">
+                                <Label text="上一章的URI："/> <TextField HBox.hgrow="ALWAYS" fx:id="textField612" />
+                            </HBox>
+                        </VBox>
+                        <VBox styleClass="commbox">
+                            <HBox styleClass="hbox">
+                                <Label text="下一章的标签："/> <TextField fx:id="textField621" promptText="a#pager_next"/>
+                                <Button text="下一章" onAction="#button3Click" fx:id="button42"/>
+                            </HBox>
+                            <HBox styleClass="hbox">
+                                <Label text="下一章的URI："/> <TextField HBox.hgrow="ALWAYS"  fx:id="textField622" />
+                            </HBox>
+                        </VBox>
                     </VBox>
                 </HBox>
             </VBox>
