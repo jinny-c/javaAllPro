@@ -41,7 +41,9 @@
                         </HBox>
                         <Label style="-fx-text-fill: red;">
                             <text>
-                                <![CDATA["div #link .mylink h1"：选择<div>下ID为link的元素内部的所有具有类名mylink的元素的所有<h1>子元素。]]>
+                                <![CDATA[
+                                    "div #link .mylink h1"：选择<div>下ID为link的元素内部的所有具有类名mylink的元素的所有<h1>子元素。
+                                ]]>
                             </text>
                         </Label>
                     </VBox>

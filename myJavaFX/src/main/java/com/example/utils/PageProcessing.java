@@ -59,15 +59,21 @@ public class PageProcessing {
         return ballList;
     }
 
-    public static String pagerGetBySelect(String url, String select) {
-        Document document = getDocument(url);
+    public static String pagerGetBySelect(Document document, String select) {
+        //Document document = getDocument(url);
         Element linkElement = document.select(select).first();
         // 获取绝对UR
         String absoluteHref = linkElement.attr("abs:href");
         return absoluteHref;
     }
+
     public static String pagerGetBySelect(String url, String select, boolean isLineFeed) {
         Document document = getDocument(url);
+        return pagerGetBySelect(document, select, isLineFeed);
+    }
+
+    public static String pagerGetBySelect(Document document, String select, boolean isLineFeed) {
+
         Elements elements = document.select(select);
 
         List<String> valList = new ArrayList<>();
