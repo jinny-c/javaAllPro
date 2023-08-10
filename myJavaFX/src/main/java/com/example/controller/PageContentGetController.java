@@ -33,7 +33,8 @@ public class PageContentGetController {
     private TextField textField1, textField2, textField3, textField4, textField5;
     @FXML
     private TextField textField611, textField612, textField621, textField622;
-
+    @FXML
+    private TextField textField613, textField623;
 
     @FXML
     private RadioButton radioButton1, radioButton2, radioButton3, radioButton4, radioButton5;
@@ -203,12 +204,29 @@ public class PageContentGetController {
 
         String select61 = textField611.getText();
         String select62 = textField621.getText();
-        if (StringUtils.isNotBlank(select61)) {
-            textField612.setText(PageProcessing.pagerGetBySelect(document, select61));
+
+        String content61 = textField613.getText();
+        String content62 = textField623.getText();
+
+        textField612.setText(contentGet(document, content61, select61));
+
+        textField622.setText(contentGet(document, content62, select62));
+
+    }
+
+    private String contentGet(Document document, String... elements) {
+        String content = null;
+        for (String el : elements) {
+            if (StringUtils.isBlank(el)) {
+                continue;
+            }
+            content = PageProcessing.pagerOneElementGetByContent(document, el);
+            if (StringUtils.isNotBlank(content)) {
+                return content;
+                //break;
+            }
         }
-        if (StringUtils.isNotBlank(select62)) {
-            textField622.setText(PageProcessing.pagerGetBySelect(document, select62));
-        }
+        return content;
     }
 
     @FXML

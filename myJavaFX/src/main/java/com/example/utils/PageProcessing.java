@@ -28,9 +28,31 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 public class PageProcessing {
-    @SneakyThrows
+
+    public static Document getDocumentMayNull(String url) {
+        try {
+            log.info("getDocument start,url={}", url);
+            if (!StringUtils.startsWithAny(url, "http://", "https://")) {
+                url = "http://" + url;
+            }
+            Connection mozilla = Jsoup.connect(URLDecoder.decode(url, String.valueOf(StandardCharsets.UTF_8))).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Safari/537.36");
+            mozilla.timeout(30 * 1000);
+            Document document = mozilla.get();
+            //Document document = mozilla.timeout(5000).get();
+            return document;
+        }catch (Exception e){
+            log.error("getDocument",e);
+        }
+        return null;
+    }
+
+    @SneakyThrows(Exception.class)
     public static Document getDocument(String url) {
         log.info("getDocument start,url={}", url);
+        if (!StringUtils.startsWithAny(url, "http://", "https://")) {
+            url = "http://" + url;
+            log.info("convert url={}", url);
+        }
         Connection mozilla = Jsoup.connect(URLDecoder.decode(url, String.valueOf(StandardCharsets.UTF_8))).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Safari/537.36");
         mozilla.timeout(30 * 1000);
         Document document = mozilla.get();
@@ -102,6 +124,15 @@ public class PageProcessing {
 //        return elements.outerHtml();
     }
 
+    public static String pagerOneElementGetByContent(Document document, String content) {
+        Element linkElement = document.getElementsContainingOwnText(content).first();
+        if (null == linkElement) {
+            return null;
+        }
+        // 获取绝对UR
+        String absoluteHref = linkElement.attr("abs:href");
+        return absoluteHref;
+    }
     public static String pagerElementsGetByContent(String url, String content) {
         Document document = getDocument(url);
         Elements elementsContainingText = document.getElementsContainingOwnText(content);
@@ -179,7 +210,7 @@ public class PageProcessing {
 //    public static void main(String[] args) {
 //        String url = "https://www.sdk.cn/details/9pPQD6wqK0Jo8ozvNy#title-8";
 //        url = "https://blog.csdn.net/lansefangzhou/article/details/81091407";
-//        url = "https://www.xpiaotian.com/book/215870/207674278.html";
+//        url = "https://www.xpiaotian.com/book/215870/207674278.html1";
 //        String startKey = "登陆界面";
 //        String endKey = "关注";
 //        String content = "下一章";
@@ -187,8 +218,13 @@ public class PageProcessing {
 //        String select1 = "div[id=content]";
 ////        System.out.println(getDocument(url));
 ////        System.out.println(pagerElementsGetByContent(url, content));
-//        System.out.println(pagerGetBySelect(url, select));
-//        System.out.println(pagerGetBySelect(url, select1));
+//
+//        try {
+//            Document document = getDocument(url);
+//            System.out.println(pagerGetBySelect(document, select));
+//            System.out.println(pagerGetBySelect(document, select1));
+//        }catch (Exception e){
+//            log.error("11111111111111",e);
+//        }
 //    }
-
 }

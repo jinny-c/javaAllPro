@@ -56,7 +56,8 @@
                                 <Label text="上一章的URI："/> <TextField HBox.hgrow="ALWAYS" fx:id="textField612" />
                             </HBox>
                             <HBox styleClass="hbox">
-                                <Label text="上一章的标签："/> <TextField fx:id="textField611" promptText="a#pager_prev" text="#pager_prev"/>
+                                <Label text="上一章："/> <TextField fx:id="textField613" text="上一章"/>
+                                <Label text="标签："/> <TextField fx:id="textField611" promptText="a#pager_prev" text="#pager_prev"/>
                                 <Button text="上一章" onAction="#button3Click" fx:id="button41"/>
                             </HBox>
                         </VBox>
@@ -65,7 +66,8 @@
                                 <Label text="下一章的URI："/> <TextField HBox.hgrow="ALWAYS"  fx:id="textField622" />
                             </HBox>
                             <HBox styleClass="hbox">
-                                <Label text="下一章的标签："/> <TextField fx:id="textField621" promptText="a#pager_next" text="#pager_next"/>
+                                <Label text="下一章："/> <TextField fx:id="textField623" text="下一章"/>
+                                <Label text="标签："/> <TextField fx:id="textField621" promptText="a#pager_next" text="#pager_next"/>
                                 <Button text="下一章" onAction="#button3Click" fx:id="button42"/>
                             </HBox>
                         </VBox>
