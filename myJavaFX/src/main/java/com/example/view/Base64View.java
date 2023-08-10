@@ -1,5 +1,6 @@
 package com.example.view;
 
+import com.example.utils.CommonConstant;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -8,8 +9,12 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
+import java.util.List;
 
 /**
  * @description TODO
@@ -85,8 +90,9 @@ public class Base64View {
                 resultTextArea.clear();
                 label2.setText("Base64 Encoder:");
                 String text = inputTextArea.getText();
-                String encodedText = Base64.getEncoder().encodeToString(text.getBytes());
-                resultTextArea.setText(encodedText);
+                //String encodedText = Base64.getEncoder().encodeToString(text.getBytes());
+                //resultTextArea.setText(encodedText);
+                resultTextArea.setText(StringUtils.join(convertEncoder(text), CommonConstant.line_feed));
             } catch (Exception e) {
                 resultTextArea.setText(e.getMessage());
             }
@@ -97,8 +103,9 @@ public class Base64View {
                 resultTextArea.clear();
                 label2.setText("Base64 Decode:");
                 String text = inputTextArea.getText();
-                String decodeText = new String(Base64.getDecoder().decode(text.getBytes()));
-                resultTextArea.setText(decodeText);
+                //String decodeText = new String(Base64.getDecoder().decode(text.getBytes()));
+                //resultTextArea.setText(decodeText);
+                resultTextArea.setText(StringUtils.join(convertDecoder(text), CommonConstant.line_feed));
             } catch (Exception e) {
                 resultTextArea.setText(e.getMessage());
             }
@@ -119,6 +126,32 @@ public class Base64View {
             stage.setX(event.getScreenX() - xOffset);
             stage.setY(event.getScreenY() - yOffset);
         });
+    }
+
+
+    private List<String> convertEncoder(String txt) {
+        List<String> reqList = Arrays.asList(txt.split(CommonConstant.line_feed_pattern));
+        List<String> respList = new ArrayList<>();
+        for (String val : reqList) {
+            try {
+                respList.add(Base64.getEncoder().encodeToString(val.getBytes()));
+            } catch (Exception e) {
+                respList.add(e.getMessage());
+            }
+        }
+        return respList;
+    }
+    private List<String> convertDecoder(String txt) {
+        List<String> reqList = Arrays.asList(txt.split(CommonConstant.line_feed_pattern));
+        List<String> respList = new ArrayList<>();
+        for (String val : reqList) {
+            try {
+                respList.add(new String(Base64.getDecoder().decode(val.getBytes())));
+            } catch (Exception e) {
+                respList.add(e.getMessage());
+            }
+        }
+        return respList;
     }
 
     public void show() {
