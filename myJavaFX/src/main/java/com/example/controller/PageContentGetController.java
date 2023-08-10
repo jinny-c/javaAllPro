@@ -127,9 +127,9 @@ public class PageContentGetController {
                 try {
                     button3ClickMethod(event);
                 }catch (Exception e){
+                    log.error("button3Click",e);
                     textArea1.setText(e.getMessage());
                 }
-
                 return null;
             }
         };
@@ -178,9 +178,14 @@ public class PageContentGetController {
             protected Void call() throws Exception {
                 try {
                     String url = textField1.getText();
+                    if (StringUtils.isBlank(url)) {
+                        textArea1.setText("url is null");
+                        return null;
+                    }
                     Document document = PageProcessing.getDocument(url);
                     button4ClickMethod(document);
                 }catch (Exception e){
+                    log.error("button4Click",e);
                     textArea1.setText(e.getMessage());
                 }
                 return null;

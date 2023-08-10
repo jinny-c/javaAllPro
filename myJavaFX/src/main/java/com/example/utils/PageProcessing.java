@@ -32,7 +32,7 @@ public class PageProcessing {
     public static Document getDocument(String url) {
         log.info("getDocument start,url={}", url);
         Connection mozilla = Jsoup.connect(URLDecoder.decode(url, String.valueOf(StandardCharsets.UTF_8))).userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.54 Safari/537.36");
-        mozilla.timeout(50 * 1000);
+        mozilla.timeout(30 * 1000);
         Document document = mozilla.get();
         //Document document = mozilla.timeout(5000).get();
         return document;
@@ -62,6 +62,9 @@ public class PageProcessing {
     public static String pagerGetBySelect(Document document, String select) {
         //Document document = getDocument(url);
         Element linkElement = document.select(select).first();
+        if (null == linkElement) {
+            return null;
+        }
         // 获取绝对UR
         String absoluteHref = linkElement.attr("abs:href");
         return absoluteHref;

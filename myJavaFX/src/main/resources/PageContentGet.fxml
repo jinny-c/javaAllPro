@@ -30,13 +30,13 @@
                 </HBox>
                 <HBox styleClass="hbox">
                     <Button text="查询&#10;标签" minHeight="64" minWidth="64" onAction="#button1Click" fx:id="button2"/>
-                    <HBox styleClass="hbox"><Label text="网页的内容："/> <TextField fx:id="textField4"/></HBox>
+                    <HBox styleClass="hbox"><Label text="网页的内容："/> <TextField fx:id="textField4" text="一章"/></HBox>
                 </HBox>
                 <HBox styleClass="hbox">
                     <Button text="查询&#10;内容" minHeight="64" minWidth="64" onAction="#button1Click" fx:id="button3"/>
                     <VBox>
                         <HBox styleClass="hbox">
-                            <Label text="内容的标签："/> <TextField fx:id="textField5" promptText="div[id=content]"/>
+                            <Label text="内容的标签："/> <TextField fx:id="textField5" promptText="div[id=content]" text="#content"/>
                             <ToggleButton text="是否换行" selected="true" fx:id="toggleButton1"/>
                         </HBox>
                         <Label style="-fx-text-fill: red;">
@@ -56,7 +56,7 @@
                                 <Label text="上一章的URI："/> <TextField HBox.hgrow="ALWAYS" fx:id="textField612" />
                             </HBox>
                             <HBox styleClass="hbox">
-                                <Label text="上一章的标签："/> <TextField fx:id="textField611" promptText="a#pager_prev"/>
+                                <Label text="上一章的标签："/> <TextField fx:id="textField611" promptText="a#pager_prev" text="#pager_prev"/>
                                 <Button text="上一章" onAction="#button3Click" fx:id="button41"/>
                             </HBox>
                         </VBox>
@@ -65,7 +65,7 @@
                                 <Label text="下一章的URI："/> <TextField HBox.hgrow="ALWAYS"  fx:id="textField622" />
                             </HBox>
                             <HBox styleClass="hbox">
-                                <Label text="下一章的标签："/> <TextField fx:id="textField621" promptText="a#pager_next"/>
+                                <Label text="下一章的标签："/> <TextField fx:id="textField621" promptText="a#pager_next" text="#pager_next"/>
                                 <Button text="下一章" onAction="#button3Click" fx:id="button42"/>
                             </HBox>
                         </VBox>
