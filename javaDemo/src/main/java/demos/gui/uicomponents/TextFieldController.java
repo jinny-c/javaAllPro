@@ -1,12 +1,12 @@
  package demos.gui.uicomponents;
 
  import com.jfoenix.controls.JFXPasswordField;
- import com.jfoenix.controls.JFXTextArea;
- import com.jfoenix.controls.JFXTextField;
- import io.datafx.controller.ViewController;
- import javafx.beans.value.ObservableValue;
- import javafx.fxml.FXML;
- import javax.annotation.PostConstruct;
+import com.jfoenix.controls.JFXTextArea;
+import com.jfoenix.controls.JFXTextField;
+import io.datafx.controller.ViewController;
+import javafx.fxml.FXML;
+
+import javax.annotation.PostConstruct;
 
 
 

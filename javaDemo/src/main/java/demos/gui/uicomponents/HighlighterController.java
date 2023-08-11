@@ -1,16 +1,17 @@
  package demos.gui.uicomponents;
 
  import com.jfoenix.controls.JFXTextField;
- import com.jfoenix.effects.JFXDepthManager;
- import com.jfoenix.utils.JFXHighlighter;
- import com.jfoenix.utils.JFXNodeUtils;
- import io.datafx.controller.ViewController;
- import javafx.fxml.FXML;
- import javafx.scene.Node;
- import javafx.scene.input.KeyEvent;
- import javafx.scene.layout.Pane;
- import javafx.util.Duration;
- import javax.annotation.PostConstruct;
+import com.jfoenix.effects.JFXDepthManager;
+import com.jfoenix.utils.JFXHighlighter;
+import com.jfoenix.utils.JFXNodeUtils;
+import io.datafx.controller.ViewController;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.Pane;
+import javafx.util.Duration;
+
+import javax.annotation.PostConstruct;
 
 
 

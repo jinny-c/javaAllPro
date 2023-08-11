@@ -1,13 +1,13 @@
  package demos.components;
 
  import com.jfoenix.controls.JFXCheckBox;
- import javafx.application.Application;
- import javafx.geometry.Insets;
- import javafx.scene.Scene;
- import javafx.scene.control.CheckBox;
- import javafx.scene.layout.FlowPane;
- import javafx.scene.layout.StackPane;
- import javafx.stage.Stage;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.CheckBox;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
  public class CheckBoxDemo
    extends Application {

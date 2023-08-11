@@ -1,17 +1,17 @@
  package demos.components;
 
  import com.jfoenix.controls.JFXToggleButton;
- import com.jfoenix.controls.JFXToggleNode;
- import javafx.application.Application;
- import javafx.scene.Node;
- import javafx.scene.Scene;
- import javafx.scene.control.ToggleButton;
- import javafx.scene.layout.VBox;
- import javafx.scene.paint.Color;
- import javafx.stage.Stage;
- import org.kordamp.ikonli.Ikon;
- import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
- import org.kordamp.ikonli.javafx.FontIcon;
+import com.jfoenix.controls.JFXToggleNode;
+import javafx.application.Application;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import org.kordamp.ikonli.Ikon;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
  public class ToggleButtonDemo
    extends Application {

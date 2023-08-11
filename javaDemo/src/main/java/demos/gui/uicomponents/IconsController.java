@@ -1,11 +1,7 @@
 // Source code is decompiled from a .class file using FernFlower decompiler.
 package demos.gui.uicomponents;
 
-import com.jfoenix.controls.JFXBadge;
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXHamburger;
-import com.jfoenix.controls.JFXSnackbar;
-import com.jfoenix.controls.JFXSnackbarLayout;
+import com.jfoenix.controls.*;
 import io.datafx.controller.ViewController;
 import javafx.animation.Transition;
 import javafx.css.PseudoClass;
@@ -14,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+
 import javax.annotation.PostConstruct;
 
 @ViewController(

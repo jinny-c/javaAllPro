@@ -1,17 +1,17 @@
  package demos.gui.uicomponents;
 
  import com.jfoenix.controls.JFXHamburger;
- import com.jfoenix.controls.JFXPopup;
- import com.jfoenix.controls.JFXRippler;
- import io.datafx.controller.ViewController;
- import java.io.IOException;
- import javafx.fxml.FXML;
- import javafx.fxml.FXMLLoader;
- import javafx.scene.Node;
- import javafx.scene.input.MouseEvent;
- import javafx.scene.layout.Region;
- import javafx.scene.layout.StackPane;
- import javax.annotation.PostConstruct;
+import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXRippler;
+import io.datafx.controller.ViewController;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+
+import javax.annotation.PostConstruct;
+import java.io.IOException;
 
 
 

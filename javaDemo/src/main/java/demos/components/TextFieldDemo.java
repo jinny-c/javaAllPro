@@ -1,19 +1,18 @@
  package demos.components;
 
  import com.jfoenix.controls.JFXPasswordField;
- import com.jfoenix.controls.JFXTextField;
- import com.jfoenix.validation.RequiredFieldValidator;
- import javafx.application.Application;
- import javafx.beans.value.ObservableValue;
- import javafx.scene.Node;
- import javafx.scene.Scene;
- import javafx.scene.control.TextField;
- import javafx.scene.layout.VBox;
- import javafx.scene.paint.Color;
- import javafx.stage.Stage;
- import org.kordamp.ikonli.Ikon;
- import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
- import org.kordamp.ikonli.javafx.FontIcon;
+import com.jfoenix.controls.JFXTextField;
+import com.jfoenix.validation.RequiredFieldValidator;
+import javafx.application.Application;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+import org.kordamp.ikonli.Ikon;
+import org.kordamp.ikonli.fontawesome5.FontAwesomeSolid;
+import org.kordamp.ikonli.javafx.FontIcon;
 
  public class TextFieldDemo extends Application {
    private static final String FX_LABEL_FLOAT_TRUE = "-fx-label-float:true;";

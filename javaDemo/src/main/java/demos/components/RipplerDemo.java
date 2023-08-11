@@ -1,16 +1,15 @@
  package demos.components;
 
  import com.jfoenix.controls.JFXRippler;
- import com.jfoenix.effects.JFXDepthManager;
- import javafx.application.Application;
- import javafx.geometry.Insets;
- import javafx.scene.Node;
- import javafx.scene.Scene;
- import javafx.scene.control.Label;
- import javafx.scene.input.MouseEvent;
- import javafx.scene.layout.FlowPane;
- import javafx.scene.layout.StackPane;
- import javafx.stage.Stage;
+import com.jfoenix.effects.JFXDepthManager;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
  public class RipplerDemo extends Application {
    private static int counter = 0; private static final String FX_BACKGROUND_COLOR_WHITE = "-fx-background-color:WHITE;";

@@ -1,17 +1,17 @@
  package demos.components;
 
  import com.jfoenix.controls.JFXHamburger;
- import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
- import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
- import com.jfoenix.transitions.hamburger.HamburgerNextArrowBasicTransition;
- import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
- import javafx.application.Application;
- import javafx.geometry.Insets;
- import javafx.scene.Scene;
- import javafx.scene.input.MouseEvent;
- import javafx.scene.layout.FlowPane;
- import javafx.scene.layout.StackPane;
- import javafx.stage.Stage;
+import com.jfoenix.transitions.hamburger.HamburgerBackArrowBasicTransition;
+import com.jfoenix.transitions.hamburger.HamburgerBasicCloseTransition;
+import com.jfoenix.transitions.hamburger.HamburgerNextArrowBasicTransition;
+import com.jfoenix.transitions.hamburger.HamburgerSlideCloseTransition;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 
 

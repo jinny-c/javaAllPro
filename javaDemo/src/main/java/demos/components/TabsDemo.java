@@ -1,20 +1,20 @@
  package demos.components;
 
  import com.jfoenix.controls.JFXButton;
- import com.jfoenix.controls.JFXTabPane;
- import java.math.BigInteger;
- import java.security.SecureRandom;
- import javafx.application.Application;
- import javafx.geometry.Pos;
- import javafx.scene.Group;
- import javafx.scene.Node;
- import javafx.scene.Scene;
- import javafx.scene.control.Label;
- import javafx.scene.control.SingleSelectionModel;
- import javafx.scene.control.Tab;
- import javafx.scene.input.MouseEvent;
- import javafx.scene.layout.HBox;
- import javafx.stage.Stage;
+import com.jfoenix.controls.JFXTabPane;
+import javafx.application.Application;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.SingleSelectionModel;
+import javafx.scene.control.Tab;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+
+import java.math.BigInteger;
+import java.security.SecureRandom;
 
  public class TabsDemo extends Application {
    private static final String TAB_0 = "Tab 0";

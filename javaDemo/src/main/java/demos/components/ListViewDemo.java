@@ -1,16 +1,15 @@
  package demos.components;
 
  import com.jfoenix.controls.JFXButton;
- import com.jfoenix.controls.JFXListView;
- import javafx.application.Application;
- import javafx.geometry.Insets;
- import javafx.scene.Node;
- import javafx.scene.Scene;
- import javafx.scene.control.Label;
- import javafx.scene.control.ListView;
- import javafx.scene.layout.*;
- import javafx.scene.paint.Color;
- import javafx.stage.Stage;
+import com.jfoenix.controls.JFXListView;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
  public class ListViewDemo extends Application {
    private int counter = 0;

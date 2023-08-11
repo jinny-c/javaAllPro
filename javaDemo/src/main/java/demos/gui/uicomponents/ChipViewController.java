@@ -1,21 +1,19 @@
  package demos.gui.uicomponents;
 
- import com.jfoenix.controls.JFXChip;
  import com.jfoenix.controls.JFXChipView;
- import com.jfoenix.controls.JFXDefaultChip;
- import com.jfoenix.controls.JFXListCell;
- import com.jfoenix.effects.JFXDepthManager;
- import com.jfoenix.svg.SVGGlyph;
- import com.jfoenix.svg.SVGGlyphLoader;
- import io.datafx.controller.ViewController;
- import java.util.HashMap;
- import java.util.Objects;
- import javafx.fxml.FXML;
- import javafx.scene.Node;
- import javafx.scene.control.ListCell;
- import javafx.scene.control.ListView;
- import javafx.util.StringConverter;
- import javax.annotation.PostConstruct;
+import com.jfoenix.controls.JFXDefaultChip;
+import com.jfoenix.controls.JFXListCell;
+import com.jfoenix.effects.JFXDepthManager;
+import com.jfoenix.svg.SVGGlyph;
+import com.jfoenix.svg.SVGGlyphLoader;
+import io.datafx.controller.ViewController;
+import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.util.StringConverter;
+
+import javax.annotation.PostConstruct;
+import java.util.HashMap;
+import java.util.Objects;
 
 
  @ViewController(value = "/fxml/ui/ChipView.fxml", title = "Material Design Example")

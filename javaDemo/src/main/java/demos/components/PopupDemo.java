@@ -1,19 +1,18 @@
  package demos.components;
 
  import com.jfoenix.controls.JFXHamburger;
- import com.jfoenix.controls.JFXListView;
- import com.jfoenix.controls.JFXPopup;
- import com.jfoenix.controls.JFXRippler;
- import javafx.application.Application;
- import javafx.geometry.Insets;
- import javafx.scene.Node;
- import javafx.scene.Scene;
- import javafx.scene.control.Label;
- import javafx.scene.input.MouseEvent;
- import javafx.scene.layout.AnchorPane;
- import javafx.scene.layout.Region;
- import javafx.scene.layout.StackPane;
- import javafx.stage.Stage;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXPopup;
+import com.jfoenix.controls.JFXRippler;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 
 

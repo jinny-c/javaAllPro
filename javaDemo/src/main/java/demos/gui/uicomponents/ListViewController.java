@@ -1,11 +1,11 @@
  package demos.gui.uicomponents;
 
  import com.jfoenix.controls.JFXButton;
- import com.jfoenix.controls.JFXListView;
- import io.datafx.controller.ViewController;
- import javafx.fxml.FXML;
- import javafx.scene.input.MouseEvent;
- import javax.annotation.PostConstruct;
+import com.jfoenix.controls.JFXListView;
+import io.datafx.controller.ViewController;
+import javafx.fxml.FXML;
+
+import javax.annotation.PostConstruct;
 
 
  @ViewController(value = "/fxml/ui/ListView.fxml", title = "Material Design Example")

@@ -1,7 +1,6 @@
 // Source code is decompiled from a .class file using FernFlower decompiler.
 package demos.gui.uicomponents;
 
-import com.jfoenix.controls.*;
 import com.jfoenix.controls.cells.editors.IntegerTextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.TextFieldEditorBuilder;
 import com.jfoenix.controls.cells.editors.base.GenericEditableTreeTableCell;

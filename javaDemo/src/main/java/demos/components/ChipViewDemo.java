@@ -1,12 +1,12 @@
  package demos.components;
 
  import com.jfoenix.controls.JFXChipView;
- import javafx.application.Application;
- import javafx.geometry.Insets;
- import javafx.scene.Node;
- import javafx.scene.Scene;
- import javafx.scene.layout.StackPane;
- import javafx.stage.Stage;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
  public final class ChipViewDemo
    extends Application {

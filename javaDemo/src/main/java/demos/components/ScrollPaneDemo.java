@@ -1,19 +1,19 @@
  package demos.components;
 
  import com.jfoenix.controls.JFXButton;
- import com.jfoenix.controls.JFXListView;
- import com.jfoenix.controls.JFXScrollPane;
- import com.jfoenix.svg.SVGGlyph;
- import javafx.application.Application;
- import javafx.geometry.Insets;
- import javafx.geometry.Pos;
- import javafx.scene.Node;
- import javafx.scene.Scene;
- import javafx.scene.control.Label;
- import javafx.scene.control.ScrollPane;
- import javafx.scene.layout.StackPane;
- import javafx.scene.paint.Color;
- import javafx.stage.Stage;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXScrollPane;
+import com.jfoenix.svg.SVGGlyph;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
  public class ScrollPaneDemo
    extends Application {

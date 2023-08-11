@@ -1,9 +1,9 @@
  package demos.gui.uicomponents;
 
  import com.jfoenix.controls.JFXButton;
- import com.jfoenix.controls.JFXNodesList;
- import io.datafx.controller.ViewController;
- import javafx.fxml.FXML;
+import com.jfoenix.controls.JFXNodesList;
+import io.datafx.controller.ViewController;
+import javafx.fxml.FXML;
 
 
 

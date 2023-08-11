@@ -1,17 +1,17 @@
  package demos.components;
 
  import com.jfoenix.controls.JFXDatePicker;
- import com.jfoenix.controls.JFXTimePicker;
- import demos.MainDemo;
- import javafx.application.Application;
- import javafx.collections.ObservableList;
- import javafx.geometry.Insets;
- import javafx.scene.Scene;
- import javafx.scene.control.DatePicker;
- import javafx.scene.layout.FlowPane;
- import javafx.scene.layout.StackPane;
- import javafx.scene.paint.Color;
- import javafx.stage.Stage;
+import com.jfoenix.controls.JFXTimePicker;
+import demos.MainDemo;
+import javafx.application.Application;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.DatePicker;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 
 
 

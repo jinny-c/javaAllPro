@@ -1,14 +1,14 @@
  package demos.components;
 
  import com.jfoenix.controls.JFXComboBox;
- import javafx.application.Application;
- import javafx.geometry.Insets;
- import javafx.scene.Node;
- import javafx.scene.Scene;
- import javafx.scene.control.Label;
- import javafx.scene.layout.HBox;
- import javafx.stage.Stage;
- import javafx.util.StringConverter;
+import javafx.application.Application;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
  public class ComboBoxDemo
    extends Application {

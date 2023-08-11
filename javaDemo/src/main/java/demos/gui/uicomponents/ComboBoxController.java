@@ -1,13 +1,13 @@
  package demos.gui.uicomponents;
 
  import com.jfoenix.controls.JFXComboBox;
- import io.datafx.controller.ViewController;
- import javafx.beans.value.ChangeListener;
- import javafx.beans.value.ObservableValue;
- import javafx.fxml.FXML;
- import javafx.scene.control.Label;
- import javafx.util.StringConverter;
- import javax.annotation.PostConstruct;
+import io.datafx.controller.ViewController;
+import javafx.beans.value.ChangeListener;
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
+import javafx.util.StringConverter;
+
+import javax.annotation.PostConstruct;
 
 
 

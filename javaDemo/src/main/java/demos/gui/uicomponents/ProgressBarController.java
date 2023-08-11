@@ -8,6 +8,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.util.Duration;
+
 import javax.annotation.PostConstruct;
 
 @ViewController(
