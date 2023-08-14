@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.*?>
-<?import de.jensd.fx.glyphs.fontawesome.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <StackPane fx:id="root" xmlns:fx="http://javafx.com/fxml/1"
@@ -40,8 +39,7 @@
                 Item 1
                 <graphic>
                     <StackPane styleClass="custom-jfx-list-view-icon-container">
-                        <FontAwesomeIconView glyphName="STAR" size="1.5em"
-                                             styleClass="custom-jfx-list-view-icon"/>
+
                     </StackPane>
                 </graphic>
             </Label>
@@ -49,8 +47,7 @@
                 Item 2
                 <graphic>
                     <StackPane styleClass="custom-jfx-list-view-icon-container">
-                        <FontAwesomeIconView glyphName="HEART" size="1.5em"
-                                             styleClass="custom-jfx-list-view-icon"/>
+
                     </StackPane>
                 </graphic>
             </Label>
@@ -58,8 +55,7 @@
                 Item 3
                 <graphic>
                     <StackPane styleClass="custom-jfx-list-view-icon-container">
-                        <FontAwesomeIconView glyphName="WARNING" size="1.5em"
-                                             styleClass="custom-jfx-list-view-icon"/>
+
                     </StackPane>
                 </graphic>
             </Label>
@@ -67,8 +63,7 @@
                 Item 4
                 <graphic>
                     <StackPane styleClass="custom-jfx-list-view-icon-container">
-                        <FontAwesomeIconView glyphName="UNIVERSITY"
-                                             size="1.5em" styleClass="custom-jfx-list-view-icon"/>
+
                     </StackPane>
                 </graphic>
             </Label>
@@ -76,8 +71,7 @@
                 Item 5
                 <graphic>
                     <StackPane styleClass="custom-jfx-list-view-icon-container">
-                        <FontAwesomeIconView glyphName="TABLET" size="1.5em"
-                                             styleClass="custom-jfx-list-view-icon"/>
+
                     </StackPane>
                 </graphic>
             </Label>

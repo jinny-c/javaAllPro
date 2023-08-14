@@ -43,14 +43,17 @@ public class JavaFxDemo extends Application {
     public void start(Stage primaryStage) throws Exception {
         String fxmlUri = "/fxml/ui/";
         String button = "Button.fxml";
-        int i = (int) (Math.random() * fxmlArr.length);
 
         String url = fxmlUri + button;
+
+        int i = (int) (Math.random() * fxmlArr.length);
         url = fxmlUri + fxmlArr[i];
-        url = fxmlUri + fxmlMap.get("Slider");
+
+        url = fxmlUri + fxmlMap.get("TreeTableView");
 
         log.info("url={}", url);
-        Parent root = FXMLLoader.load(getClass().getResource(url));
+        //Parent root = FXMLLoader.load(getClass().getResource(url));
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/Main.fxml"));
 
 
         primaryStage.setTitle("My Application");

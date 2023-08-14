@@ -39,5 +39,11 @@
     <orderEntry type="library" scope="TEST" name="Maven: org.aspectj:aspectjweaver:1.9.6" level="project" />
     <orderEntry type="library" name="Maven: com.google.guava:guava:19.0" level="project" />
     <orderEntry type="library" name="Maven: com.google.code.gson:gson:2.8.6" level="project" />
+    <orderEntry type="library" name="Maven: io.datafx:flow:8.0.1" level="project" />
+    <orderEntry type="library" name="Maven: io.datafx:datafx:8.0.1" level="project" />
+    <orderEntry type="library" name="Maven: io.datafx:core:8.0.1" level="project" />
+    <orderEntry type="library" name="Maven: org.kordamp.ikonli:ikonli-javafx:2.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.kordamp.ikonli:ikonli-fontawesome5-pack:2.6.0" level="project" />
+    <orderEntry type="library" name="Maven: org.kordamp.ikonli:ikonli-core:2.6.0" level="project" />
   </component>
 </module>
