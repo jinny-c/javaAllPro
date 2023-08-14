@@ -251,25 +251,25 @@ public class PageProcessing {
         return str;
     }
 
-    public static void main(String[] args) {
-        String url = "https://www.sdk.cn/details/9pPQD6wqK0Jo8ozvNy#title-8";
-        url = "https://blog.csdn.net/lansefangzhou/article/details/81091407";
-        url = "https://www.xpiaotian.com/book/215870/207674278.html";
-        url = "https://www.itshang.com/as/35285/19799725.html";
-        String startKey = "登陆界面";
-        String endKey = "关注";
-        String content = "下一章";
-        String select = "a[id=pager_next]";
-        String select1 = "div[id=content]";
-//        System.out.println(getDocument(url));
-//        System.out.println(pagerElementsGetByContent(url, content));
-
-        try {
-            Document document = getDocument(url);
-            //System.out.println(pagerGetBySelect(document, select));
-            //System.out.println(pagerGetBySelect(document, select1));
-        }catch (Exception e){
-            log.error("11111111111111",e);
-        }
-    }
+//    public static void main(String[] args) {
+//        String url = "https://www.sdk.cn/details/9pPQD6wqK0Jo8ozvNy#title-8";
+//        url = "https://blog.csdn.net/lansefangzhou/article/details/81091407";
+//        url = "https://www.xpiaotian.com/book/215870/207674278.html";
+//        url = "https://www.itshang.com/as/35285/19799725.html";
+//        String startKey = "登陆界面";
+//        String endKey = "关注";
+//        String content = "下一章";
+//        String select = "a[id=pager_next]";
+//        String select1 = "div[id=content]";
+////        System.out.println(getDocument(url));
+////        System.out.println(pagerElementsGetByContent(url, content));
+//
+//        try {
+//            Document document = getDocument(url);
+//            //System.out.println(pagerGetBySelect(document, select));
+//            //System.out.println(pagerGetBySelect(document, select1));
+//        }catch (Exception e){
+//            log.error("11111111111111",e);
+//        }
+//    }
 }
