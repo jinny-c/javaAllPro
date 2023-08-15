@@ -27,10 +27,10 @@ public class PageContentGetController {
     @FXML
     private TextArea textArea1;
     @FXML
-    private ToggleButton toggleButton1;
+    private ToggleButton toggleButton1, toggleButton2;
 
     @FXML
-    private TextField textField1, textField2, textField3, textField4, textField5;
+    private TextField textField1,textField11, textField2, textField3, textField4, textField5;
     @FXML
     private TextField textField611, textField612, textField621, textField622;
     @FXML
@@ -38,8 +38,10 @@ public class PageContentGetController {
 
     @FXML
     private RadioButton radioButton1, radioButton2, radioButton3, radioButton4, radioButton5;
+    @FXML
+    private RadioButton radioButton61, radioButton62;
 
-    private ToggleGroup toggleGroup;
+    private ToggleGroup toggleGroup,toggleGroup1;
 
     private Thread backgroundThread = null;
 
@@ -51,8 +53,12 @@ public class PageContentGetController {
         radioButton3.setToggleGroup(toggleGroup);
         radioButton4.setToggleGroup(toggleGroup);
         radioButton5.setToggleGroup(toggleGroup);
-
         radioButton1.setSelected(true);
+
+        toggleGroup1 = new ToggleGroup();
+        radioButton61.setToggleGroup(toggleGroup1);
+        radioButton62.setToggleGroup(toggleGroup1);
+        radioButton61.setSelected(true);
     }
 
 
@@ -69,11 +75,22 @@ public class PageContentGetController {
                     String contentEnd = textField3.getText();
                     String content = textField4.getText();
                     String select = textField5.getText();
+                    String cookies = textField11.getText();
+
                     String redioValue = "01";
                     RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
                     if (null != selectedRadioButton) {
                         redioValue = (String) selectedRadioButton.getUserData();
                     }
+
+                    String method = "GET";
+                    RadioButton selectedRadioButton1 = (RadioButton) toggleGroup1.getSelectedToggle();
+                    if (null != selectedRadioButton1) {
+                        method= (String) selectedRadioButton1.getUserData();
+                    }
+
+                    boolean needChange = toggleButton2.isSelected();
+
                     Button sourceButton = (Button) event.getSource();
 
                     if (StringUtils.isBlank(url)) {
@@ -82,7 +99,8 @@ public class PageContentGetController {
                     }
 
                     if (sourceButton == button1) {
-                        textArea1.setText(PageProcessing.pagerGet(url, contentStrat, contentEnd, redioValue));
+                        Document document = PageProcessing.getDocument(url, method, cookies, needChange);
+                        textArea1.setText(PageProcessing.pagerGet(document, contentStrat, contentEnd, redioValue));
                         return null;
                     }
                     if (sourceButton == button2) {
@@ -90,7 +108,8 @@ public class PageContentGetController {
                             textArea1.setText("content is null");
                             return null;
                         }
-                        textArea1.setText(PageProcessing.pagerElementsGetByContent(url, content));
+                        Document document = PageProcessing.getDocument(url, method, cookies, needChange);
+                        textArea1.setText(PageProcessing.pagerElementsGetByContent(document, content));
                         return null;
                     }
                     if (sourceButton == button3) {

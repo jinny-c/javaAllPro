@@ -18,7 +18,7 @@ public class PageContentGetControllerAppMain extends Application {
         //可移动窗口
         removableWindow(root, primaryStage);
         primaryStage.setTitle("Page Content Get Processing");
-        primaryStage.setScene(new Scene(root, 900, 800));
+        primaryStage.setScene(new Scene(root, 800, 900));
         primaryStage.show();
     }
 
@@ -36,6 +36,7 @@ public class PageContentGetControllerAppMain extends Application {
             primaryStage.setY(event.getScreenY() - yOffset);
         });
     }
+
     public static void main(String[] args) {
         launch(args);
     }

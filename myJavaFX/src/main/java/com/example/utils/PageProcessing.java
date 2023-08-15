@@ -1,6 +1,7 @@
 package com.example.utils;
 
 import com.example.bean.BallsInfo;
+import com.google.common.base.Splitter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -13,14 +14,13 @@ import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeVisitor;
 
+import javax.annotation.PostConstruct;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +31,27 @@ import java.util.regex.Pattern;
  */
 @Slf4j
 public class PageProcessing {
+    private static AbstractCacheFactory<Document> cache = new AbstractCacheFactory<Document>(new CacheConfigBean()) {
+        @Override
+        protected Document loadByKey(String key) throws Exception {
+            return loadDateByKey(key);
+        }
+    };
+    //private AbstractCacheFactory<Document> cache;
+
+
+    private static Map<String, String> needParams = new HashMap<String, String>() {{
+        put(key_method, "GET");
+    }};
+
+    private static String key_method = "method";
+    private static String key_cookies = "cookies";
+
+    @PostConstruct
+    private void init() {
+        log.info("init start");
+    }
+
 
 //    @SneakyThrows(Exception.class)
 //    public static Document getDocumentByRest(String url) {
@@ -44,62 +65,103 @@ public class PageProcessing {
 //        return document;
 //    }
 
-    @SneakyThrows(Exception.class)
-    public static Document getDocumentByHttp(String url) {
-        log.info("getDocumentByHttp start,url={}", url);
-        if (!StringUtils.startsWithAny(url, "http://", "https://")) {
-            url = "http://" + url;
+    private static String convertUrl(String url) {
+        log.info("convertUrl start,url={}", url);
+        if (StringUtils.startsWithAny(url, "http://", "https://")) {
+            return url;
         }
-        URL urlObj = new URL(url);
-        HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
-        connection.setRequestMethod("GET");
-        InputStream inputStream = connection.getInputStream();
-        Document document = Jsoup.parse(inputStream, "UTF-8", url);
-        return document;
+        url = "http://" + url;
+        log.info("convertUrl end,url={}", url);
+        return url;
     }
 
-    public static Document getDocumentMayNull(String url) {
-        try {
-            log.info("getDocumentMayNull start,url={}", url);
-            if (!StringUtils.startsWithAny(url, "http://", "https://")) {
-                url = "http://" + url;
-            }
-            Connection mozilla = Jsoup.connect(URLDecoder.decode(url, String.valueOf(StandardCharsets.UTF_8))).userAgent(RandomUserAgent.getRandomUserAgent());
-            mozilla.timeout(60 * 1000);
-            Document document = mozilla.get();
-            //Document document = mozilla.timeout(5000).get();
-            return document;
-        } catch (Exception e) {
-            log.error("getDocumentMayNull", e);
-        }
-        return null;
+    @SneakyThrows(Exception.class)
+    public static Document getDocumentByHttp(String url) {
+        return getDocumentByHttp(url, needParams.get(key_method), needParams.get(key_cookies));
+    }
+
+    @SneakyThrows(Exception.class)
+    public static Document getDocumentByHttp(String url, String method, String cookies) {
+        String finallyUrl = convertUrl(url);
+        URL urlObj = new URL(finallyUrl);
+        HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
+        connection.setRequestMethod(method);
+        connection.setRequestProperty("Cookie", cookies);
+        InputStream inputStream = connection.getInputStream();
+        return Jsoup.parse(inputStream, "UTF-8", finallyUrl);
+//        Document document = Jsoup.parse(inputStream, "UTF-8", finallyUrl);
+//        return document;
     }
 
     @SneakyThrows(Exception.class)
     public static Document getDocumentByConnect(String url) {
-        log.info("getDocumentByConnect start,url={}", url);
-        if (!StringUtils.startsWithAny(url, "http://", "https://")) {
-            url = "http://" + url;
-            log.info("convert url={}", url);
+        Map<String, String> cookies = null;
+        String needCookies = needParams.get(key_cookies);
+        if (StringUtils.isNotBlank(needCookies)) {
+            cookies = Splitter.on("&").trimResults().withKeyValueSeparator(Splitter.on("=").trimResults()).split(needCookies);
         }
-        Connection mozilla = Jsoup.connect(URLDecoder.decode(url, String.valueOf(StandardCharsets.UTF_8))).userAgent(RandomUserAgent.getRandomUserAgent());
-        mozilla.userAgent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Safari/537.36");
+        return getDocumentByConnect(url, needParams.get(key_method), cookies);
+    }
+
+    @SneakyThrows(Exception.class)
+    public static Document getDocumentByConnect(String url, String method, Map<String, String> cookies) {
+        Connection mozilla = Jsoup.connect(URLDecoder.decode(convertUrl(url), String.valueOf(StandardCharsets.UTF_8))).userAgent(RandomUserAgent.getRandomUserAgent());
         mozilla.timeout(30 * 1000);
-        Document document = mozilla.get();
-        //Document document = mozilla.timeout(5000).get();
+        boolean isNull = null == cookies || cookies.isEmpty();
+        if (!isNull) {
+            mozilla.cookies(cookies);
+        }
+        if (StringUtils.equalsIgnoreCase(method, "GET")) {
+            return mozilla.get();
+        }
+        return mozilla.post();
+//        Document document = mozilla.get();
+//        return document;
+    }
+
+    @SneakyThrows(Exception.class)
+    public static Document loadDateByKey(String url) {
+        Document document = null;
+        try {
+            document = getDocumentByConnect(url);
+            //return getDocumentByHttp(url);
+        } catch (Exception e) {
+            //log.debug("loadDateByKey Exception", e);
+            log.error("getDocumentByConnect Exception={}", e.getMessage());
+            //return getDocumentByRest(url);
+            document = getDocumentByHttp(url);
+            //return getDocumentByConnect(url);
+        }
         return document;
     }
 
     @SneakyThrows(Exception.class)
     public static Document getDocument(String url) {
-        try {
-            return getDocumentByConnect(url);
-            //return getDocumentByHttp(url);
-        } catch (Exception e) {
-            log.error("getDocument", e);
-            //return getDocumentByRest(url);
-            return getDocumentByHttp(url);
-            //return getDocumentByConnect(url);
+        return cache.getCacheByKey(convertUrl(url));
+    }
+
+    @SneakyThrows(Exception.class)
+    public static Document getDocument(String url, String method, String cookies, boolean change) {
+        changeDef(method, cookies, change);
+        return cache.getCacheByKey(convertUrl(url));
+    }
+
+    private static void changeDef(String method, String cookies, boolean change) {
+        log.info("changeDef method={},change={}", method, change);
+        if (needParams == null) {
+            log.info("needParams is null");
+            needParams = new HashMap<>();
+            needParams.put(key_method, StringUtils.isNotBlank(method) ? method : "GET");
+            needParams.put(key_cookies, cookies);
+            return;
+        }
+        if (StringUtils.isBlank(needParams.get(key_method))) {
+            log.info("key_method is null");
+            needParams.put(key_method, StringUtils.isNotBlank(method) ? method : "GET");
+        }
+        if (change) {
+            needParams.put(key_method, StringUtils.isNotBlank(method) ? method : "GET");
+            needParams.put(key_cookies, cookies);
         }
     }
 
@@ -177,8 +239,7 @@ public class PageProcessing {
         return absoluteHref;
     }
 
-    public static String pagerElementsGetByContent(String url, String content) {
-        Document document = getDocument(url);
+    public static String pagerElementsGetByContent(Document document, String content) {
         Elements elementsContainingText = document.getElementsContainingOwnText(content);
 
         List<String> eleList = new ArrayList<>();
@@ -189,13 +250,8 @@ public class PageProcessing {
         return StringUtils.join(eleList, CommonConstant.line_feed);
     }
 
-    public static String pagerGet(String url, String startKey, String endKey) {
-        return pagerGet(url, startKey, endKey, PageContentSelectEnums.select_content.getSelectType());
-    }
-
-    public static String pagerGet(String url, String startKey, String endKey, String type) {
+    public static String pagerGet(Document document, String startKey, String endKey, String type) {
         log.info("startKey={},endKey={}", startKey, endKey);
-        Document document = getDocument(url);
         //String allValue = document.text();
         String allValue = null;
         PageContentSelectEnums selectEnums = PageContentSelectEnums.convertByType(type);
@@ -256,6 +312,7 @@ public class PageProcessing {
 //        url = "https://blog.csdn.net/lansefangzhou/article/details/81091407";
 //        url = "https://www.xpiaotian.com/book/215870/207674278.html";
 //        url = "https://www.itshang.com/as/35285/19799725.html";
+//        url = "http://www.ixianzong.com/125682.html";
 //        String startKey = "登陆界面";
 //        String endKey = "关注";
 //        String content = "下一章";
@@ -265,11 +322,11 @@ public class PageProcessing {
 ////        System.out.println(pagerElementsGetByContent(url, content));
 //
 //        try {
-//            Document document = getDocument(url);
+//            Document document = loadDateByKey(url);
 //            //System.out.println(pagerGetBySelect(document, select));
 //            //System.out.println(pagerGetBySelect(document, select1));
-//        }catch (Exception e){
-//            log.error("11111111111111",e);
+//        } catch (Exception e) {
+//            log.error("11111111111111", e);
 //        }
 //    }
 }

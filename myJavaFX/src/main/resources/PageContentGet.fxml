@@ -11,8 +11,18 @@
         <VBox styleClass="vbox" >
             <VBox styleClass="vbox">
                 <HBox styleClass="hbox" fillHeight="true">
-                    <Label text="获取网页的地址："/>
-                    <TextField HBox.hgrow="ALWAYS" fx:id="textField1"/>
+                    <Label text="网页的地址："/> <TextField HBox.hgrow="ALWAYS" fx:id="textField1"/>
+                </HBox>
+                <HBox styleClass="hbox" fillHeight="true">
+                    <Label text="method："/>
+                    <FlowPane vgap="20" hgap="20">
+                        <RadioButton text="GET" userData="GET" fx:id="radioButton61" />
+                        <RadioButton text="POST" userData="POST" fx:id="radioButton62" />
+                    </FlowPane>
+                    <ToggleButton text="是否强制更新cookies" selected="false" fx:id="toggleButton2"/>
+                </HBox>
+                <HBox styleClass="hbox" fillHeight="true">
+                    <Label text="cookies："/> <TextField HBox.hgrow="ALWAYS" fx:id="textField11"/>
                 </HBox>
                 <HBox styleClass="hbox">
                     <Button text="查询&#10;结果" minHeight="64" minWidth="64" onAction="#button1Click" fx:id="button1"/>
