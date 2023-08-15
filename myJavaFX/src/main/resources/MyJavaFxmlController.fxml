@@ -24,6 +24,7 @@
             <Button text="BallGet" prefHeight="32" onAction="#ballGetButtonClick"/>
             <Button text="PageContentGet" prefHeight="32" onAction="#pageContentGetButtonClick"/>
             <Button text="ContentProcessing" prefHeight="32" onAction="#contentProcessingButtonClick"/>
+            <Button text="JFoenixDemo" prefHeight="32" onAction="#jfoenixDemoButtonClick"/>
         </FlowPane>
     </left>
 

@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.app.*;
 import com.example.app.calculator.CalculatorApplication;
+import com.example.app.demo.jfoenix.MainDemo;
 import com.example.view.Base64View;
 import com.example.view.FileDigestView;
 import javafx.fxml.FXML;
@@ -86,6 +87,14 @@ public class MyJavaFxmlController {
     protected void contentProcessingButtonClick() {
         try {
             StringUtilsControllerAppMain myMainApp = new StringUtilsControllerAppMain();
+            myMainApp.start(new Stage());
+        } catch (Exception e) {
+        }
+    }
+    @FXML
+    protected void jfoenixDemoButtonClick() {
+        try {
+            MainDemo myMainApp = new MainDemo();
             myMainApp.start(new Stage());
         } catch (Exception e) {
         }
