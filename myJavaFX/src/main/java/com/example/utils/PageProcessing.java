@@ -389,10 +389,17 @@ public class PageProcessing {
         return str;
     }
 
+    private static String webdriver_chrome_driver = "C:\\Users\\jidd\\AppData\\Local\\Google\\Chrome\\Application\\chromedriver.exe";
+
     @SneakyThrows(Exception.class)
     public static void doChromeDriver(String url) {
+        doChromeDriver(url, webdriver_chrome_driver);
+    }
+
+    @SneakyThrows(Exception.class)
+    public static void doChromeDriver(String url, String driverPath) {
         // 设置ChromeDriver路径
-        System.setProperty("webdriver.chrome.driver", "C:\\Users\\jidd\\AppData\\Local\\Google\\Chrome\\Application\\chromedriver.exe");
+        System.setProperty("webdriver.chrome.driver", driverPath);
 
         WebDriver driver = new ChromeDriver();
         driver.get(url); // 访问URL
@@ -403,28 +410,28 @@ public class PageProcessing {
         log.info("htmlContent={}", htmlContent);
         driver.quit(); // 关闭浏览器
     }
-    public static void main(String[] args) {
-        String url = "https://www.sdk.cn/details/9pPQD6wqK0Jo8ozvNy#title-8";
-        url = "https://blog.csdn.net/lansefangzhou/article/details/81091407";
-        url = "https://www.xpiaotian.com/book/215870/207674278.html";
-        url = "https://www.itshang.com/as/35285/19799725.html";
-        //url = "http://www.ixianzong.com/125682.html";
-        String startKey = "登陆界面";
-        String endKey = "关注";
-        String content = "下一章";
-        String select = "a[id=pager_next]";
-        String select1 = "div[id=content]";
-//        System.out.println(getDocument(url));
-//        System.out.println(pagerElementsGetByContent(url, content));
-
-        try {
-            doChromeDriver(url);
-            //Document document = getDcoumentByEvery(url);
-            //System.out.println(pagerGetBySelect(document, select));
-            //System.out.println(pagerGetBySelect(document, select1));
-            //System.out.println(pagerGet(document, null, null, null));
-        } catch (Exception e) {
-            log.error("11111111111111", e);
-        }
-    }
+//    public static void main(String[] args) {
+//        String url = "https://www.sdk.cn/details/9pPQD6wqK0Jo8ozvNy#title-8";
+//        url = "https://blog.csdn.net/lansefangzhou/article/details/81091407";
+//        url = "https://www.xpiaotian.com/book/215870/207674278.html";
+//        url = "https://www.itshang.com/as/35285/19799725.html";
+//        //url = "http://www.ixianzong.com/125682.html";
+//        String startKey = "登陆界面";
+//        String endKey = "关注";
+//        String content = "下一章";
+//        String select = "a[id=pager_next]";
+//        String select1 = "div[id=content]";
+////        System.out.println(getDocument(url));
+////        System.out.println(pagerElementsGetByContent(url, content));
+//
+//        try {
+//            doChromeDriver(url);
+//            //Document document = getDcoumentByEvery(url);
+//            //System.out.println(pagerGetBySelect(document, select));
+//            //System.out.println(pagerGetBySelect(document, select1));
+//            //System.out.println(pagerGet(document, null, null, null));
+//        } catch (Exception e) {
+//            log.error("11111111111111", e);
+//        }
+//    }
 }
