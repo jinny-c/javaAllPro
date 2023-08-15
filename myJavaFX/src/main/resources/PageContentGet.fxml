@@ -22,7 +22,7 @@
                     <ToggleButton text="是否强制更新cookies" selected="false" fx:id="toggleButton2"/>
                 </HBox>
                 <HBox styleClass="hbox" fillHeight="true">
-                    <Label text="cookies："/> <TextField HBox.hgrow="ALWAYS" fx:id="textField11"/>
+                    <Label text="cookies："/> <TextField HBox.hgrow="ALWAYS" promptText="delPer=0; PSINO=5" fx:id="textField11"/>
                 </HBox>
                 <HBox styleClass="hbox">
                     <Button text="查询&#10;结果" minHeight="64" minWidth="64" onAction="#button1Click" fx:id="button1"/>

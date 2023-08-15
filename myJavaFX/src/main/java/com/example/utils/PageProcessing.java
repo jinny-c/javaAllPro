@@ -52,6 +52,10 @@ public class PageProcessing {
         log.info("init start");
     }
 
+    static {
+        needParams = new HashMap<>();
+        needParams.put(key_method, "GET");
+    }
 
 //    @SneakyThrows(Exception.class)
 //    public static Document getDocumentByRest(String url) {
@@ -98,7 +102,7 @@ public class PageProcessing {
         Map<String, String> cookies = null;
         String needCookies = needParams.get(key_cookies);
         if (StringUtils.isNotBlank(needCookies)) {
-            cookies = Splitter.on("&").trimResults().withKeyValueSeparator(Splitter.on("=").trimResults()).split(needCookies);
+            cookies = Splitter.on(";").trimResults().withKeyValueSeparator(Splitter.on("=").trimResults()).split(needCookies);
         }
         return getDocumentByConnect(url, needParams.get(key_method), cookies);
     }
