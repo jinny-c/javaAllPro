@@ -4,6 +4,9 @@ import com.example.bean.BallsInfo;
 import com.google.common.base.Splitter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Connection;
 import org.jsoup.Jsoup;
@@ -13,11 +16,15 @@ import org.jsoup.nodes.Node;
 import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 import org.jsoup.select.NodeVisitor;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 import javax.annotation.PostConstruct;
+import javax.net.ssl.*;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLConnection;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -34,7 +41,7 @@ public class PageProcessing {
     private static AbstractCacheFactory<Document> cache = new AbstractCacheFactory<Document>(new CacheConfigBean()) {
         @Override
         protected Document loadByKey(String key) throws Exception {
-            return loadDateByKey(key);
+            return getDcoumentByEvery(key);
         }
     };
     //private AbstractCacheFactory<Document> cache;
@@ -57,26 +64,69 @@ public class PageProcessing {
         needParams.put(key_method, "GET");
     }
 
-//    @SneakyThrows(Exception.class)
-//    public static Document getDocumentByRest(String url) {
-//        log.info("getDocumentByRest start,url={}", url);
-//        if (!StringUtils.startsWithAny(url, "http://", "https://")) {
-//            url = "http://" + url;
-//        }
-//        RestTemplate restTemplate = new RestTemplate();
-//        String htmlContent = restTemplate.getForObject(url, String.class);
-//        Document document = Jsoup.parse(htmlContent);
-//        return document;
-//    }
+    // 创建信任所有证书的 TrustManager
+    private static final TrustManager[] trustAllCerts = new TrustManager[]{
+            new X509TrustManager() {
+                @Override
+                public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+                }
+
+                @Override
+                public void checkServerTrusted(java.security.cert.X509Certificate[] chain, String authType) {
+                }
+
+                @Override
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return new java.security.cert.X509Certificate[]{};
+                }
+            }
+    };
+
+    @SneakyThrows(Exception.class)
+    public static SSLSocketFactory getUnsafeFactory() {
+        // 设置 SSLContext 来使用这个 TrustManager
+        final SSLContext sslContext = SSLContext.getInstance("SSL");
+        sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+        // 创建一个 SSLSocketFactory
+        final SSLSocketFactory sslSocketFactory = sslContext.getSocketFactory();
+        return sslSocketFactory;
+    }
 
     private static String convertUrl(String url) {
-        log.info("convertUrl start,url={}", url);
+        //log.info("convertUrl start,url={}", url);
         if (StringUtils.startsWithAny(url, "http://", "https://")) {
             return url;
         }
         url = "http://" + url;
         log.info("convertUrl end,url={}", url);
         return url;
+    }
+
+    @SneakyThrows(Exception.class)
+    public static Document getDocumentByOkHttp(String url) {
+        return getDocumentByOkHttp(url, needParams.get(key_method), needParams.get(key_cookies));
+    }
+
+    @SneakyThrows(Exception.class)
+    public static Document getDocumentByOkHttp(String url, String method, String cookies) {
+        OkHttpClient client = new OkHttpClient();
+        if (StringUtils.startsWith(url, "https")) {
+            OkHttpClient.Builder builder = new OkHttpClient.Builder();
+            builder.sslSocketFactory(getUnsafeFactory(), (X509TrustManager) trustAllCerts[0]);
+            builder.hostnameVerifier((hostname, session) -> true);
+            client = builder.build();
+        }
+        Request.Builder builder = new Request.Builder().url(url);
+        if (StringUtils.isNotBlank(cookies)) {
+            builder.addHeader("Cookie", cookies);
+        }
+        builder.addHeader("User-Agent", RandomUserAgent.getRandomUserAgent());
+        Request request = builder.build();
+
+        Response response = client.newCall(request).execute();
+        return Jsoup.parse(response.body().string());
+//        Document document = Jsoup.parse(response.body().string());
+//        return document;
     }
 
     @SneakyThrows(Exception.class)
@@ -88,8 +138,19 @@ public class PageProcessing {
     public static Document getDocumentByHttp(String url, String method, String cookies) {
         String finallyUrl = convertUrl(url);
         URL urlObj = new URL(finallyUrl);
-        HttpURLConnection connection = (HttpURLConnection) urlObj.openConnection();
-        connection.setRequestMethod(method);
+        URLConnection connection = null;
+        if (StringUtils.startsWith(url, "https")) {
+            HttpsURLConnection.setDefaultSSLSocketFactory(getUnsafeFactory());
+            HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
+
+            HttpsURLConnection httpsConnection = (HttpsURLConnection) urlObj.openConnection();
+            httpsConnection.setRequestMethod(method);
+            connection = httpsConnection;
+        } else {
+            HttpURLConnection httpConnection = (HttpURLConnection) urlObj.openConnection();
+            httpConnection.setRequestMethod(method);
+            connection = httpConnection;
+        }
         connection.setRequestProperty("Cookie", cookies);
         InputStream inputStream = connection.getInputStream();
         return Jsoup.parse(inputStream, "UTF-8", finallyUrl);
@@ -124,17 +185,34 @@ public class PageProcessing {
     }
 
     @SneakyThrows(Exception.class)
-    public static Document loadDateByKey(String url) {
+    public static Document getDcoumentByEvery(String url) {
         Document document = null;
+
         try {
             document = getDocumentByConnect(url);
-            //return getDocumentByHttp(url);
         } catch (Exception e) {
-            //log.debug("loadDateByKey Exception", e);
+            //log.debug("getDocumentByConnect Exception", e);
             log.error("getDocumentByConnect Exception={}", e.getMessage());
-            //return getDocumentByRest(url);
+        }
+        if (null != document) {
+            return document;
+        }
+
+        try {
+            document = getDocumentByOkHttp(url);
+        } catch (Exception e) {
+            //log.debug("getDocumentByOkHttp Exception", e);
+            log.error("getDocumentByOkHttp Exception={}", e.getMessage());
+        }
+        if (null != document) {
+            return document;
+        }
+
+        try {
             document = getDocumentByHttp(url);
-            //return getDocumentByConnect(url);
+        } catch (Exception e) {
+            //log.debug("getDocumentByHttp Exception", e);
+            log.error("getDocumentByHttp Exception={}", e.getMessage());
         }
         return document;
     }
@@ -311,26 +389,42 @@ public class PageProcessing {
         return str;
     }
 
-//    public static void main(String[] args) {
-//        String url = "https://www.sdk.cn/details/9pPQD6wqK0Jo8ozvNy#title-8";
-//        url = "https://blog.csdn.net/lansefangzhou/article/details/81091407";
-//        url = "https://www.xpiaotian.com/book/215870/207674278.html";
-//        url = "https://www.itshang.com/as/35285/19799725.html";
-//        url = "http://www.ixianzong.com/125682.html";
-//        String startKey = "登陆界面";
-//        String endKey = "关注";
-//        String content = "下一章";
-//        String select = "a[id=pager_next]";
-//        String select1 = "div[id=content]";
-////        System.out.println(getDocument(url));
-////        System.out.println(pagerElementsGetByContent(url, content));
-//
-//        try {
-//            Document document = loadDateByKey(url);
-//            //System.out.println(pagerGetBySelect(document, select));
-//            //System.out.println(pagerGetBySelect(document, select1));
-//        } catch (Exception e) {
-//            log.error("11111111111111", e);
-//        }
-//    }
+    @SneakyThrows(Exception.class)
+    public static void doChromeDriver(String url) {
+        // 设置ChromeDriver路径
+        System.setProperty("webdriver.chrome.driver", "C:\\Users\\jidd\\AppData\\Local\\Google\\Chrome\\Application\\chromedriver.exe");
+
+        WebDriver driver = new ChromeDriver();
+        driver.get(url); // 访问URL
+
+        // 使用WebDriver获取页面内容
+        String htmlContent = driver.getPageSource();
+        // 在这里，你可以使用OkHttpClient进一步处理htmlContent或执行其他操作
+        log.info("htmlContent={}", htmlContent);
+        driver.quit(); // 关闭浏览器
+    }
+    public static void main(String[] args) {
+        String url = "https://www.sdk.cn/details/9pPQD6wqK0Jo8ozvNy#title-8";
+        url = "https://blog.csdn.net/lansefangzhou/article/details/81091407";
+        url = "https://www.xpiaotian.com/book/215870/207674278.html";
+        url = "https://www.itshang.com/as/35285/19799725.html";
+        //url = "http://www.ixianzong.com/125682.html";
+        String startKey = "登陆界面";
+        String endKey = "关注";
+        String content = "下一章";
+        String select = "a[id=pager_next]";
+        String select1 = "div[id=content]";
+//        System.out.println(getDocument(url));
+//        System.out.println(pagerElementsGetByContent(url, content));
+
+        try {
+            doChromeDriver(url);
+            //Document document = getDcoumentByEvery(url);
+            //System.out.println(pagerGetBySelect(document, select));
+            //System.out.println(pagerGetBySelect(document, select1));
+            //System.out.println(pagerGet(document, null, null, null));
+        } catch (Exception e) {
+            log.error("11111111111111", e);
+        }
+    }
 }
