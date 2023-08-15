@@ -5,6 +5,7 @@ import com.example.app.calculator.CalculatorApplication;
 import com.example.app.demo.jfoenix.MainDemo;
 import com.example.view.Base64View;
 import com.example.view.FileDigestView;
+import com.xwintop.HttpToolMain;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -95,6 +96,14 @@ public class MyJavaFxmlController {
     protected void jfoenixDemoButtonClick() {
         try {
             MainDemo myMainApp = new MainDemo();
+            myMainApp.start(new Stage());
+        } catch (Exception e) {
+        }
+    }
+    @FXML
+    protected void httpToolDemoButtonClick() {
+        try {
+            HttpToolMain myMainApp = new HttpToolMain();
             myMainApp.start(new Stage());
         } catch (Exception e) {
         }
