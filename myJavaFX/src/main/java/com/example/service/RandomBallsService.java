@@ -2,9 +2,12 @@ package com.example.service;
 
 import com.example.service.bean.BallEnty;
 import com.example.service.bean.BeanConvert;
+import com.example.utils.GsonUtils;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @description TODO
@@ -97,25 +100,65 @@ public interface RandomBallsService {
         return enty;
     }
 
+
+    ConcurrentHashMap<String, List<Integer>> BALL_HASH_MAP = new ConcurrentHashMap<>();
+
     default BallEnty getBalls(Boolean isIn, List<Integer> redLt, List<Integer> blueLt, Map<Integer, Double> redMp, Map<Integer, Double> blueMp) {
-        List<Integer> reds = null;
-        List<Integer> blues = null;
-        if (isIn) {
-            reds = new ArrayList<>(Arrays.asList(MY_DEFAULT_ARR));
+        String redKey = isIn + GsonUtils.toJson(redLt);
+        String blueKey = isIn + GsonUtils.toJson(blueLt);
+        List<Integer> reds = BALL_HASH_MAP.get(redKey);
+        List<Integer> blues = BALL_HASH_MAP.get(blueKey);
 
-            blues = new ArrayList<>(Arrays.asList(MY_DEFAULT_ARR));
-            blues.removeIf(e -> !BLUELIST.contains(e));
-        } else {
-            reds = new ArrayList<>(REDLIST);
-            if (redLt != null) {
-                reds.removeIf(redLt::contains);
+        if (reds == null || blues == null || reds.isEmpty() || blues.isEmpty()) {
+            if (isIn) {
+                if (redLt == null || redLt.size() < 6) {
+                    List<Integer> defReds = new ArrayList<>(Arrays.asList(MY_DEFAULT_ARR));
+                    if (redLt != null) {
+                        reds = Stream.concat(defReds.stream(), redLt.stream())
+                                .distinct()
+                                .collect(Collectors.toList());
+                    } else {
+                        reds = defReds;
+                    }
+                }else {
+                    reds = redLt;
+                }
+
+                List<Integer> defBlues = new ArrayList<>(Arrays.asList(MY_DEFAULT_ARR));
+                defBlues.removeIf(e -> !BLUELIST.contains(e));
+
+                if (blueLt == null || blueLt.size() < 1) {
+                    blues = defBlues;
+                    if (blueLt != null) {
+                        blues = Stream.concat(defBlues.stream(), blueLt.stream())
+                                .distinct()
+                                .collect(Collectors.toList());
+                    }
+                }else {
+                    blues = blueLt;
+                }
+                //过滤
+                blues.removeIf(e -> !BLUELIST.contains(e));
+                if (blues.size() < 1) {
+                    blues = defBlues;
+                }
+
+            } else {
+                reds = new ArrayList<>(REDLIST);
+                if (redLt != null) {
+                    reds.removeIf(redLt::contains);
+                }
+
+                blues = new ArrayList<>(BLUELIST);
+                if (blueLt != null) {
+                    blues.removeIf(blueLt::contains);
+                }
             }
 
-            blues = new ArrayList<>(BLUELIST);
-            if (blueLt != null) {
-                blues.removeIf(blueLt::contains);
-            }
+            BALL_HASH_MAP.put(redKey, reds);
+            BALL_HASH_MAP.put(blueKey, blues);
         }
+
         if (redMp == null) {
             redMp = new HashMap<>();
         }

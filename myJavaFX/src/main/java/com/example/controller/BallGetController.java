@@ -248,23 +248,6 @@ public class BallGetController {
         return LotteryProcessing.getBallsByCondations(isIn, redLt, blueLt, redMp, blueMp);
     }
 
-//    @FXML
-//    protected void checkBox1Click() {
-//        if (checkBox1.isSelected()) {
-//            checkBox2.setDisable(true);
-//            textField1.setDisable(true);
-//            textField11.setDisable(true);
-//            textField2.setDisable(true);
-//            textField3.setDisable(true);
-//        } else {
-//            checkBox2.setDisable(false);
-//            textField1.setDisable(false);
-//            textField11.setDisable(false);
-//            textField2.setDisable(false);
-//            textField3.setDisable(false);
-//        }
-//    }
-
     @FXML
     protected void toggleButton1Click(){
         if (toggleButton1.isSelected()) {
