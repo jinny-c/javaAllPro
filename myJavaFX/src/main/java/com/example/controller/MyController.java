@@ -4,6 +4,7 @@ import com.example.app.sub.AddView;
 import com.example.app.sub.JfoenixDeatilMain;
 import com.example.bean.TableColumnModel;
 import com.example.bean.TableModel;
+import com.example.view.ConfirmDialog;
 import com.example.view.MyTableColumnBuilder;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -128,9 +129,15 @@ public class MyController {
     @FXML
     protected void closeButtonClick() {
         Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
+        //stage.close();
         //Platform.exit();
         //daemon.setDaemon(true);
+
+        //e.consume();
+        ConfirmDialog confirm = new ConfirmDialog(stage);
+        if (confirm.showAndWait().get()) {
+            stage.close();
+        }
     }
 
 }

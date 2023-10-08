@@ -107,6 +107,14 @@ public class PageProcessing {
         return getDocumentByOkHttp(url, needParams.get(key_method), needParams.get(key_cookies));
     }
 
+    /**
+     * OkHttpClient 实现
+     * 跳过https证书
+     * @param url
+     * @param method
+     * @param cookies
+     * @return
+     */
     @SneakyThrows(Exception.class)
     public static Document getDocumentByOkHttp(String url, String method, String cookies) {
         OkHttpClient client = new OkHttpClient();
@@ -134,6 +142,13 @@ public class PageProcessing {
         return getDocumentByHttp(url, needParams.get(key_method), needParams.get(key_cookies));
     }
 
+    /**
+     * URLConnection实现
+     * @param url
+     * @param method
+     * @param cookies
+     * @return
+     */
     @SneakyThrows(Exception.class)
     public static Document getDocumentByHttp(String url, String method, String cookies) {
         String finallyUrl = convertUrl(url);
@@ -168,6 +183,13 @@ public class PageProcessing {
         return getDocumentByConnect(url, needParams.get(key_method), cookies);
     }
 
+    /**
+     * Jsoup实现
+     * @param url
+     * @param method
+     * @param cookies
+     * @return
+     */
     @SneakyThrows(Exception.class)
     public static Document getDocumentByConnect(String url, String method, Map<String, String> cookies) {
         Connection mozilla = Jsoup.connect(URLDecoder.decode(convertUrl(url), String.valueOf(StandardCharsets.UTF_8))).userAgent(RandomUserAgent.getRandomUserAgent());
