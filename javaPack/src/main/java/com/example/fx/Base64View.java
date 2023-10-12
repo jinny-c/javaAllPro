@@ -59,12 +59,12 @@ public class Base64View {
         });
         Button closeButton = new Button("关闭窗口");
         closeButton.setOnAction(e -> {
-            //stage.close();
-            e.consume();
-            ConfirmDialog confirm = new ConfirmDialog(stage);
-            if (confirm.showAndWait().get()) {
-                stage.close();
-            }
+            stage.close();
+//            e.consume();
+//            ConfirmDialog confirm = new ConfirmDialog(stage);
+//            if (confirm.showAndWait().get()) {
+//                stage.close();
+//            }
         });
 
         // 布局组件
