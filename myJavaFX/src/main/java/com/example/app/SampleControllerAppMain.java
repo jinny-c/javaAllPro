@@ -7,7 +7,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
- * @description TODO
+ * @description 通用测试用
  * @auth chaijd
  * @date 2023/6/9
  */

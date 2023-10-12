@@ -33,7 +33,14 @@ public class SampleController {
         Base64View view = new Base64View();
         view.show();
     }
-
+    @FXML
+    protected void readExcelAppMainButtonClick() {
+        try {
+            ReadExcelAppMain myMainApp = new ReadExcelAppMain();
+            myMainApp.start(new Stage());
+        } catch (Exception e) {
+        }
+    }
     @FXML
     protected void closeButtonClick() {
         Stage stage = (Stage) closeButton.getScene().getWindow();

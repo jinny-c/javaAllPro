@@ -160,7 +160,9 @@ public class LotteryController {
             if (StringUtils.isNotBlank(val1)) {
                 subtraction = Integer.parseInt(val1);
             }
-            subtraction -= 1;
+            if (subtraction > 1) {
+                subtraction -= 1;
+            }
 //            if (subtraction % 3 == 0) {
 //                subtraction = subtraction * 2;
 //            }else if(subtraction % 3 == 1){

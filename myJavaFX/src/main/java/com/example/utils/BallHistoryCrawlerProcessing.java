@@ -31,7 +31,8 @@ public class BallHistoryCrawlerProcessing {
         }
         if (StringUtils.isNoneBlank(reqVo.get(CommonConstant.filed_start), reqVo.get(CommonConstant.filed_end))) {
             //03001代表03年第一期彩票  21036代表21年第36期彩票
-            String url = StringUtils.join(new Object[]{BASEURL, "?start=", reqVo.get(CommonConstant.filed_start), "&end=", reqVo.get(CommonConstant.filed_end)});
+            //String url = StringUtils.join(new Object[]{BASEURL, "?start=", reqVo.get(CommonConstant.filed_start), "&end=", reqVo.get(CommonConstant.filed_end)});
+            String url = StringUtils.join(BASEURL, "?start=", reqVo.get(CommonConstant.filed_start), "&end=", reqVo.get(CommonConstant.filed_end));
             //String url = BASEURL + "?start=" + reqVo.get(CommonConstant.filed_start) + "&end=" + reqVo.get(CommonConstant.filed_end);
             reqVo.put(CommonConstant.filed_url, url);
         }

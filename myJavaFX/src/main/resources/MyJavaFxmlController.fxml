@@ -26,6 +26,7 @@
             <Button text="ContentProcessing" prefHeight="32" onAction="#contentProcessingButtonClick"/>
             <Button text="JFoenixDemo" prefHeight="32" onAction="#jfoenixDemoButtonClick"/>
             <Button text="HttpToolDemo" prefHeight="32" onAction="#httpToolDemoButtonClick"/>
+            <Button text="ReadExcelAppMain" prefHeight="32" onAction="#readExcelAppMainButtonClick"/>
         </FlowPane>
     </left>
 
