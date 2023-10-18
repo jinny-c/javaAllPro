@@ -37,7 +37,11 @@ public class FxModuleAssemblyUtils extends ToggleButton {
     public static HBox initMyHBoxToToggleButton(String textMsg) {
         Text txt = new Text(textMsg);
         ToggleButton mtb = initMyToggleButton();
-        return new HBox(txt, mtb);
+        HBox hBox = new HBox();
+        hBox.setPadding(new Insets(6));
+        hBox.getChildren().addAll(txt, mtb);
+        return hBox;
+        //return new HBox(txt, mtb);
     }
 
     public static HBox initMyHBoxToInPut(String[] textMsgs, Integer[] values, int textFieldWidth) {

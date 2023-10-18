@@ -36,6 +36,7 @@ public class ReadExcelAppMain extends Application {
     private Stage primaryStage;
     private TextArea fileContentArea;
     private HBox hBox1;
+    private HBox hBox1a;
     private HBox hBox2;
     private HBox hBox3;
 
@@ -44,6 +45,7 @@ public class ReadExcelAppMain extends Application {
         this.primaryStage = primaryStage;
 
         hBox1 = FxModuleAssemblyUtils.initMyHBoxToToggleButton("是否自动转换成驼峰式（若选择是，则自动加注解SerializedName）：");
+        hBox1a = FxModuleAssemblyUtils.initMyHBoxToToggleButton("描述后是否带类型长度：");
         hBox2 = FxModuleAssemblyUtils.initMyHBoxToInPut(new String[]{"加载的sheet-", "开始的行数-", "列数-"}, new Integer[]{1, 3, 7}, 50);
         hBox3 = FxModuleAssemblyUtils.initMyHBoxToInPut(new String[]{"所在列数，字段=", "描述=", "类型=", "备注="}, new Integer[]{2, 3, 4, 7}, 50);
 
@@ -62,7 +64,7 @@ public class ReadExcelAppMain extends Application {
         fileContentArea.setPrefHeight(300);
 
         // 创建一个布局容器，将按钮和文本域嵌入其中
-        VBox root = new VBox(hBox1, hBox2, hBox3, openFileButton, fileContentArea, btnSave, FxModuleAssemblyUtils.initMyHBoxToCloseButton(primaryStage));
+        VBox root = new VBox(hBox1, hBox1a, hBox2, hBox3, openFileButton, fileContentArea, btnSave, FxModuleAssemblyUtils.initMyHBoxToCloseButton(primaryStage));
         root.setPadding(new Insets(10));
         root.setSpacing(10);
 
@@ -96,6 +98,7 @@ public class ReadExcelAppMain extends Application {
         List<Integer> readFile = convertList(hBox2);
         List<Integer> convertContent = convertList(hBox3);
         boolean isSelect = convertSelect(hBox1);
+        boolean havingType = convertSelect(hBox1a);
         List<List<String>> resutlContent;
         try (InputStream in = new FileInputStream(file)) {
             try (XSSFWorkbook xssfWorkbook = new XSSFWorkbook(in)) {
@@ -104,7 +107,7 @@ public class ReadExcelAppMain extends Application {
                 ListIterator<Integer> it1 = readFile.listIterator();
                 ListIterator<Integer> it2 = convertContent.listIterator();
                 List<List<String>> fileRestList = ExcelUtils.oneSheetRead2007Excel(xssfWorkbook, it1.next(), it1.next(), it1.next());
-                resutlContent = ExcelConvertToJavaBean.convertContent(fileRestList, it2.next(), it2.next(), it2.next(), it2.next(), isSelect);
+                resutlContent = ExcelConvertToJavaBean.convertContent(fileRestList, it2.next(), it2.next(), it2.next(), it2.next(), isSelect, havingType);
             }
             StringBuilder sbd = new StringBuilder();
             for (List<String> line : resutlContent) {
@@ -113,7 +116,7 @@ public class ReadExcelAppMain extends Application {
             }
             fileContentArea.setText(sbd.toString());
         } catch (Exception e) {
-            log.error("Exception", e);
+            //log.error("Exception", e);
         }
     }
 
@@ -146,14 +149,14 @@ public class ReadExcelAppMain extends Application {
         fileChooser.getExtensionFilters().add(ft);
         File file = fileChooser.showSaveDialog(null);
         if (file == null) {
-            log.warn("取消，放弃写文件");
+            //log.warn("取消，放弃写文件");
             return;
         }
         Path path = file.toPath();
         try (BufferedWriter writer = Files.newBufferedWriter(path)) {
             writer.write(fileContentArea.getText());
         } catch (IOException ex) {
-            log.error("文件写入出错: " + ex.getMessage());
+            //log.error("文件写入出错: " + ex.getMessage());
         }
     }
 }
