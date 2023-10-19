@@ -3,11 +3,15 @@ package com.example.controller;
 import com.example.utils.CommonConstant;
 import com.example.utils.MyLotteryProcessing;
 import com.google.common.base.Splitter;
+import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.StringUtils;
 
@@ -17,50 +21,33 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * @description TODO
+ * @description 新随机获取
  * @auth chaijd
  * @date 2023/5/30
  */
 public class MyBallGetController {
     @FXML
-    private Button closeButton;
-    @FXML
-    private Button button1;
+    private Button closeButton, button1,clear1Button;
+
     @FXML
     private HBox hbox1;
-
     @FXML
     private GridPane gridPane1;
     @FXML
     private ToggleButton toggleButton2;
     @FXML
-    private RadioButton radioButton1;
-    @FXML
-    private RadioButton radioButton2;
-    @FXML
-    private RadioButton radioButton3;
-    @FXML
-    private RadioButton radioButton4;
-
-    private ToggleGroup toggleGroup;
+    private RadioButton radioButton1, radioButton2, radioButton3, radioButton4;
     @FXML
     private TextArea textArea1;
     @FXML
-    private TextField textField1;
+    private TextField textField1, textField11, textField2, textField3;
     @FXML
-    private TextField textField11;
-    @FXML
-    private TextField textField2;
-    @FXML
-    private TextField textField3;
-    @FXML
-    private TextField textField4;
-
+    private Text text1, text2;
     @FXML
     private ComboBox<String> comboBox;
 
     private static int[] indexArr = new int[]{1, 2, 3};
-
+    private ToggleGroup toggleGroup;
     private Thread backgroundThread = null;
 
     public void initialize() {
@@ -78,6 +65,23 @@ public class MyBallGetController {
         radioButton4.setToggleGroup(toggleGroup);
 
         radioButton1.setSelected(true);
+
+        toggleButton2.textProperty().bind(Bindings.when(toggleButton2.selectedProperty())
+                .then("是")
+                .otherwise("否"));
+
+        // 绑定text2的wrappingWidth属性到text1的宽度
+        text2.wrappingWidthProperty().bind(Bindings.createDoubleBinding(() ->
+                text1.getBoundsInLocal().getWidth(), text1.boundsInLocalProperty()));
+
+
+        //clear1Button.onActionProperty().bind(Bindings.createObjectBinding(()-> event -> textArea1.clear()));
+        clear1Button.onActionProperty().bind(Bindings.createObjectBinding(()->new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                textArea1.clear();
+            }
+        }));
     }
 
     @FXML
@@ -207,7 +211,6 @@ public class MyBallGetController {
             textField3.setDisable(true);
         }
     }
-
 
     @FXML
     protected void closeButtonClick() {

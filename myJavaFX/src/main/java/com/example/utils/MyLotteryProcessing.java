@@ -42,7 +42,7 @@ public class MyLotteryProcessing {
                 streamEnty = ballsStream.getBalls(isInList, defType, red, blue, redMp, blueMp);
 
                 if (setEnty.equals(streamEnty)) {
-                    log.info("setEnty={},streamEnty={}", setEnty, streamEnty);
+                    log.info("count={},setEnty={},streamEnty={}", count, setEnty, streamEnty);
                     break;
                 }
                 count++;

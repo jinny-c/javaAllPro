@@ -9,22 +9,29 @@
             fx:controller="com.example.controller.MyBallGetController" styleClass="border-pane">
 
     <center>
-        <VBox styleClass="vbox" >
+        <VBox styleClass="vbox">
             <HBox styleClass="hbox" fillHeight="true" fx:id="hbox1">
                 <Text text="条件选择："/>
                 <VBox styleClass="vbox">
                     <VBox styleClass="vbox">
                         <GridPane styleClass="grid_pane" fx:id="gridPane1">
                             <!--<GridPane alignment="center" hgap="10" vgap="10">-->
-                            <RadioButton text="ALL" userData="01" fx:id="radioButton1" GridPane.rowIndex="0" GridPane.columnIndex="0" onAction="#radioButtonClick"/>
-                            <RadioButton text="DEFAULT" userData="02" fx:id="radioButton2" GridPane.rowIndex="0" GridPane.columnIndex="1" onAction="#radioButtonClick"/>
-                            <RadioButton text="369" userData="03" fx:id="radioButton3" GridPane.rowIndex="1" GridPane.columnIndex="0" onAction="#radioButtonClick"/>
-                            <RadioButton text="OTHERS" userData="04" fx:id="radioButton4" GridPane.rowIndex="1" GridPane.columnIndex="1" onAction="#radioButtonClick"/>
+                            <RadioButton text="ALL" userData="01" fx:id="radioButton1" GridPane.rowIndex="0"
+                                         GridPane.columnIndex="0" onAction="#radioButtonClick"/>
+                            <RadioButton text="DEFAULT" userData="02" fx:id="radioButton2" GridPane.rowIndex="0"
+                                         GridPane.columnIndex="1" onAction="#radioButtonClick"/>
+                            <RadioButton text="369" userData="03" fx:id="radioButton3" GridPane.rowIndex="1"
+                                         GridPane.columnIndex="0" onAction="#radioButtonClick"/>
+                            <RadioButton text="OTHERS" userData="04" fx:id="radioButton4" GridPane.rowIndex="1"
+                                         GridPane.columnIndex="1" onAction="#radioButtonClick"/>
                         </GridPane>
                     </VBox>
                     <HBox styleClass="hbox">
-                        <!--<CheckBox text="isIn预留数字：" selected="true" disable="true" fx:id="checkBox2"/>-->
-                        <ToggleButton text="isIn预留数字" selected="true" disable="true" fx:id="toggleButton2"/>
+                        <VBox styleClass="vbox">
+                            <Text text="是否从预留数中随机：" fx:id="text1"/>
+                            <Text fill="red" text="仅在OTHERS时生效，默认取DEFAULT" fx:id="text2"/>
+                        </VBox>
+                        <ToggleButton selected="true" disable="true" fx:id="toggleButton2"/>
                         <VBox styleClass="vbox">
                             <TextField promptText="red：1-11-21-31" disable="true" fx:id="textField1"/>
                             <TextField promptText="bule：1-11-15" disable="true" fx:id="textField11"/>
@@ -33,8 +40,10 @@
                     <TextField promptText="red概率：02=2,26=2,17=2,08=2" disable="true" fx:id="textField2"/>
                     <TextField promptText="blue概率：04=2,14=1,15=1,10=1" disable="true" fx:id="textField3"/>
                 </VBox>
-                <Text text="查询次数："/>
-                <ComboBox fx:id="comboBox"/>
+                <HBox styleClass="hbox" alignment="BASELINE_CENTER">
+                    <Text text="查询次数："/>
+                    <ComboBox fx:id="comboBox"/>
+                </HBox>
             </HBox>
 
             <HBox styleClass="hbox" fx:id="hbox2">
@@ -46,8 +55,9 @@
 
     <bottom>
         <HBox alignment="BOTTOM_RIGHT" styleClass="hbox">
+            <Button text="ClearRest" styleClass="button" fx:id="clear1Button" onAction="#clearButtonClick"/>
             <Button text="Stop" styleClass="button" fx:id="stopButton" onAction="#stopButtonClick"/>
-            <Button text="Clear" styleClass="button" fx:id="clearButton" onAction="#clearButtonClick"/>
+            <Button text="ClearAll" styleClass="button" fx:id="clearButton" onAction="#clearButtonClick"/>
             <Button text="Close" styleClass="button" fx:id="closeButton" onAction="#closeButtonClick"/>
         </HBox>
     </bottom>
