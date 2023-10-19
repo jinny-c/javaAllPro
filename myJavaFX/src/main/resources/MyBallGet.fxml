@@ -28,7 +28,7 @@
                     </VBox>
                     <HBox styleClass="hbox">
                         <VBox styleClass="vbox">
-                            <Text text="是否从预留数中随机：" fx:id="text1"/>
+                            <Text text="input中自定义列表：" fx:id="text1"/>
                             <Text fill="red" text="仅在OTHERS时生效，默认取DEFAULT" fx:id="text2"/>
                         </VBox>
                         <ToggleButton selected="true" disable="true" fx:id="toggleButton2"/>

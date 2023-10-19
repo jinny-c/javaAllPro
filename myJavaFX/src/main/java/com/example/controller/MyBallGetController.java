@@ -67,8 +67,8 @@ public class MyBallGetController {
         radioButton1.setSelected(true);
 
         toggleButton2.textProperty().bind(Bindings.when(toggleButton2.selectedProperty())
-                .then("是")
-                .otherwise("否"));
+                .then("input列表随机")
+                .otherwise("input列表去除"));
 
         // 绑定text2的wrappingWidth属性到text1的宽度
         text2.wrappingWidthProperty().bind(Bindings.createDoubleBinding(() ->
