@@ -77,6 +77,15 @@ public class MyJavaFxmlController {
     }
 
     @FXML
+    protected void myBallGetButtonClick() {
+        try {
+            MyBallGetAppMain myMainApp = new MyBallGetAppMain();
+            myMainApp.start(new Stage());
+        } catch (Exception e) {
+        }
+    }
+
+    @FXML
     protected void pageContentGetButtonClick() {
         try {
             PageContentGetControllerAppMain myMainApp = new PageContentGetControllerAppMain();
