@@ -41,7 +41,7 @@
                     <TextField promptText="blue概率：04=2,14=1,15=1,10=1" disable="true" fx:id="textField3"/>
                 </VBox>
                 <HBox styleClass="hbox" alignment="BASELINE_CENTER">
-                    <Text text="查询次数："/>
+                    <Text text="随机次数："/>
                     <ComboBox fx:id="comboBox"/>
                 </HBox>
             </HBox>

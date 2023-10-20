@@ -54,7 +54,7 @@ public class MyDemoController {
     @FXML
     protected void fxmlWindowButtonClick() {
         try {
-            MyControllerAppMain myMainApp = new MyControllerAppMain();
+            TableDemoControllerAppMain myMainApp = new TableDemoControllerAppMain();
             myMainApp.start(new Stage());
         } catch (Exception e) {
         }

@@ -26,7 +26,7 @@ import java.util.function.Consumer;
  * @auth chaijd
  * @date 2023/5/30
  */
-public class MyController {
+public class TableDemoController {
 
     @FXML
     private Button closeButton;

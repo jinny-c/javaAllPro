@@ -161,7 +161,6 @@ public class MyBallGetController {
                 }
             }
         } catch (Exception e) {
-
         }
         return lt;
     }
@@ -190,7 +189,6 @@ public class MyBallGetController {
 
             return mp;
         } catch (Exception e) {
-
         }
         return null;
     }

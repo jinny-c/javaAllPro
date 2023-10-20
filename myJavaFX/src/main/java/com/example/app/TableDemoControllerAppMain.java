@@ -2,12 +2,8 @@ package com.example.app;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.HPos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -15,11 +11,11 @@ import javafx.stage.Stage;
  * @auth chaijd
  * @date 2023/6/9
  */
-public class MyControllerAppMain extends Application {
+public class TableDemoControllerAppMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/MyController.fxml"));
-//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/MyController.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/TableDemoController.fxml"));
+//        FXMLLoader loader = new FXMLLoader(getClass().getResource("/TableDemoController.fxml"));
 //        GridPane root = loader.load();
 
 //        //关闭按钮设置

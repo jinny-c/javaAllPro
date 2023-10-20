@@ -10,7 +10,7 @@
 <?import javafx.scene.control.TableView?>
 <VBox spacing="10" xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.controller.MyController">
+      fx:controller="com.example.controller.TableDemoController">
     <padding>
         <Insets top="10" bottom="10" left="10" right="10"/>
     </padding>
