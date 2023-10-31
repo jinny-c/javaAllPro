@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.my.FxModuleAssemblyUtils;
 import com.example.utils.CommonConstant;
 import com.example.utils.MyLotteryProcessing;
 import com.google.common.base.Splitter;
@@ -11,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.StringUtils;
@@ -27,10 +29,11 @@ import java.util.stream.Collectors;
  */
 public class MyBallGetController {
     @FXML
-    private Button closeButton, button1,clear1Button;
-
+    private Button closeButton, button1, clear1Button;
     @FXML
-    private HBox hbox1;
+    private HBox hbox1, hbox2;
+    @FXML
+    private VBox vbox1;
     @FXML
     private GridPane gridPane1;
     @FXML
@@ -45,6 +48,8 @@ public class MyBallGetController {
     private Text text1, text2;
     @FXML
     private ComboBox<String> comboBox;
+
+    private TextField textField = new TextField();
 
     private static int[] indexArr = new int[]{1, 2, 3};
     private ToggleGroup toggleGroup;
@@ -76,12 +81,15 @@ public class MyBallGetController {
 
 
         //clear1Button.onActionProperty().bind(Bindings.createObjectBinding(()-> event -> textArea1.clear()));
-        clear1Button.onActionProperty().bind(Bindings.createObjectBinding(()->new EventHandler<ActionEvent>() {
+        clear1Button.onActionProperty().bind(Bindings.createObjectBinding(() -> new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 textArea1.clear();
             }
         }));
+
+        HBox numHBox = FxModuleAssemblyUtils.initMyHBoxToNumber(textField, "相同数：");
+        vbox1.getChildren().add(numHBox);
     }
 
     @FXML
@@ -99,6 +107,7 @@ public class MyBallGetController {
             protected Void call() throws Exception {
                 int num = indexArr[comboBox.getSelectionModel().getSelectedIndex()];
                 Boolean isIn = toggleButton2.isSelected();
+                int same = getSameCount();
 
                 String redioValue = "01";
                 RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
@@ -127,7 +136,9 @@ public class MyBallGetController {
                 if (StringUtils.isNotBlank(txt3)) {
                     blueMp = convertMap(txt3, 16);
                 }
-                Map<Integer, List<String>> rstMap = MyLotteryProcessing.getBallsByExecutor(num, isIn, redioValue, redLt, blueLt, redMp, blueMp);
+
+                //Map<Integer, List<String>> rstMap = MyLotteryProcessing.getBallsByExecutor(num, isIn, redioValue, redLt, blueLt, redMp, blueMp);
+                Map<Integer, List<String>> rstMap = MyLotteryProcessing.getBallsByExecutor(num, isIn, redioValue, redLt, blueLt, redMp, blueMp, same);
                 rstMap.forEach((k, v) -> {
                     textArea1.setText(textArea1.getText() + CommonConstant.line_feed + StringUtils.join(v, CommonConstant.line_feed));
                 });
@@ -144,6 +155,14 @@ public class MyBallGetController {
         //多窗口需关闭主窗口
         backgroundThread.setDaemon(true);
         backgroundThread.start();
+    }
+
+    private int getSameCount() {
+        try {
+            return Integer.parseInt(textField.getText());
+        } catch (Exception e) {
+        }
+        return 0;
     }
 
     private List<Integer> convertList(String str) {

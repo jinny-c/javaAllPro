@@ -3,11 +3,12 @@ package com.example.service;
 import com.example.service.bean.BallEnty;
 import com.example.utils.GsonUtils;
 import com.example.utils.LotteryProcessing;
+import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 
 import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -70,6 +71,15 @@ public abstract class AbstractRandomBalls {
 
     ConcurrentHashMap<String, List<Integer>> BALL_HASH_MAP = new ConcurrentHashMap<>();
 
+    private static final long DEFAULT_ALIVE_TIME = 0L;
+    private static final int DEFAULT_CORE_POOL_SIZE = 3;
+    private static final int DEFAULT_MAX_POOL_SIZE = 6;
+    private static final int DEFAULT_QUEUE_SIZE = 9;
+    protected static final ExecutorService executor = new ThreadPoolExecutor(DEFAULT_CORE_POOL_SIZE, DEFAULT_MAX_POOL_SIZE
+            , DEFAULT_ALIVE_TIME, TimeUnit.SECONDS
+            , new ArrayBlockingQueue(DEFAULT_QUEUE_SIZE)
+            , new ThreadFactoryBuilder().setNameFormat("async-pool-%d").build());
+
     private void convertNeedList(boolean isInList, String redKey, String blueKey, List<Integer> redLt, List<Integer> blueLt) {
         List<Integer> reds = null;
         List<Integer> blues = null;
@@ -121,13 +131,11 @@ public abstract class AbstractRandomBalls {
         BALL_HASH_MAP.put(blueKey, blues);
     }
 
-    public BallEnty getBalls(boolean isInList, String defType, List<Integer> redLt, List<Integer> blueLt, Map<Integer, Double> redMp, Map<Integer, Double> blueMp) {
-        String redKey = defType + "<red>" + GsonUtils.toJson(redLt);
-        String blueKey = defType + "<blue>" + GsonUtils.toJson(blueLt);
-        List<Integer> reds = BALL_HASH_MAP.get(redKey);
-        List<Integer> blues = BALL_HASH_MAP.get(blueKey);
-
-        if (CollectionUtils.isEmpty(reds) || CollectionUtils.isEmpty(blues)) {
+    private void convertListToCache(String redKey, String blueKey, boolean isInList, String defType, List<Integer> redLt, List<Integer> blueLt) {
+        //List<Integer> reds = BALL_HASH_MAP.get(redKey);
+        //List<Integer> blues = BALL_HASH_MAP.get(blueKey);
+        if (CollectionUtils.isEmpty(BALL_HASH_MAP.get(redKey)) || CollectionUtils.isEmpty(BALL_HASH_MAP.get(blueKey))) {
+            List<Integer> reds, blues;
             log.info("lt having null");
             switch (defType) {
                 case "02":
@@ -141,7 +149,7 @@ public abstract class AbstractRandomBalls {
                     blues.removeIf(e -> !BLUELIST.contains(e));
                     break;
                 case "04":
-                    convertNeedList(isInList, redKey, blueKey, redLt, blueLt);
+                    this.convertNeedList(isInList, redKey, blueKey, redLt, blueLt);
                     reds = BALL_HASH_MAP.get(redKey);
                     blues = BALL_HASH_MAP.get(blueKey);
                     break;
@@ -151,32 +159,82 @@ public abstract class AbstractRandomBalls {
                     blues = new ArrayList<>(BLUELIST);
                     break;
             }
-
             BALL_HASH_MAP.put(redKey, reds);
             BALL_HASH_MAP.put(blueKey, blues);
         }
+    }
 
-
+    private Map<Integer, Double> filteredRedMapGet(String redKey, Map<Integer, Double> redMp) {
         if (redMp == null) {
-            redMp = new HashMap<>();
+            //redMp = new HashMap<>();
+            return null;
         }
-        List<Integer> finalReds = reds;
-        Map<Integer, Double> filteredRedMap = redMp.entrySet()
+        List<Integer> finalReds = BALL_HASH_MAP.get(redKey);
+        return redMp.entrySet()
                 .stream().filter(entry -> finalReds.contains(entry.getKey()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
 
+    private Map<Integer, Double> filteredBluedMapGet(String blueKey, Map<Integer, Double> blueMp) {
         if (blueMp == null) {
-            blueMp = new HashMap<>();
+            return null;
         }
-        List<Integer> finalBlues = blues;
-        Map<Integer, Double> filteredBluedMap = blueMp.entrySet()
+        List<Integer> finalBlues = BALL_HASH_MAP.get(blueKey);
+        return blueMp.entrySet()
                 .stream().filter(entry -> finalBlues.contains(entry.getKey()))
                 .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
 
-        return getBalls(reds, blues, filteredRedMap, filteredBluedMap);
+    public BallEnty getBalls(boolean isInList, String defType, List<Integer> redLt, List<Integer> blueLt, Map<Integer, Double> redMp, Map<Integer, Double> blueMp) {
+        String redKey = defType + "<red>" + GsonUtils.toJson(redLt);
+        String blueKey = defType + "<blue>" + GsonUtils.toJson(blueLt);
+
+        this.convertListToCache(redKey, blueKey, isInList, defType, redLt, blueLt);
+
+        return getBalls(BALL_HASH_MAP.get(redKey), BALL_HASH_MAP.get(blueKey), filteredRedMapGet(redKey, redMp), filteredBluedMapGet(blueKey, blueMp));
     }
 
     public abstract BallEnty getBalls(List<Integer> redLt, List<Integer> blueLt, Map<Integer, Double> redMp, Map<Integer, Double> blueMp);
+
+
+    public BallEnty getBallsIn(boolean isInList, String defType, List<Integer> redLt, List<Integer> blueLt,
+                               Map<Integer, Double> redMp, Map<Integer, Double> blueMp, int inCount) {
+        String redKey = defType + "<red>" + GsonUtils.toJson(redLt);
+        String blueKey = defType + "<blue>" + GsonUtils.toJson(blueLt);
+
+        this.convertListToCache(redKey, blueKey, isInList, defType, redLt, blueLt);
+
+        return getBallsIn(BALL_HASH_MAP.get(redKey), BALL_HASH_MAP.get(blueKey), filteredRedMapGet(redKey, redMp), filteredBluedMapGet(blueKey, blueMp), inCount);
+    }
+
+    private BallEnty getBallsIn(List<Integer> redLt, List<Integer> blueLt, Map<Integer, Double> redMp, Map<Integer, Double> blueMp, int inCount){
+        Future<List<Integer>> myRed =  executor.submit(() -> {
+            Set<Integer> myReds = new HashSet<>();
+            do {
+                if (inCount <= 0 || myReds.size() >= inCount) {
+                    myReds.add(myRedGet(redLt, redMp));
+                } else {
+                    myReds.add(myRedCompare(redLt, redMp));
+                }
+            } while (myReds.size() < 6);
+            return new ArrayList<>(myReds);
+        });
+        Future<Integer> myBlue =  executor.submit(new Callable<Integer>() {
+            @Override
+            public Integer call() throws Exception {
+                return myBlueCompare(blueLt, blueMp);
+            }
+        });
+        BallEnty enty = new BallEnty();
+        try {
+            enty.setBlue(myBlue.get());
+            enty.setRed(myRed.get());
+        } catch (InterruptedException | ExecutionException e) {
+            e.printStackTrace();
+        }
+        return enty;
+    }
+
 
     protected Integer getBlueByMp(List<Integer> blueLt, Map<Integer, Double> blueMp) {
         Map<Integer, Double> blueMap = blueLt.stream().collect(Collectors.toMap(key -> key, key -> BLUE_PROBABILITIES));
@@ -205,4 +263,41 @@ public abstract class AbstractRandomBalls {
         return myRed;
     }
 
+    protected Integer getOneBallByMp(List<Integer> ballLt, Map<Integer, Double> ballMp, Double ballProbabilities) {
+        Map<Integer, Double> ballMap = ballLt.stream().collect(Collectors.toMap(key -> key, key -> ballProbabilities));
+        ballMap.putAll(ballMp);
+        //概率
+        List<Double> blueProbabilities = new ArrayList<>(ballMap.values());
+        return ballLt.get(LotteryProcessing.getRandomIndex(blueProbabilities, new Random()));
+    }
+
+    protected Integer myRedCompare(List<Integer> redLt, Map<Integer, Double> redMp) {
+        Integer myRed1, myRed2;
+        int count = 0;
+        do {
+            count++;
+            myRed1 = myRedGet(redLt, redMp);
+            myRed2 = myRedGet(redLt, redMp);
+            if (myRed1.equals(myRed2)) {
+                //System.out.println(String.format("%s,%s,%s", count, myRed1, myRed2));
+                return myRed1;
+            }
+        } while (true);
+    }
+    public abstract Integer myRedGet(List<Integer> redLt, Map<Integer, Double> redMp);
+
+    protected Integer myBlueCompare(List<Integer> blueLt, Map<Integer, Double> blueMp) {
+        Integer myBlue1, myBlue2;
+        int count = 0;
+        do {
+            count++;
+            myBlue1 = myBlueGet(blueLt, blueMp);
+            myBlue2 = myBlueGet(blueLt, blueMp);
+            if (myBlue1.equals(myBlue2)) {
+                //System.out.println(String.format("%s,%s,%s", count, myBlue1, myBlue2));
+                return myBlue1;
+            }
+        } while (true);
+    }
+    public abstract Integer myBlueGet(List<Integer> blueLt, Map<Integer, Double> blueMp);
 }

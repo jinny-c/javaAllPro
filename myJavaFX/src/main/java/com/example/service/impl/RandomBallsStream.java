@@ -37,4 +37,26 @@ public class RandomBallsStream extends AbstractRandomBalls {
         enty.setRed(myRed);
         return enty;
     }
+
+    @Override
+    public Integer myRedGet(List<Integer> redLt, Map<Integer, Double> redMp) {
+        if (MapUtils.isEmpty(redMp)) {
+            List<Integer> givenList = new ArrayList<>(redLt);
+            Collections.shuffle(givenList, new Random());
+            //System.out.println(givenList);
+            int idx = new Random().nextInt(givenList.size());
+            //System.out.println(idx);
+            return givenList.get(idx);
+        }
+        return getOneBallByMp(redLt, redMp, RED_PROBABILITIES);
+    }
+
+    @Override
+    public Integer myBlueGet(List<Integer> blueLt, Map<Integer, Double> blueMp) {
+        if (MapUtils.isEmpty(blueMp)) {
+            int idx = new Random().nextInt(blueLt.size());
+            return blueLt.get(idx);
+        }
+        return getOneBallByMp(blueLt, blueMp, BLUE_PROBABILITIES);
+    }
 }

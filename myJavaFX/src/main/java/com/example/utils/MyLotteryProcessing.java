@@ -1,5 +1,6 @@
 package com.example.utils;
 
+import com.example.service.AbstractRandomBalls;
 import com.example.service.bean.BallEnty;
 import com.example.service.impl.RandomBallsSet;
 import com.example.service.impl.RandomBallsStream;
@@ -62,9 +63,17 @@ public class MyLotteryProcessing {
     }
 
     public static Map<Integer, List<String>> getBallsByExecutor(int conut, boolean isInList, String defType, List<Integer> red, List<Integer> blue, Map<Integer, Double> redMp, Map<Integer, Double> blueMp) {
+        return getBallsByExecutor(conut, isInList, defType, red, blue, redMp, blueMp, 3);
+    }
+
+    public static Map<Integer, List<String>> getBallsByExecutor(int conut, boolean isInList, String defType,
+                                                                List<Integer> red, List<Integer> blue,
+                                                                Map<Integer, Double> redMp, Map<Integer, Double> blueMp, int sameCount) {
         List<Future<List<String>>> rest = new ArrayList<>();
         do {
             rest.add(executor.submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp)));
+            rest.add(executor.submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsSet())));
+            rest.add(executor.submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsStream())));
             conut--;
         } while (conut > 0);
 
@@ -82,7 +91,36 @@ public class MyLotteryProcessing {
         return restMap;
     }
 
-    public static void main(String[] args) {
-        getBallsByExecutor(2, true, "01", null, null, null, null);
+    public static <T extends AbstractRandomBalls> List<String> getBallsByCondations(boolean isInList, String defType, List<Integer> red, List<Integer> blue,
+                                                                                    Map<Integer, Double> redMp, Map<Integer, Double> blueMp, int inCount, T balls) {
+        log.info("isInList={},defType={},red={},blue={},redMp={},blueMp={},inCount={}", isInList, defType, red, blue, redMp, blueMp, inCount);
+        List<String> rstList = new ArrayList<>();
+        try {
+            BallEnty enty = balls.getBallsIn(isInList, defType, red, blue, redMp, blueMp, inCount);
+            rstList.add(StringUtils.join("balls=", balls.getClass(), ",defType=", defType, ",isInList=", isInList));
+            String entyStr = enty.toString();
+            Collections.sort(enty.getRed());
+            String redStr = enty.getRed().toString();
+            rstList.add(entyStr + redStr);
+        } catch (Exception e) {
+            log.info("Exception==", e);
+        }
+        return rstList;
     }
+
+
+    public static void main(String[] args) {
+        //getBallsByExecutor(2, true, "01", null, null, null, null);
+//        RandomBallsStream ballsStream = new RandomBallsStream();
+//        BallEnty enty1 = ballsStream.getBallsIn(true, "01", null, null, null, null, 6);
+//        System.out.println(enty1);
+//
+//        RandomBallsSet ballsSet = new RandomBallsSet();
+//        BallEnty enty2 = ballsSet.getBallsIn(true, "01", null, null, null, null, 6);
+//        System.out.println(enty2);
+
+//        System.out.println(getBallsByCondations(true, "01", null, null, null, null, 6, new RandomBallsSet()));
+//        System.out.println(getBallsByCondations(true, "01", null, null, null, null, 6, new RandomBallsStream()));
+    }
+
 }

@@ -46,4 +46,22 @@ public class RandomBallsSet extends AbstractRandomBalls {
         enty.setRed(myRed);
         return enty;
     }
+
+    @Override
+    public Integer myRedGet(List<Integer> redLt, Map<Integer, Double> redMp) {
+        if (MapUtils.isEmpty(redMp)) {
+            List<Integer> reds = new ArrayList<>(redLt);
+            //获取随机数
+            int i = (int) (Math.random() * reds.size() + 1);
+            int idx = i - 1;
+            return reds.get(idx);
+        }
+        return getOneBallByMp(redLt, redMp, RED_PROBABILITIES);
+    }
+
+    @Override
+    public Integer myBlueGet(List<Integer> blueLt, Map<Integer, Double> blueMp) {
+        int idx = (int) (Math.random() * blueLt.size());
+        return blueLt.get(idx);
+    }
 }

@@ -80,4 +80,44 @@ public class FxModuleAssemblyUtils extends ToggleButton {
         hBox.getChildren().addAll(closeButton);
         return hBox;
     }
+
+    public static HBox initMyHBoxToNumber(TextField textField, String textMsg) {
+        Text txt = new Text(textMsg);
+        Button addButton = new Button("+");
+        //addButton.setPrefWidth(16);
+        Button subtractButton = new Button("-");
+        //subtractButton.setPrefWidth(16);
+        textField.setText("0");
+
+        addButton.setOnAction(e -> {
+            int currentValue = Integer.parseInt(textField.getText());
+            if (currentValue < 9) {
+                currentValue++;
+            }
+            textField.setText(String.valueOf(currentValue));
+        });
+        subtractButton.setOnAction(e -> {
+            int currentValue = Integer.parseInt(textField.getText());
+            if (currentValue > 0) {
+                currentValue--;
+            }
+            textField.setText(String.valueOf(currentValue));
+        });
+
+        textField.setPrefWidth(32);
+        // 添加事件监听器以验证输入
+        textField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                textField.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+
+        //水平布局的容器 HBox
+        HBox hBox = new HBox();
+        hBox.setSpacing(3);
+        hBox.setAlignment(Pos.BOTTOM_RIGHT);
+        hBox.setMinHeight(Region.USE_PREF_SIZE);
+        hBox.getChildren().addAll(txt, textField, addButton, subtractButton);
+        return hBox;
+    }
 }
