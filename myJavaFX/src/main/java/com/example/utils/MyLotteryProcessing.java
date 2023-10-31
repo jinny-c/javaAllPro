@@ -72,8 +72,10 @@ public class MyLotteryProcessing {
         List<Future<List<String>>> rest = new ArrayList<>();
         do {
             rest.add(executor.submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp)));
-            rest.add(executor.submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsSet())));
-            rest.add(executor.submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsStream())));
+            if (sameCount <= 6) {
+                rest.add(executor.submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsSet())));
+                rest.add(executor.submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsStream())));
+            }
             conut--;
         } while (conut > 0);
 
