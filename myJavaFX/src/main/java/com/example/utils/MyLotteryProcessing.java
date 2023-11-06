@@ -17,26 +17,29 @@ import java.util.concurrent.*;
  * @date 2021/7/28
  */
 @Slf4j
-public class MyLotteryProcessing {
+public class MyLotteryProcessing implements AutoCloseable {
     private static final long DEFAULT_ALIVE_TIME = 0L;
     private static final int DEFAULT_CORE_POOL_SIZE = 3;
     private static final int DEFAULT_MAX_POOL_SIZE = 6;
     private static final int DEFAULT_QUEUE_SIZE = 9;
 
-    private static final ExecutorService executor = new ThreadPoolExecutor(DEFAULT_CORE_POOL_SIZE, DEFAULT_MAX_POOL_SIZE
-            , DEFAULT_ALIVE_TIME, TimeUnit.SECONDS
-            , new ArrayBlockingQueue(DEFAULT_QUEUE_SIZE)
-            , new ThreadFactoryBuilder().setNameFormat("async-pool-%d").build());
+    private static ExecutorService executor = null;
 
+    public MyLotteryProcessing() {
+        executor = new ThreadPoolExecutor(DEFAULT_CORE_POOL_SIZE, DEFAULT_MAX_POOL_SIZE
+                , DEFAULT_ALIVE_TIME, TimeUnit.SECONDS
+                , new ArrayBlockingQueue(DEFAULT_QUEUE_SIZE)
+                , new ThreadFactoryBuilder().setNameFormat("async-pool-%d").build());
+    }
 
     public static List<String> getBallsByCondations(boolean isInList, String defType, List<Integer> red, List<Integer> blue, Map<Integer, Double> redMp, Map<Integer, Double> blueMp) {
         log.info("isInList={},defType={},red={},blue={},redMp={},blueMp={}", isInList, defType, red, blue, redMp, blueMp);
         List<String> rstList = new ArrayList<>();
-        try {
+        try (RandomBallsSet ballsSet = new RandomBallsSet(); RandomBallsStream ballsStream = new RandomBallsStream()) {
             BallEnty setEnty = null;
             BallEnty streamEnty = null;
-            RandomBallsSet ballsSet = new RandomBallsSet();
-            RandomBallsStream ballsStream = new RandomBallsStream();
+            //RandomBallsSet ballsSet = new RandomBallsSet();
+            //RandomBallsStream ballsStream = new RandomBallsStream();
             int count = 0;
             while (true) {
                 setEnty = ballsSet.getBalls(isInList, defType, red, blue, redMp, blueMp);
@@ -62,21 +65,21 @@ public class MyLotteryProcessing {
         return rstList;
     }
 
-    public static Map<Integer, List<String>> getBallsByExecutor(int conut, boolean isInList, String defType, List<Integer> red, List<Integer> blue, Map<Integer, Double> redMp, Map<Integer, Double> blueMp) {
-        return getBallsByExecutor(conut, isInList, defType, red, blue, redMp, blueMp, 3);
-    }
-
-    public static Map<Integer, List<String>> getBallsByExecutor(int conut, boolean isInList, String defType,
+    public Map<Integer, List<String>> getBallsByExecutor(int conut, boolean isInList, String defType,
                                                                 List<Integer> red, List<Integer> blue,
                                                                 Map<Integer, Double> redMp, Map<Integer, Double> blueMp, int sameCount) {
         List<Future<List<String>>> rest = new ArrayList<>();
         do {
-            rest.add(executor.submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp)));
+            conut--;
+
+            if (sameCount <= 0 || sameCount >= 6) {
+                rest.add(executor.submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp)));
+            }
             if (sameCount <= 6) {
                 rest.add(executor.submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsSet())));
                 rest.add(executor.submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsStream())));
             }
-            conut--;
+
         } while (conut > 0);
 
         int contKey = 1;
@@ -125,4 +128,11 @@ public class MyLotteryProcessing {
 //        System.out.println(getBallsByCondations(true, "01", null, null, null, null, 6, new RandomBallsStream()));
     }
 
+    @Override
+    public void close() throws Exception {
+        // 在close方法中关闭线程池
+        if (executor != null && !executor.isShutdown()) {
+            executor.shutdown();
+        }
+    }
 }

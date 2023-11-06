@@ -1,9 +1,9 @@
 package com.example.controller;
 
+import com.example.my.CommonConvertUtils;
 import com.example.my.FxModuleAssemblyUtils;
 import com.example.utils.CommonConstant;
 import com.example.utils.MyLotteryProcessing;
-import com.google.common.base.Splitter;
 import javafx.beans.binding.Bindings;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -17,10 +17,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * @description 新随机获取
@@ -107,7 +105,7 @@ public class MyBallGetController {
             protected Void call() throws Exception {
                 int num = indexArr[comboBox.getSelectionModel().getSelectedIndex()];
                 Boolean isIn = toggleButton2.isSelected();
-                int same = getSameCount();
+                int same = CommonConvertUtils.getSameCount(textField.getText());
 
                 String redioValue = "01";
                 RadioButton selectedRadioButton = (RadioButton) toggleGroup.getSelectedToggle();
@@ -125,23 +123,29 @@ public class MyBallGetController {
                 String txt3 = textField3.getText();
 
                 if (StringUtils.isNotBlank(txt)) {
-                    redLt = convertList(txt);
+                    redLt = CommonConvertUtils.convertList(txt);
                 }
                 if (StringUtils.isNotBlank(txt11)) {
-                    blueLt = convertList(txt11);
+                    blueLt = CommonConvertUtils.convertList(txt11);
                 }
                 if (StringUtils.isNotBlank(txt2)) {
-                    redMp = convertMap(txt2, 33);
+                    redMp = CommonConvertUtils.convertMap(txt2, 33);
                 }
                 if (StringUtils.isNotBlank(txt3)) {
-                    blueMp = convertMap(txt3, 16);
+                    blueMp = CommonConvertUtils.convertMap(txt3, 16);
                 }
 
                 //Map<Integer, List<String>> rstMap = MyLotteryProcessing.getBallsByExecutor(num, isIn, redioValue, redLt, blueLt, redMp, blueMp);
-                Map<Integer, List<String>> rstMap = MyLotteryProcessing.getBallsByExecutor(num, isIn, redioValue, redLt, blueLt, redMp, blueMp, same);
-                rstMap.forEach((k, v) -> {
-                    textArea1.setText(textArea1.getText() + CommonConstant.line_feed + StringUtils.join(v, CommonConstant.line_feed));
-                });
+//                Map<Integer, List<String>> rstMap = new MyLotteryProcessing().getBallsByExecutor(num, isIn, redioValue, redLt, blueLt, redMp, blueMp, same);
+//                rstMap.forEach((k, v) -> {
+//                    textArea1.setText(textArea1.getText() + CommonConstant.line_feed + StringUtils.join(v, CommonConstant.line_feed));
+//                });
+                try (MyLotteryProcessing processing = new MyLotteryProcessing()) {
+                    Map<Integer, List<String>> rstMap = processing.getBallsByExecutor(num, isIn, redioValue, redLt, blueLt, redMp, blueMp, same);
+                    rstMap.forEach((k, v) -> {
+                        textArea1.setText(textArea1.getText() + CommonConstant.line_feed + StringUtils.join(v, CommonConstant.line_feed));
+                    });
+                }
                 return null;
             }
         };
@@ -155,61 +159,6 @@ public class MyBallGetController {
         //多窗口需关闭主窗口
         backgroundThread.setDaemon(true);
         backgroundThread.start();
-    }
-
-    private int getSameCount() {
-        try {
-            return Integer.parseInt(textField.getText());
-        } catch (Exception e) {
-        }
-        return 0;
-    }
-
-    private List<Integer> convertList(String str) {
-        if (StringUtils.isBlank(str)) {
-            return null;
-        }
-
-        List<Integer> lt = null;
-        try {
-            String[] arr = str.split("-");
-            if (arr.length > 0) {
-                lt = new ArrayList<>();
-                for (String st : arr) {
-                    lt.add(Integer.parseInt(st.trim()));
-                }
-            }
-        } catch (Exception e) {
-        }
-        return lt;
-    }
-
-    private Map<Integer, Double> convertMap(String str, Integer length) {
-        if (StringUtils.isBlank(str)) {
-            return null;
-        }
-        try {
-            if (StringUtils.startsWith(str, "{")) {
-                str = StringUtils.substringAfter(str, "{");
-            }
-            if (StringUtils.endsWith(str, "}")) {
-                str = StringUtils.substringBefore(str, "}");
-            }
-
-            Splitter.MapSplitter smsp = Splitter.on(",").withKeyValueSeparator("=");
-            Map<String, String> smspMp = smsp.split(str);
-            // 使用Stream和Lambda表达式进行类型转换
-            Map<Integer, Double> mp = smspMp.entrySet()
-                    .stream()
-                    .collect(Collectors.toMap(
-                            entry -> Integer.parseInt(entry.getKey().trim()),
-                            entry -> Double.parseDouble(entry.getValue().trim()) / length
-                    ));
-
-            return mp;
-        } catch (Exception e) {
-        }
-        return null;
     }
 
     @FXML

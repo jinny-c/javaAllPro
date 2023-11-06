@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.app.BallGetOnlyAppMain;
 import com.example.bean.BallsInfo;
 import com.example.utils.BallHistoryCrawlerProcessing;
 import com.example.utils.CommonConstant;
@@ -48,6 +49,7 @@ public class LotteryController {
 
     private Thread backgroundThread = null;
 
+    List<BallsInfo> ballsInfoList = null;
 
     private static String[] indexArr = new String[]{"2", "4", "6", "10", "12", "18"};
 
@@ -79,9 +81,10 @@ public class LotteryController {
             protected Void call() throws Exception {
                 //hbox1.setDisable(true);
                 List<BallsInfo> ballsInfos = BallHistoryCrawlerProcessing.crawlerBall(null);
-                if (null == ballsInfos || ballsInfos.isEmpty()) {
+                if (ballsInfos.isEmpty()) {
                     return null;
                 }
+                ballsInfoList = ballsInfos;
                 List<String> textValues = BallHistoryCrawlerProcessing.crawlerBallByInfo(ballsInfos, 3);
                 textArea1.setText(StringUtils.join(textValues, CommonConstant.line_feed));
                 latestPeriods.setText(ballsInfos.get(0).getBallDate());
@@ -122,9 +125,10 @@ public class LotteryController {
                 reqMap.put(CommonConstant.filed_end, latest);
                 reqMap.put(CommonConstant.filed_start, getStart(latest, val, val1));
                 List<BallsInfo> ballsInfos = BallHistoryCrawlerProcessing.crawlerBall(reqMap);
-                if (null == ballsInfos || ballsInfos.isEmpty()) {
+                if (ballsInfos.isEmpty()) {
                     return null;
                 }
+                ballsInfoList = ballsInfos;
                 List<String> textValues = BallHistoryCrawlerProcessing.crawlerBallByInfo(ballsInfos, ballsInfos.size());
                 textArea2.setText(StringUtils.join(textValues, CommonConstant.line_feed));
 
@@ -202,6 +206,27 @@ public class LotteryController {
             //backgroundThread.interrupt();
             backgroundThread.stop();
             backgroundThread = null;
+        }
+    }
+
+    @FXML
+    protected void subButtonClick() {
+//        Platform.runLater(() -> {
+//            if (ballsInfoList != null) {
+//                try {
+//                    BallGetOnlyAppMain myMainApp = new BallGetOnlyAppMain(ballsInfoList);
+//                    myMainApp.start(new Stage());
+//                } catch (Exception e) {
+//                }
+//            }
+//        });
+
+        if (ballsInfoList != null) {
+            try {
+                BallGetOnlyAppMain myMainApp = new BallGetOnlyAppMain(ballsInfoList);
+                myMainApp.start(new Stage());
+            } catch (Exception e) {
+            }
         }
     }
 }

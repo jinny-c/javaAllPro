@@ -32,7 +32,11 @@
                     <TextArea HBox.Hgrow="ALWAYS" editable="false" wrapText="true" prefRowCount="6" fx:id="textArea2"/>
                 </HBox>
                 <HBox styleClass="hbox">
-                    <Label text="统计的结果："/>
+                    <VBox>
+                        <Label text="统计的结果："/>
+                        <Region VBox.vgrow="ALWAYS" />
+                        <Button text="结果随机" styleClass="button" onAction="#subButtonClick" />
+                    </VBox>
                     <TextArea HBox.Hgrow="ALWAYS" editable="false" wrapText="true" fx:id="textArea3"/>
                 </HBox>
             </VBox>

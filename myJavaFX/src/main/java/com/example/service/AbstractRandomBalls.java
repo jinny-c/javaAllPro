@@ -18,7 +18,7 @@ import java.util.stream.Stream;
  * @date 2023/6/21
  */
 @Slf4j
-public abstract class AbstractRandomBalls {
+public abstract class AbstractRandomBalls implements AutoCloseable {
     public List<Integer> BLUELIST = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
             11, 12, 13, 14, 15, 16);
     public Double BLUE_PROBABILITIES = 0.0625;
@@ -75,10 +75,14 @@ public abstract class AbstractRandomBalls {
     private static final int DEFAULT_CORE_POOL_SIZE = 3;
     private static final int DEFAULT_MAX_POOL_SIZE = 6;
     private static final int DEFAULT_QUEUE_SIZE = 9;
-    protected static final ExecutorService executor = new ThreadPoolExecutor(DEFAULT_CORE_POOL_SIZE, DEFAULT_MAX_POOL_SIZE
-            , DEFAULT_ALIVE_TIME, TimeUnit.SECONDS
-            , new ArrayBlockingQueue(DEFAULT_QUEUE_SIZE)
-            , new ThreadFactoryBuilder().setNameFormat("async-pool-%d").build());
+    protected static ExecutorService executor = null;
+
+    public AbstractRandomBalls(){
+        executor = new ThreadPoolExecutor(DEFAULT_CORE_POOL_SIZE, DEFAULT_MAX_POOL_SIZE
+                , DEFAULT_ALIVE_TIME, TimeUnit.SECONDS
+                , new ArrayBlockingQueue(DEFAULT_QUEUE_SIZE)
+                , new ThreadFactoryBuilder().setNameFormat("async-pool-%d").build());
+    }
 
     private void convertNeedList(boolean isInList, String redKey, String blueKey, List<Integer> redLt, List<Integer> blueLt) {
         List<Integer> reds = null;
@@ -300,4 +304,12 @@ public abstract class AbstractRandomBalls {
         } while (true);
     }
     public abstract Integer myBlueGet(List<Integer> blueLt, Map<Integer, Double> blueMp);
+
+    @Override
+    public void close() throws Exception {
+        // 在close方法中关闭线程池
+        if (executor != null && !executor.isShutdown()) {
+            executor.shutdown();
+        }
+    }
 }

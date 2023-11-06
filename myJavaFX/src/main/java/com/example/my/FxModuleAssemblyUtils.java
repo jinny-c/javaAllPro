@@ -10,8 +10,10 @@ import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
+import java.util.function.Consumer;
+
 /**
- * @description TODO
+ * @description 特殊组件
  * @auth chaijd
  * @date 2023/10/12
  */
@@ -44,7 +46,16 @@ public class FxModuleAssemblyUtils extends ToggleButton {
         //return new HBox(txt, mtb);
     }
 
-    public static HBox initMyHBoxToInPut(String[] textMsgs, Integer[] values, int textFieldWidth) {
+    public static HBox initMyHBoxToToggleButton(String textMsg, String toggleMsgY, String toggleMsgN) {
+        Text txt = new Text(textMsg);
+        ToggleButton mtb = initMyToggleButton(toggleMsgY, toggleMsgN);
+        HBox hBox = new HBox();
+        hBox.setPadding(new Insets(6));
+        hBox.getChildren().addAll(txt, mtb);
+        return hBox;
+    }
+
+    public static HBox initMyHBoxToInPut(String[] textMsgs, String[] values, int textFieldWidth) {
         int length = textMsgs.length;
         if (textMsgs.length > values.length) {
             length = values.length;
@@ -65,6 +76,43 @@ public class FxModuleAssemblyUtils extends ToggleButton {
 //            hBox.getChildren().add(txt);
 //            hBox.getChildren().add(textField);
         }
+        return hBox;
+    }
+
+    public static HBox initMyHBoxToInPutWithPrompt(String[] textMsgs, String[] values, int textFieldWidth) {
+        int length = textMsgs.length;
+        if (textMsgs.length > values.length) {
+            length = values.length;
+        }
+        HBox hBox = new HBox();
+//        hBox.setSpacing(6);
+        hBox.setPadding(new Insets(6));
+        // 设置HBox的垂直对齐方式为
+        hBox.setAlignment(Pos.CENTER_LEFT);
+        for (int i = 0; i < length; i++) {
+            Text txt = new Text(textMsgs[i]);
+            TextField textField = new TextField();
+            textField.setPromptText(values[i]);
+            if (textFieldWidth != 0) {
+                textField.setPrefWidth(textFieldWidth);
+            }
+            hBox.getChildren().addAll(txt, textField, new Text("\u00A0\u00A0"));
+
+//            hBox.getChildren().add(txt);
+//            hBox.getChildren().add(textField);
+        }
+        return hBox;
+    }
+
+    public static HBox initMyHBoxToInPut(String textMsg, String promptText) {
+        HBox hBox = new HBox();
+        hBox.setPadding(new Insets(6));
+        // 设置HBox的垂直对齐方式为
+        hBox.setAlignment(Pos.CENTER_LEFT);
+        Text txt = new Text(textMsg);
+        TextField textField = new TextField();
+        textField.setPromptText(promptText);
+        hBox.getChildren().addAll(txt, textField);
         return hBox;
     }
 
@@ -120,4 +168,47 @@ public class FxModuleAssemblyUtils extends ToggleButton {
         hBox.getChildren().addAll(txt, textField, addButton, subtractButton);
         return hBox;
     }
+
+
+    public static <T> HBox initMyHBoxToButton(String butName, T t, Consumer<T> processor) {
+        Button closeButton = new Button(butName);
+        closeButton.setPrefHeight(32);
+        closeButton.setOnAction(event -> processor.accept(t));
+        //水平布局的容器 HBox
+        HBox hBox = new HBox();
+        hBox.setSpacing(12);
+        hBox.setAlignment(Pos.BOTTOM_RIGHT);
+        hBox.setMinHeight(Region.USE_PREF_SIZE);
+        hBox.getChildren().addAll(closeButton);
+        return hBox;
+    }
+
+    public static <T> Button initMyButton(String butName, T t, Consumer<T> processor) {
+        Button closeButton = new Button(butName);
+        closeButton.setPrefHeight(32);
+        closeButton.setOnAction(event -> processor.accept(t));
+        return closeButton;
+    }
+
+//    public static <T> HBox initMyHBoxToButton(List<?>... lists) {
+//        //水平布局的容器 HBox
+//        HBox hBox = new HBox();
+//        hBox.setSpacing(9);
+//        hBox.setAlignment(Pos.BOTTOM_RIGHT);
+//        hBox.setMinHeight(Region.USE_PREF_SIZE);
+//
+//        for (List<?> list : lists) {
+//            if (list.size() <= 2) {
+//                continue;
+//            }
+//
+//            String butName = (String) list.get(0);
+//            T t = (T) list.get(1);
+//            Consumer<T> processor = (Consumer<T>) list.get(2);
+//            Button myButton = initMyButton(butName, t, processor);
+//            myButton.setOnAction(event -> processor.accept(t));
+//            hBox.getChildren().addAll(myButton);
+//        }
+//        return hBox;
+//    }
 }

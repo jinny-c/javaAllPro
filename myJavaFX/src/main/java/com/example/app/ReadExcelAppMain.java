@@ -5,12 +5,9 @@ import com.example.utils.ExcelConvertToJavaBean;
 import com.example.utils.ExcelUtils;
 import javafx.application.Application;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -22,9 +19,11 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+
+import static com.example.my.CommonConvertUtils.convertList;
+import static com.example.my.CommonConvertUtils.convertSelect;
 
 /**
  * @description TODO
@@ -46,8 +45,8 @@ public class ReadExcelAppMain extends Application {
 
         hBox1 = FxModuleAssemblyUtils.initMyHBoxToToggleButton("是否自动转换成驼峰式（若选择是，则自动加注解SerializedName）：");
         hBox1a = FxModuleAssemblyUtils.initMyHBoxToToggleButton("描述后是否带类型长度：");
-        hBox2 = FxModuleAssemblyUtils.initMyHBoxToInPut(new String[]{"加载的sheet-", "开始的行数-", "列数-"}, new Integer[]{1, 3, 7}, 50);
-        hBox3 = FxModuleAssemblyUtils.initMyHBoxToInPut(new String[]{"所在列数，字段=", "描述=", "类型=", "备注="}, new Integer[]{2, 3, 4, 7}, 50);
+        hBox2 = FxModuleAssemblyUtils.initMyHBoxToInPut(new String[]{"加载的sheet-", "开始的行数-", "列数-"}, new String[]{"1", "3", "7"}, 50);
+        hBox3 = FxModuleAssemblyUtils.initMyHBoxToInPut(new String[]{"所在列数，字段=", "描述=", "类型=", "备注="}, new String[]{"2", "3", "4", "7"}, 50);
 
         // 创建一个按钮
         Button openFileButton = new Button("选择.xlsx文件");
@@ -119,28 +118,6 @@ public class ReadExcelAppMain extends Application {
             //log.error("Exception", e);
         }
     }
-
-    private List<Integer> convertList(HBox hBox) {
-        List<Integer> result = new ArrayList<>();
-        for (Node child : hBox.getChildren()) {
-            if (child instanceof TextField) {
-                TextField textField = (TextField) child;
-                result.add(Integer.parseInt(textField.getText()));
-            }
-        }
-        return result;
-    }
-
-    private boolean convertSelect(HBox hBox) {
-        for (Node child : hBox.getChildren()) {
-            if (child instanceof ToggleButton) {
-                ToggleButton toggleButton = (ToggleButton) child;
-                return toggleButton.isSelected();
-            }
-        }
-        return false;
-    }
-
 
     private void saveFile() {
         FileChooser fileChooser = new FileChooser();

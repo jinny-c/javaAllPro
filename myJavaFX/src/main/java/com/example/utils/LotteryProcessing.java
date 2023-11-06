@@ -11,8 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -229,60 +227,6 @@ public class LotteryProcessing {
         }
         // 概率不等于1时的默认情况
         return 0;
-    }
-
-
-    private static BallEnty getNeed1(ExecutorService executor) {
-        Future<BallEnty> future = executor.submit(new LotteryGetTask(new RandomBallsImpl3()));
-        try {
-            return future.get();
-        } catch (Exception ignored) {
-        }
-        return null;
-    }
-
-    private static BallEnty getNeed(ExecutorService executor) {
-        List<BallEnty> needList = null;
-        int count = 0;
-        boolean allEqual = false;
-
-        while (!allEqual) {
-//            List<Future<BallEnty>> futures = new ArrayList<>();
-//
-//            for (int i = 0; i < 2; i++) {
-//                futures.add(executor.submit(new LotteryGetTask(new RandomBallsImpl3())));
-//                //System.out.println(count);
-//
-//            }
-//
-//            needList = futures.stream()
-//                    .map(LotteryProcessing::futureGet)
-//                    .collect(Collectors.toList());
-            needList = new ArrayList<>();
-            //RandomBallsService randomBalls2 = new RandomBallsImpl3();
-            RandomBallsService randomBalls1 = new RandomBallsImpl3();
-            needList.add(randomBalls1.getBalls());
-            needList.add(randomBalls1.getBalls());
-
-            allEqual = needList.stream().distinct().limit(2).count() <= 1;
-
-            count++;
-            if (count % 136592 == 0) {
-                log.info("count={}", count);
-            }
-        }
-
-        BallEnty ret = needList.get(0);
-        System.out.println(ret);
-        return ret;
-    }
-
-    private static BallEnty futureGet(Future<BallEnty> future) {
-        try {
-            return future.get();
-        } catch (Exception ignored) {
-        }
-        return new BallEnty();
     }
 
     public static Map<String, String> lotteryResult(String content) {
