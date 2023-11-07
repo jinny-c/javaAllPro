@@ -1,9 +1,9 @@
 package com.example.service;
 
+import com.example.my.CommonExecutorService;
 import com.example.service.bean.BallEnty;
 import com.example.utils.GsonUtils;
 import com.example.utils.LotteryProcessing;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 
@@ -18,7 +18,7 @@ import java.util.stream.Stream;
  * @date 2023/6/21
  */
 @Slf4j
-public abstract class AbstractRandomBalls implements AutoCloseable {
+public abstract class AbstractRandomBalls {
     public List<Integer> BLUELIST = Arrays.asList(1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
             11, 12, 13, 14, 15, 16);
     public Double BLUE_PROBABILITIES = 0.0625;
@@ -71,18 +71,7 @@ public abstract class AbstractRandomBalls implements AutoCloseable {
 
     ConcurrentHashMap<String, List<Integer>> BALL_HASH_MAP = new ConcurrentHashMap<>();
 
-    private static final long DEFAULT_ALIVE_TIME = 0L;
-    private static final int DEFAULT_CORE_POOL_SIZE = 3;
-    private static final int DEFAULT_MAX_POOL_SIZE = 6;
-    private static final int DEFAULT_QUEUE_SIZE = 9;
-    protected static ExecutorService executor = null;
-
-    public AbstractRandomBalls(){
-        executor = new ThreadPoolExecutor(DEFAULT_CORE_POOL_SIZE, DEFAULT_MAX_POOL_SIZE
-                , DEFAULT_ALIVE_TIME, TimeUnit.SECONDS
-                , new ArrayBlockingQueue(DEFAULT_QUEUE_SIZE)
-                , new ThreadFactoryBuilder().setNameFormat("async-pool-%d").build());
-    }
+    //protected static ExecutorService executor = CommonExecutorService.getInstannce();
 
     private void convertNeedList(boolean isInList, String redKey, String blueKey, List<Integer> redLt, List<Integer> blueLt) {
         List<Integer> reds = null;
@@ -212,7 +201,7 @@ public abstract class AbstractRandomBalls implements AutoCloseable {
     }
 
     private BallEnty getBallsIn(List<Integer> redLt, List<Integer> blueLt, Map<Integer, Double> redMp, Map<Integer, Double> blueMp, int inCount){
-        Future<List<Integer>> myRed =  executor.submit(() -> {
+        Future<List<Integer>> myRed =  CommonExecutorService.getInstannce().submit(() -> {
             Set<Integer> myReds = new HashSet<>();
             do {
                 if (inCount <= 0 || myReds.size() >= inCount) {
@@ -223,7 +212,7 @@ public abstract class AbstractRandomBalls implements AutoCloseable {
             } while (myReds.size() < 6);
             return new ArrayList<>(myReds);
         });
-        Future<Integer> myBlue =  executor.submit(new Callable<Integer>() {
+        Future<Integer> myBlue =  CommonExecutorService.getInstannce().submit(new Callable<Integer>() {
             @Override
             public Integer call() throws Exception {
                 return myBlueCompare(blueLt, blueMp);
@@ -305,11 +294,4 @@ public abstract class AbstractRandomBalls implements AutoCloseable {
     }
     public abstract Integer myBlueGet(List<Integer> blueLt, Map<Integer, Double> blueMp);
 
-    @Override
-    public void close() throws Exception {
-        // 在close方法中关闭线程池
-        if (executor != null && !executor.isShutdown()) {
-            executor.shutdown();
-        }
-    }
 }

@@ -140,12 +140,10 @@ public class MyBallGetController {
 //                rstMap.forEach((k, v) -> {
 //                    textArea1.setText(textArea1.getText() + CommonConstant.line_feed + StringUtils.join(v, CommonConstant.line_feed));
 //                });
-                try (MyLotteryProcessing processing = new MyLotteryProcessing()) {
-                    Map<Integer, List<String>> rstMap = processing.getBallsByExecutor(num, isIn, redioValue, redLt, blueLt, redMp, blueMp, same);
-                    rstMap.forEach((k, v) -> {
-                        textArea1.setText(textArea1.getText() + CommonConstant.line_feed + StringUtils.join(v, CommonConstant.line_feed));
-                    });
-                }
+                Map<Integer, List<String>> rstMap = MyLotteryProcessing.getBallsByExecutor(num, isIn, redioValue, redLt, blueLt, redMp, blueMp, same);
+                rstMap.forEach((k, v) -> {
+                    textArea1.setText(textArea1.getText() + CommonConstant.line_feed + StringUtils.join(v, CommonConstant.line_feed));
+                });
                 return null;
             }
         };

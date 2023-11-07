@@ -2,6 +2,7 @@ package com.example.app;
 
 import com.example.bean.BallsInfo;
 import com.example.my.CommonConvertUtils;
+import com.example.my.CommonExecutorService;
 import com.example.my.FxModuleAssemblyUtils;
 import com.example.utils.BallHistoryCrawlerProcessing;
 import com.example.utils.CommonConstant;
@@ -11,6 +12,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -51,8 +53,8 @@ public class BallGetOnlyAppMain extends Application {
     public void start(Stage primaryStage) throws Exception {
         toggleHBox = FxModuleAssemblyUtils.initMyHBoxToToggleButton("input中自定义列表：", "input列表随机", "input列表去除");
         toggleHBox.setAlignment(Pos.BOTTOM_LEFT);
-        HBox numHBox = FxModuleAssemblyUtils.initMyHBoxToNumber(numTextField, "相同数：");
-        HBox numHBox2 = FxModuleAssemblyUtils.initMyHBoxToNumber(numTextField2, "取列表数：", 12, 27, 40);
+        HBox numHBox = FxModuleAssemblyUtils.initMyHBoxToNumber(numTextField, "相同数：", 1, 9, 32);
+        HBox numHBox2 = FxModuleAssemblyUtils.initMyHBoxToNumber(numTextField2, "取列表数：", 11, 27, 40);
         VBox vBox1 = new VBox(6);
         vBox1.setAlignment(Pos.BOTTOM_LEFT);
         vBox1.getChildren().addAll(numHBox, numHBox2);
@@ -78,19 +80,21 @@ public class BallGetOnlyAppMain extends Application {
         HBox hbox = getHBox();
         hbox.getChildren().setAll(getResultButton, region, refreshtButton);
 
-
         // 创建一个文本域用于显示文件内容
         contentArea.setEditable(false);
         contentArea.setPrefHeight(300);
 
         HBox bottomHbox = getHBox();
         bottomHbox.getChildren().addAll(FxModuleAssemblyUtils.initMyButton("Clear text", contentArea, TextArea::clear),
-                FxModuleAssemblyUtils.initMyButton("Close Window", primaryStage, Stage::close));
+                FxModuleAssemblyUtils.initMyButton("Close Window", primaryStage, this::close));
 
         // 创建一个布局容器，将按钮和文本域嵌入其中
         VBox root = new VBox(hBox1, red, blue, hbox, contentArea, bottomHbox);
         root.setPadding(new Insets(10));
         root.setSpacing(10);
+
+        //可移动窗口
+        removableWindow(root, primaryStage);
 
         // 创建一个场景并将容器添加到场景中
         Scene scene = new Scene(root, 660, 560);
@@ -98,12 +102,22 @@ public class BallGetOnlyAppMain extends Application {
         primaryStage.setTitle("Ball Get Only Viewer");
         primaryStage.show();
     }
+    public static void main(String[] args) {
+        launch(args);
+        // 在程序退出时关闭线程池
+        Runtime.getRuntime().addShutdownHook(new Thread(CommonExecutorService::shutdown));
+    }
 
 
     private void initInputValue(boolean isFirst) {
         Platform.runLater(() -> {
             LaterInitInputValue(isFirst);
         });
+    }
+    private void close(Stage primaryStage){
+        primaryStage.close();
+        Platform.exit();
+        //CommonExecutorService.shutdown();
     }
 
     private void LaterInitInputValue(boolean isFirst) {
@@ -159,7 +173,7 @@ public class BallGetOnlyAppMain extends Application {
                 String redChanceText = CommonConvertUtils.convertPaneValue(red, 2);
 
                 String buleText = CommonConvertUtils.convertPaneValue(blue, 1);
-                String blueChanceText = CommonConvertUtils.convertPaneValue(blue, 1);
+                String blueChanceText = CommonConvertUtils.convertPaneValue(blue, 2);
 
                 List<Integer> redLt = null;
                 List<Integer> blueLt = null;
@@ -179,20 +193,31 @@ public class BallGetOnlyAppMain extends Application {
                 }
 
                 //Map<Integer, List<String>> rstMap = new MyLotteryProcessing().getBallsByExecutor(1, isIn, "04", redLt, blueLt, redMp, blueMp, same);
-                try (MyLotteryProcessing processing = new MyLotteryProcessing()) {
-                    Map<Integer, List<String>> rstMap = processing.getBallsByExecutor(1, isIn, "04", redLt, blueLt, redMp, blueMp, same);
-                    rstMap.forEach((k, v) -> {
-                        contentArea.setText(contentArea.getText() + CommonConstant.line_feed + StringUtils.join(v, CommonConstant.line_feed));
-                    });
-                }
+                Map<Integer, List<String>> rstMap = MyLotteryProcessing.getBallsByExecutor(1, isIn, "04", redLt, blueLt, redMp, blueMp, same);
+                rstMap.forEach((k, v) -> {
+                    contentArea.setText(contentArea.getText() + CommonConstant.line_feed + StringUtils.join(v, CommonConstant.line_feed));
+                });
                 return null;
             }
         };
         task.setOnSucceeded(evt -> {
             button.setDisable(false);
         });
-
-        Platform.runLater(task);
+        CommonExecutorService.getInstannce().execute(task);
     }
 
+    private double xOffset = 0;
+    private double yOffset = 0;
+
+    private <T extends Parent> void removableWindow(T pan, Stage primaryStage) {
+        // 绑定鼠标事件
+        pan.setOnMousePressed(event -> {
+            xOffset = event.getSceneX();
+            yOffset = event.getSceneY();
+        });
+        pan.setOnMouseDragged(event -> {
+            primaryStage.setX(event.getScreenX() - xOffset);
+            primaryStage.setY(event.getScreenY() - yOffset);
+        });
+    }
 }

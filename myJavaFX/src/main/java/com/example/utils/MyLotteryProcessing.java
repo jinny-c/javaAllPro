@@ -1,15 +1,15 @@
 package com.example.utils;
 
+import com.example.my.CommonExecutorService;
 import com.example.service.AbstractRandomBalls;
 import com.example.service.bean.BallEnty;
 import com.example.service.impl.RandomBallsSet;
 import com.example.service.impl.RandomBallsStream;
-import com.google.common.util.concurrent.ThreadFactoryBuilder;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
-import java.util.concurrent.*;
+import java.util.concurrent.Future;
 
 /**
  * @description 随机数 双色球
@@ -17,25 +17,14 @@ import java.util.concurrent.*;
  * @date 2021/7/28
  */
 @Slf4j
-public class MyLotteryProcessing implements AutoCloseable {
-    private static final long DEFAULT_ALIVE_TIME = 0L;
-    private static final int DEFAULT_CORE_POOL_SIZE = 3;
-    private static final int DEFAULT_MAX_POOL_SIZE = 6;
-    private static final int DEFAULT_QUEUE_SIZE = 9;
-
-    private static ExecutorService executor = null;
-
-    public MyLotteryProcessing() {
-        executor = new ThreadPoolExecutor(DEFAULT_CORE_POOL_SIZE, DEFAULT_MAX_POOL_SIZE
-                , DEFAULT_ALIVE_TIME, TimeUnit.SECONDS
-                , new ArrayBlockingQueue(DEFAULT_QUEUE_SIZE)
-                , new ThreadFactoryBuilder().setNameFormat("async-pool-%d").build());
-    }
+public class MyLotteryProcessing {
 
     public static List<String> getBallsByCondations(boolean isInList, String defType, List<Integer> red, List<Integer> blue, Map<Integer, Double> redMp, Map<Integer, Double> blueMp) {
         log.info("isInList={},defType={},red={},blue={},redMp={},blueMp={}", isInList, defType, red, blue, redMp, blueMp);
         List<String> rstList = new ArrayList<>();
-        try (RandomBallsSet ballsSet = new RandomBallsSet(); RandomBallsStream ballsStream = new RandomBallsStream()) {
+        try {
+            RandomBallsSet ballsSet = new RandomBallsSet();
+            RandomBallsStream ballsStream = new RandomBallsStream();
             BallEnty setEnty = null;
             BallEnty streamEnty = null;
             //RandomBallsSet ballsSet = new RandomBallsSet();
@@ -65,7 +54,7 @@ public class MyLotteryProcessing implements AutoCloseable {
         return rstList;
     }
 
-    public Map<Integer, List<String>> getBallsByExecutor(int conut, boolean isInList, String defType,
+    public static Map<Integer, List<String>> getBallsByExecutor(int conut, boolean isInList, String defType,
                                                                 List<Integer> red, List<Integer> blue,
                                                                 Map<Integer, Double> redMp, Map<Integer, Double> blueMp, int sameCount) {
         List<Future<List<String>>> rest = new ArrayList<>();
@@ -73,11 +62,11 @@ public class MyLotteryProcessing implements AutoCloseable {
             conut--;
 
             if (sameCount <= 0 || sameCount >= 6) {
-                rest.add(executor.submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp)));
+                rest.add(CommonExecutorService.getInstannce().submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp)));
             }
             if (sameCount <= 6) {
-                rest.add(executor.submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsSet())));
-                rest.add(executor.submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsStream())));
+                rest.add(CommonExecutorService.getInstannce().submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsSet())));
+                rest.add(CommonExecutorService.getInstannce().submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsStream())));
             }
 
         } while (conut > 0);
@@ -113,7 +102,6 @@ public class MyLotteryProcessing implements AutoCloseable {
         return rstList;
     }
 
-
     public static void main(String[] args) {
         //getBallsByExecutor(2, true, "01", null, null, null, null);
 //        RandomBallsStream ballsStream = new RandomBallsStream();
@@ -128,11 +116,4 @@ public class MyLotteryProcessing implements AutoCloseable {
 //        System.out.println(getBallsByCondations(true, "01", null, null, null, null, 6, new RandomBallsStream()));
     }
 
-    @Override
-    public void close() throws Exception {
-        // 在close方法中关闭线程池
-        if (executor != null && !executor.isShutdown()) {
-            executor.shutdown();
-        }
-    }
 }
