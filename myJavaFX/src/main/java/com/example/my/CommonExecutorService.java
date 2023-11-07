@@ -40,13 +40,14 @@ public class CommonExecutorService {
             executor = new ThreadPoolExecutor(DEFAULT_CORE_POOL_SIZE, DEFAULT_MAX_POOL_SIZE
                     , DEFAULT_ALIVE_TIME, TimeUnit.SECONDS
                     , new ArrayBlockingQueue(DEFAULT_QUEUE_SIZE)
-                    , new ThreadFactoryBuilder().setNameFormat("pool-%d").build());
+                    //setDaemon(true) 设置为守护线程，以免影响javaFX的退出
+                    , new ThreadFactoryBuilder().setNameFormat("daemon-pool-%d").setDaemon(true).build());
         }
     }
 
     // 关闭线程池
     public static void shutdown() {
-        //log.info("shutdown");
+        log.info("shutdown");
         if (executor != null && !executor.isShutdown()) {
             log.info("shutdown executor");
             executor.shutdown();
