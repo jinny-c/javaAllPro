@@ -130,16 +130,20 @@ public class FxModuleAssemblyUtils extends ToggleButton {
     }
 
     public static HBox initMyHBoxToNumber(TextField textField, String textMsg) {
+        return initMyHBoxToNumber(textField, textMsg, 0, 9, 32);
+    }
+
+    public static HBox initMyHBoxToNumber(TextField textField, String textMsg, int defval, int max, int prefWidth) {
         Text txt = new Text(textMsg);
         Button addButton = new Button("+");
         //addButton.setPrefWidth(16);
         Button subtractButton = new Button("-");
         //subtractButton.setPrefWidth(16);
-        textField.setText("0");
+        textField.setText(defval + "");
 
         addButton.setOnAction(e -> {
             int currentValue = Integer.parseInt(textField.getText());
-            if (currentValue < 9) {
+            if (currentValue < max) {
                 currentValue++;
             }
             textField.setText(String.valueOf(currentValue));
@@ -152,7 +156,7 @@ public class FxModuleAssemblyUtils extends ToggleButton {
             textField.setText(String.valueOf(currentValue));
         });
 
-        textField.setPrefWidth(32);
+        textField.setPrefWidth(prefWidth);
         // 添加事件监听器以验证输入
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
@@ -185,7 +189,7 @@ public class FxModuleAssemblyUtils extends ToggleButton {
 
     public static <T> Button initMyButton(String butName, T t, Consumer<T> processor) {
         Button closeButton = new Button(butName);
-        closeButton.setPrefHeight(32);
+        closeButton.setPrefHeight(40);
         closeButton.setOnAction(event -> processor.accept(t));
         return closeButton;
     }

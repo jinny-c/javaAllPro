@@ -96,6 +96,16 @@ public class CommonConvertUtils {
         return result;
     }
 
+    public static <T> List<T> convertSubNode(Pane pane, Class<T> clazz) {
+        List<T> result = new ArrayList<>();
+        for (Node child : pane.getChildren()) {
+            if (clazz.isInstance(child)) {
+                result.add((T) child);
+            }
+        }
+        return result;
+    }
+
     public static String convertPaneValue(Pane pane, int index) {
         List<String> result = convertListValues(pane);
         if (result.size() < index) {

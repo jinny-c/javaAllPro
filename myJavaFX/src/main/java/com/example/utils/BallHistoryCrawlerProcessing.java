@@ -65,7 +65,7 @@ public class BallHistoryCrawlerProcessing {
         //蓝
         List<String> allBlueList = ballsInfos.stream().map(BallsInfo::getBlueBall).collect(Collectors.toList());
         Map<String, String> restMap = new HashMap<>();
-        restMap.put("AllSortByValue", textValue(allRedList, allBlueList,"all"));
+        restMap.put("AllSortByValue", textValue(allRedList, allBlueList, "all"));
 
 
         Map<Integer, List<BallsInfo>> groupMap = IntStream.range(0, ballsInfos.size())
@@ -87,6 +87,21 @@ public class BallHistoryCrawlerProcessing {
 //        restMap.put("blueMap-sortByValue", "排序后：" + sortByValue(blueMap, 0).toString());
 
         return restMap;
+    }
+
+    public static List<String> crawlerBallAndStatistics(List<BallsInfo> ballsInfos) {
+        List<String> values = new ArrayList<>();
+        //红
+        List<String> allRedList = ballsInfos.stream().flatMap(info -> info.getRedBalls().stream()).collect(Collectors.toList());
+        values.add(StringUtils.join(sortlist(allRedList), "-"));
+        Map<String, Long> redMap = statisticsFrequency(allRedList);
+        values.add(sortByValue(redMap, 0).toString());
+        //蓝
+        List<String> allBlueList = ballsInfos.stream().map(BallsInfo::getBlueBall).collect(Collectors.toList());
+        values.add(StringUtils.join(sortlist(allBlueList), "-"));
+        Map<String, Long> blueMap = statisticsFrequency(allBlueList);
+        values.add(sortByValue(blueMap, 0).toString());
+        return values;
     }
 
     public static String textValue(List<String> redList, List<String> blueList, String pre) {
@@ -159,4 +174,14 @@ public class BallHistoryCrawlerProcessing {
         return sorceValue;
     }
 
+
+    private static List<String> sortlist(List<String> list) {
+        // 使用流操作去重并排序
+        List<String> distinctSorted = list.stream()
+                .distinct() // 去重
+                .sorted()    // 排序
+                .collect(Collectors.toList());
+
+        return distinctSorted;
+    }
 }
