@@ -111,12 +111,12 @@ public abstract class AbstractRandomBalls {
 
         } else {
             reds = new ArrayList<>(REDLIST);
-            if (redLt != null) {
+            if (redLt != null && redLt.size() < 20) {
                 reds.removeIf(redLt::contains);
             }
 
             blues = new ArrayList<>(BLUELIST);
-            if (blueLt != null) {
+            if (blueLt != null && blueLt.size() < 10) {
                 blues.removeIf(blueLt::contains);
             }
         }

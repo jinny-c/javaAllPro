@@ -105,7 +105,7 @@ public class BallGetOnlyAppMain extends Application {
     public static void main(String[] args) {
         launch(args);
         // 在程序退出时关闭线程池
-        //Runtime.getRuntime().addShutdownHook(new Thread(CommonExecutorService::shutdown));
+        Runtime.getRuntime().addShutdownHook(new Thread(CommonExecutorService::shutdown));
     }
 
 
