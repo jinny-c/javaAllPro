@@ -3,14 +3,17 @@ package com.example.my;
 import com.google.common.base.Splitter;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import org.apache.commons.lang3.RegExUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -19,6 +22,11 @@ import java.util.stream.Collectors;
  * @date 2023/11/6
  */
 public class CommonConvertUtils {
+
+    /* 换行 分隔符   */
+    public static final String  line_feed_pattern =  "\r\n|\n|\r";
+    public static final String pattern =  Pattern.compile(line_feed_pattern).pattern();
+
     public static int getSameCount(String text) {
         try {
             //return Integer.parseInt(textField.getText());
@@ -32,7 +40,8 @@ public class CommonConvertUtils {
         if (StringUtils.isBlank(str)) {
             return null;
         }
-
+        //str.replaceAll(pattern,"");
+        str = RegExUtils.replaceAll(str, pattern, "");
         List<Integer> lt = null;
         try {
             String[] arr = str.split("-");
@@ -51,6 +60,7 @@ public class CommonConvertUtils {
         if (StringUtils.isBlank(str)) {
             return null;
         }
+        str = RegExUtils.replaceAll(str, pattern, "");
         try {
             if (StringUtils.startsWith(str, "{")) {
                 str = StringUtils.substringAfter(str, "{");
@@ -88,9 +98,9 @@ public class CommonConvertUtils {
     public static List<String> convertListValues(Pane pane) {
         List<String> result = new ArrayList<>();
         for (Node child : pane.getChildren()) {
-            if (child instanceof TextField) {
-                TextField textField = (TextField) child;
-                result.add(textField.getText());
+            if (child instanceof TextInputControl) {
+                TextInputControl field = (TextInputControl) child;
+                result.add(field.getText());
             }
         }
         return result;
@@ -123,4 +133,5 @@ public class CommonConvertUtils {
         }
         return false;
     }
+
 }

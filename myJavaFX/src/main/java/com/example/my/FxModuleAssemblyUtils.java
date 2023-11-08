@@ -3,6 +3,7 @@ package com.example.my;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.layout.HBox;
@@ -100,6 +101,29 @@ public class FxModuleAssemblyUtils extends ToggleButton {
 
 //            hBox.getChildren().add(txt);
 //            hBox.getChildren().add(textField);
+        }
+        return hBox;
+    }
+
+    public static HBox initMyHBoxToAreaWithPrompt(String[] textMsgs, String[] values, int fieldHeight) {
+        int length = textMsgs.length;
+        if (textMsgs.length > values.length) {
+            length = values.length;
+        }
+        HBox hBox = new HBox();
+        hBox.setPadding(new Insets(6));
+        // 设置HBox的垂直对齐方式为
+        hBox.setAlignment(Pos.CENTER_LEFT);
+        for (int i = 0; i < length; i++) {
+            Text txt = new Text(textMsgs[i]);
+            TextArea filed = new TextArea();
+            filed.setPromptText(values[i]);
+            filed.setWrapText(true);
+
+            if (fieldHeight > 0) {
+                filed.setPrefHeight(fieldHeight);
+            }
+            hBox.getChildren().addAll(txt, filed, new Text("\u00A0\u00A0"));
         }
         return hBox;
     }

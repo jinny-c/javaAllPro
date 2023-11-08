@@ -17,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputControl;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -65,8 +66,10 @@ public class BallGetOnlyAppMain extends Application {
 
 
         //HBox vBox_red = FxModuleAssemblyUtils.initMyHBoxToInPut("red：", "example：");
-        red = FxModuleAssemblyUtils.initMyHBoxToInPutWithPrompt(new String[]{"red：", "chance："}, new String[]{"example：1-11-27-30", "example：03=6,12=2,17=2,06=2"}, 0);
-        blue = FxModuleAssemblyUtils.initMyHBoxToInPutWithPrompt(new String[]{"blue：", "chance："}, new String[]{"example：3-6-12", "example：01=4,16=1,15=2,9=1"}, 0);
+        red = FxModuleAssemblyUtils.initMyHBoxToAreaWithPrompt(new String[]{"red：", "chance："},
+                new String[]{"example：1-11-27-30", "example：03=6,12=2,17=2,06=2"}, 180);
+        blue = FxModuleAssemblyUtils.initMyHBoxToAreaWithPrompt(new String[]{"blue：", "chance："},
+                new String[]{"example：3-6-12", "example：01=4,16=1,15=2,9=1"}, 180);
 
         initInputValue(true);
         // 创建一个按钮
@@ -138,10 +141,10 @@ public class BallGetOnlyAppMain extends Application {
         }
 
         List<String> values = BallHistoryCrawlerProcessing.crawlerBallAndStatistics(subList);
-        List<TextField> redField = CommonConvertUtils.convertSubNode(red, TextField.class);
+        List<TextInputControl> redField = CommonConvertUtils.convertSubNode(red, TextInputControl.class);
         redField.get(0).setText(values.get(0));
         redField.get(1).setText(values.get(1));
-        List<TextField> blueField = CommonConvertUtils.convertSubNode(blue, TextField.class);
+        List<TextInputControl> blueField = CommonConvertUtils.convertSubNode(blue, TextInputControl.class);
         blueField.get(0).setText(values.get(2));
         blueField.get(1).setText(values.get(3));
         if (isFirst) {
