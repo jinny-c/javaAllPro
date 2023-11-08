@@ -88,7 +88,8 @@ public class BallGetOnlyAppMain extends Application {
         contentArea.setPrefHeight(300);
 
         HBox bottomHbox = getHBox();
-        bottomHbox.getChildren().addAll(FxModuleAssemblyUtils.initMyButton("Clear text", contentArea, TextArea::clear),
+        bottomHbox.getChildren().addAll(FxModuleAssemblyUtils.initMyButton("Data handle", contentArea, this::dataHandleClick),
+                FxModuleAssemblyUtils.initMyButton("Clear text", contentArea, TextArea::clear),
                 FxModuleAssemblyUtils.initMyButton("Close Window", primaryStage, this::close));
 
         // 创建一个布局容器，将按钮和文本域嵌入其中
@@ -110,6 +111,16 @@ public class BallGetOnlyAppMain extends Application {
     }
     public static void main(String[] args) {
         launch(args);
+    }
+
+    private void dataHandleClick(TextArea contentArea) {
+        if (contentArea != null && StringUtils.isNotBlank(contentArea.getText())) {
+            try {
+                StringUtilsControllerAppMain myMainApp = new StringUtilsControllerAppMain(contentArea.getText());
+                myMainApp.start(new Stage());
+            } catch (Exception e) {
+            }
+        }
     }
 
 

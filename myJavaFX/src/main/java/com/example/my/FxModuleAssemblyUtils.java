@@ -218,6 +218,13 @@ public class FxModuleAssemblyUtils extends ToggleButton {
         return closeButton;
     }
 
+    public static Button initMyButton(String butName, Runnable task) {
+        Button closeButton = new Button(butName);
+        closeButton.setPrefHeight(40);
+        closeButton.setOnAction(event -> task.run());
+        return closeButton;
+    }
+
 //    public static <T> HBox initMyHBoxToButton(List<?>... lists) {
 //        //水平布局的容器 HBox
 //        HBox hBox = new HBox();

@@ -1,10 +1,12 @@
 package com.example.app;
 
+import com.example.controller.StringUtilsController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * @description TODO
@@ -12,9 +14,28 @@ import javafx.stage.Stage;
  * @date 2023/6/9
  */
 public class StringUtilsControllerAppMain extends Application {
+    private String value;
+
+    public StringUtilsControllerAppMain(){
+        super();
+    }
+
+    public StringUtilsControllerAppMain(String value){
+        super();
+        this.value = value;
+    }
+
     @Override
     public void start(Stage primaryStage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("/StringUtils.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/StringUtils.fxml"));
+        Parent root = loader.load();
+        if (StringUtils.isNotBlank(value)) {
+            // 获取控制器
+            StringUtilsController controller = loader.getController();
+            // 在控制器中调用方法来更改FXML中的值
+            controller.updateLabel(value);
+        }
+
         //可移动窗口
         removableWindow(root, primaryStage);
         primaryStage.setTitle("Page Content Get Processing");

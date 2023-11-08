@@ -46,6 +46,11 @@ public class StringUtilsController {
         radioButton1.setSelected(true);
     }
 
+    public void updateLabel(String value){
+        textArea1.setText(value);
+        radioButton2.setSelected(true);
+    }
+
     @FXML
     protected void button1Click() {
         button1.setDisable(true);
