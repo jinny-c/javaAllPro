@@ -48,7 +48,7 @@ public class StringUtilsController {
 
     public void updateLabel(String value){
         textArea1.setText(value);
-        radioButton2.setSelected(true);
+        radioButton1.setSelected(true);
     }
 
     @FXML
