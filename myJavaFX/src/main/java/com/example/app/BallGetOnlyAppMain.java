@@ -101,11 +101,12 @@ public class BallGetOnlyAppMain extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Ball Get Only Viewer");
         primaryStage.show();
+
+        // 在程序退出时关闭线程池
+        Runtime.getRuntime().addShutdownHook(new Thread(CommonExecutorService::shutdown));
     }
     public static void main(String[] args) {
         launch(args);
-        // 在程序退出时关闭线程池
-        Runtime.getRuntime().addShutdownHook(new Thread(CommonExecutorService::shutdown));
     }
 
 
@@ -118,7 +119,9 @@ public class BallGetOnlyAppMain extends Application {
         primaryStage.close();
         //可以不用显示关闭
         //Platform.exit();
+        //CommonExecutorService.getInstannce().execute(()-> System.out.println("------------"));
         //CommonExecutorService.shutdown();
+        //CommonExecutorService.getInstannce().execute(()-> System.out.println("---------------------"));
     }
 
     private void LaterInitInputValue(boolean isFirst) {

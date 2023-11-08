@@ -28,14 +28,14 @@ public class CommonExecutorService {
 
     public static ExecutorService getInstannce() {
         //log.info("getInstannce executor");
-        if (executor == null) {
+        if (executor == null || executor.isShutdown()) {
             syncInit();
         }
         return executor;
     }
 
     private static synchronized void syncInit() {
-        if (executor == null) {
+        if (executor == null || executor.isShutdown()) {
             log.info("synchronized syncInit executor");
             executor = new ThreadPoolExecutor(DEFAULT_CORE_POOL_SIZE, DEFAULT_MAX_POOL_SIZE
                     , DEFAULT_ALIVE_TIME, TimeUnit.SECONDS
