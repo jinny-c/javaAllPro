@@ -57,14 +57,25 @@ public class MyLotteryProcessing {
     public static Map<Integer, List<String>> getBallsByExecutor(int conut, boolean isInList, String defType,
                                                                 List<Integer> red, List<Integer> blue,
                                                                 Map<Integer, Double> redMp, Map<Integer, Double> blueMp, int sameCount) {
+        return getBallsByExecutor("3", conut, isInList, defType, red, blue, redMp, blueMp, sameCount);
+    }
+
+    public static Map<Integer, List<String>> getBallsByExecutor(String type, int conut, boolean isInList, String defType,
+                                                                List<Integer> red, List<Integer> blue,
+                                                                Map<Integer, Double> redMp, Map<Integer, Double> blueMp, int sameCount) {
+        log.info("type={},sameCount={}", type, sameCount);
         List<Future<List<String>>> rest = new ArrayList<>();
+        boolean compareOne = StringUtils.equalsAny(type, "0", "1", "3");
+        boolean compareAll = StringUtils.equalsAny(type, "0", "2", "3");
         do {
             conut--;
 
-            if (sameCount <= 0 || sameCount >= 6) {
+            //if (sameCount <= 0 || sameCount >= 6) {
+            if (compareAll) {
                 rest.add(CommonExecutorService.getInstannce().submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp)));
             }
-            if (sameCount <= 6) {
+            //if (sameCount <= 6) {
+            if (compareOne) {
                 rest.add(CommonExecutorService.getInstannce().submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsSet())));
                 rest.add(CommonExecutorService.getInstannce().submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsStream())));
             }

@@ -2,12 +2,10 @@ package com.example.my;
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleButton;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -19,6 +17,57 @@ import java.util.function.Consumer;
  * @date 2023/10/12
  */
 public class FxModuleAssemblyUtils extends ToggleButton {
+
+    /**
+     * checkBox 模拟三元判断
+     * @param indeterminateMsg
+     * @param selectMsg
+     * @param unSelectMsg
+     * @return
+     */
+    public static CheckBox initMyCheckBox(String indeterminateMsg, String selectMsg, String unSelectMsg) {
+        CheckBox checkBox = new CheckBox(indeterminateMsg);
+        //允许中间态
+        checkBox.setAllowIndeterminate(true);
+        checkBox.setIndeterminate(true);
+
+        checkBox.setOnAction(event -> {
+            if (checkBox.isIndeterminate()) {
+                checkBox.setText(indeterminateMsg);
+            } else if (checkBox.isSelected()) {
+                checkBox.setText(selectMsg);
+            } else {
+                checkBox.setText(unSelectMsg);
+            }
+        });
+        return checkBox;
+    }
+
+    public static VBox initMyVBoxToCheckBox(String checkBoxText1, String checkBoxText2) {
+        CheckBox checkBox1 = new CheckBox(checkBoxText1);
+        checkBox1.setSelected(true);
+        CheckBox checkBox2 = new CheckBox(checkBoxText2);
+        checkBox2.setSelected(true);
+
+        checkBox1.setOnAction(event -> {
+            if (!checkBox1.isSelected()) {
+                if (!checkBox2.isSelected()) {
+                    checkBox2.setSelected(true);
+                }
+            }
+        });
+        checkBox2.setOnAction(event -> {
+            if (!checkBox2.isSelected()) {
+                if (!checkBox1.isSelected()) {
+                    checkBox1.setSelected(true);
+                }
+            }
+        });
+        VBox vBox = new VBox();
+        vBox.setPadding(new Insets(6));
+        vBox.getChildren().addAll(checkBox1, checkBox2);
+        return vBox;
+    }
 
     public static ToggleButton initMyToggleButton() {
         return initMyToggleButton("是", "否");
@@ -54,6 +103,15 @@ public class FxModuleAssemblyUtils extends ToggleButton {
         hBox.setPadding(new Insets(6));
         hBox.getChildren().addAll(txt, mtb);
         return hBox;
+    }
+
+    public static VBox initMyVBoxToToggleButton(String textMsg, String toggleMsgY, String toggleMsgN) {
+        Text txt = new Text(textMsg);
+        ToggleButton mtb = initMyToggleButton(toggleMsgY, toggleMsgN);
+        VBox vBox = new VBox();
+        vBox.setPadding(new Insets(6));
+        vBox.getChildren().addAll(txt, mtb);
+        return vBox;
     }
 
     public static HBox initMyHBoxToInPut(String[] textMsgs, String[] values, int textFieldWidth) {

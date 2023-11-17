@@ -14,10 +14,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TextInputControl;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
@@ -40,6 +37,7 @@ public class BallGetOnlyAppMain extends Application {
     private TextField numTextField = new TextField();
     private TextField numTextField2 = new TextField();
     private HBox red, blue, toggleHBox;
+    private VBox vBox2;
 
     private List<BallsInfo> ballsInfoList = null;
 
@@ -52,17 +50,19 @@ public class BallGetOnlyAppMain extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        toggleHBox = FxModuleAssemblyUtils.initMyHBoxToToggleButton("input中自定义列表：", "input列表随机", "input列表去除");
+        toggleHBox = FxModuleAssemblyUtils.initMyHBoxToToggleButton("自定义：", "input列表随机", "input列表去除");
         toggleHBox.setAlignment(Pos.BOTTOM_LEFT);
         HBox numHBox = FxModuleAssemblyUtils.initMyHBoxToNumber(numTextField, "相同数：", 1, 9, 32);
         HBox numHBox2 = FxModuleAssemblyUtils.initMyHBoxToNumber(numTextField2, "取列表数：", 11, 27, 40);
         VBox vBox1 = new VBox(6);
         vBox1.setAlignment(Pos.BOTTOM_LEFT);
         vBox1.getChildren().addAll(numHBox, numHBox2);
+        vBox2 = FxModuleAssemblyUtils.initMyVBoxToCheckBox("一个个比较", "结果比较");
+        vBox2.setAlignment(Pos.BOTTOM_LEFT);
         Region region2 = new Region();
         HBox.setHgrow(region2, Priority.ALWAYS);
         HBox hBox1 = new HBox(12);
-        hBox1.getChildren().addAll(toggleHBox, region2, vBox1, new Region());
+        hBox1.getChildren().addAll(toggleHBox, region2, vBox2, vBox1, new Region());
 
 
         //HBox vBox_red = FxModuleAssemblyUtils.initMyHBoxToInPut("red：", "example：");
@@ -173,6 +173,25 @@ public class BallGetOnlyAppMain extends Application {
         return hBox;
     }
 
+    private String convertValueByMyCheckBox() {
+        try {
+            List<CheckBox> fields = CommonConvertUtils.convertSubNode(vBox2, CheckBox.class);
+            boolean select1 = fields.get(0).isSelected();
+            boolean select2 = fields.get(1).isSelected();
+            if (select1 && select2) {
+                return "3";
+            }
+            if (select1) {
+                return "1";
+            }
+            if (select2) {
+                return "2";
+            }
+        } catch (Exception e) {
+        }
+        return "3";
+    }
+
     protected void button1Click(Button button) {
         button.setDisable(true);
         String waitVal = "等待查询结果，请稍后。。。。。。";
@@ -184,7 +203,7 @@ public class BallGetOnlyAppMain extends Application {
         Task<Void> task = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
-                //int num = indexArr[comboBox.getSelectionModel().getSelectedIndex()];
+                String type = convertValueByMyCheckBox();
                 Boolean isIn = CommonConvertUtils.convertSelect(toggleHBox);
                 int same = CommonConvertUtils.getSameCount(numTextField.getText());
                 String redText = CommonConvertUtils.convertPaneValue(red, 1);
@@ -192,6 +211,7 @@ public class BallGetOnlyAppMain extends Application {
 
                 String buleText = CommonConvertUtils.convertPaneValue(blue, 1);
                 String blueChanceText = CommonConvertUtils.convertPaneValue(blue, 2);
+
 
                 List<Integer> redLt = null;
                 List<Integer> blueLt = null;
@@ -210,8 +230,7 @@ public class BallGetOnlyAppMain extends Application {
                     blueMp = CommonConvertUtils.convertMap(blueChanceText, 16);
                 }
 
-                //Map<Integer, List<String>> rstMap = new MyLotteryProcessing().getBallsByExecutor(1, isIn, "04", redLt, blueLt, redMp, blueMp, same);
-                Map<Integer, List<String>> rstMap = MyLotteryProcessing.getBallsByExecutor(1, isIn, "04", redLt, blueLt, redMp, blueMp, same);
+                Map<Integer, List<String>> rstMap = MyLotteryProcessing.getBallsByExecutor(type, 1, isIn, "04", redLt, blueLt, redMp, blueMp, same);
                 rstMap.forEach((k, v) -> {
                     contentArea.setText(contentArea.getText() + CommonConstant.line_feed + StringUtils.join(v, CommonConstant.line_feed));
                 });
