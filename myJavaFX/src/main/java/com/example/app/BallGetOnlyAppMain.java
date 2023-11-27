@@ -38,6 +38,7 @@ public class BallGetOnlyAppMain extends Application {
     private TextField numTextField2 = new TextField();
     private HBox red, blue, toggleHBox;
     private VBox vBox2;
+    private ToggleButton toggleButton;
 
     private List<BallsInfo> ballsInfoList = null;
 
@@ -51,9 +52,11 @@ public class BallGetOnlyAppMain extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         toggleHBox = FxModuleAssemblyUtils.initMyHBoxToToggleButton("自定义：", "input列表随机", "input列表去除");
-        toggleHBox.setAlignment(Pos.BOTTOM_LEFT);
+        toggleHBox.setAlignment(Pos.CENTER);
+        toggleButton = FxModuleAssemblyUtils.initMyToggleButton("结果可重复", "结果不重复");
+        //toggleButton.setAlignment(Pos.CENTER);
         HBox numHBox = FxModuleAssemblyUtils.initMyHBoxToNumber(numTextField, "相同数：", 1, 9, 32);
-        HBox numHBox2 = FxModuleAssemblyUtils.initMyHBoxToNumber(numTextField2, "取列表数：", 11, 27, 40);
+        HBox numHBox2 = FxModuleAssemblyUtils.initMyHBoxToNumber(numTextField2, "取列表数：", 11, 99, 40);
         VBox vBox1 = new VBox(6);
         vBox1.setAlignment(Pos.BOTTOM_LEFT);
         vBox1.getChildren().addAll(numHBox, numHBox2);
@@ -62,7 +65,7 @@ public class BallGetOnlyAppMain extends Application {
         Region region2 = new Region();
         HBox.setHgrow(region2, Priority.ALWAYS);
         HBox hBox1 = new HBox(12);
-        hBox1.getChildren().addAll(toggleHBox, region2, vBox2, vBox1, new Region());
+        hBox1.getChildren().addAll(toggleHBox, region2, toggleButton, vBox2, vBox1, new Region());
 
 
         //HBox vBox_red = FxModuleAssemblyUtils.initMyHBoxToInPut("red：", "example：");
@@ -109,6 +112,7 @@ public class BallGetOnlyAppMain extends Application {
         // 在程序退出时关闭线程池
         Runtime.getRuntime().addShutdownHook(new Thread(CommonExecutorService::shutdown));
     }
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -129,7 +133,8 @@ public class BallGetOnlyAppMain extends Application {
             LaterInitInputValue(isFirst);
         });
     }
-    private void close(Stage primaryStage){
+
+    private void close(Stage primaryStage) {
         primaryStage.close();
         //可以不用显示关闭
         //Platform.exit();
@@ -205,6 +210,7 @@ public class BallGetOnlyAppMain extends Application {
             protected Void call() throws Exception {
                 String type = convertValueByMyCheckBox();
                 Boolean isIn = CommonConvertUtils.convertSelect(toggleHBox);
+                Boolean canRepeat = toggleButton.isSelected();
                 int same = CommonConvertUtils.getSameCount(numTextField.getText());
                 String redText = CommonConvertUtils.convertPaneValue(red, 1);
                 String redChanceText = CommonConvertUtils.convertPaneValue(red, 2);
@@ -230,7 +236,7 @@ public class BallGetOnlyAppMain extends Application {
                     blueMp = CommonConvertUtils.convertMap(blueChanceText, 16);
                 }
 
-                Map<Integer, List<String>> rstMap = MyLotteryProcessing.getBallsByExecutor(type, 1, isIn, "04", redLt, blueLt, redMp, blueMp, same);
+                Map<String, List<String>> rstMap = MyLotteryProcessing.getBallsByExecutor(type, 1, isIn, canRepeat, "04", redLt, blueLt, redMp, blueMp, same);
                 rstMap.forEach((k, v) -> {
                     contentArea.setText(contentArea.getText() + CommonConstant.line_feed + StringUtils.join(v, CommonConstant.line_feed));
                 });

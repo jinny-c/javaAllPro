@@ -5,10 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * @description TODO
@@ -21,6 +18,24 @@ import java.util.Objects;
 public class BallEnty implements Serializable {
     Integer blue;
     List<Integer> red;
+
+    public boolean equalsAny(Object o) {
+        if (this == o) return false;
+        if (o == null || getClass() != o.getClass()) return false;
+        BallEnty ballEnty = (BallEnty) o;
+        if (Objects.equals(blue, ballEnty.blue)) return true;
+        return equalsAnyList(red, ballEnty.red);
+    }
+
+    private boolean equalsAnyList(List<Integer> red1, List<Integer> red2) {
+        if (null == red1 || red1.isEmpty() || null == red2 || red2.isEmpty()) {
+            return false;
+        }
+        List<Integer> tmpRed1 = new ArrayList<>(red1);
+        List<Integer> tmpRed2 = new ArrayList<>(red2);
+        Optional<Integer> rst = tmpRed1.stream().filter(tmpRed2::contains).findAny();
+        return rst.isPresent();
+    }
 
     @Override
     public boolean equals(Object o) {

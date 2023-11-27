@@ -96,6 +96,55 @@ public class MyLotteryProcessing {
         return restMap;
     }
 
+    public static Map<String, List<String>> getBallsByExecutor(String type, int conut, boolean isInList, boolean canRepeat, String defType,
+                                                               List<Integer> red, List<Integer> blue,
+                                                               Map<Integer, Double> redMp, Map<Integer, Double> blueMp, int sameCount) {
+        log.info("type={},sameCount={}", type, sameCount);
+        List<Future<List<String>>> rest = new ArrayList<>();
+        List<Future<Map<String, List<String>>>> rest2 = new ArrayList<>();
+
+        boolean compareOne = StringUtils.equalsAny(type, "0", "1", "3");
+        boolean compareAll = StringUtils.equalsAny(type, "0", "2", "3");
+        do {
+            conut--;
+            if (compareAll) {
+                rest.add(CommonExecutorService.getInstannce().submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp)));
+            }
+            if (compareOne) {
+                if (canRepeat) {
+                    rest.add(CommonExecutorService.getInstannce().submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsSet())));
+                    rest.add(CommonExecutorService.getInstannce().submit(() -> getBallsByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsStream())));
+                } else {
+                    //rest2.add(CommonExecutorService.getInstannce().submit(() -> getMyBallsByCondations(isInList, true, defType, red, blue, redMp, blueMp, sameCount)));
+                    rest2.add(CommonExecutorService.getInstannce().submit(() -> getMyBallsByCondations(isInList, false, defType, red, blue, redMp, blueMp, sameCount)));
+                }
+            }
+        } while (conut > 0);
+
+        int contKey = 1;
+        Map<String, List<String>> restMap = new HashMap<>();
+
+        for (Future<List<String>> future : rest) {
+            try {
+                List<String> lt = future.get();
+                restMap.put(contKey + "", lt);
+                contKey++;
+            } catch (Exception e) {
+                log.info("lt Exception==", e);
+            }
+        }
+        for (Future<Map<String, List<String>>> future2 : rest2) {
+            try {
+                Map<String, List<String>> mp = future2.get();
+                restMap.putAll(mp);
+            } catch (Exception e) {
+                log.info("mp Exception==", e);
+            }
+        }
+
+        return restMap;
+    }
+
     public static <T extends AbstractRandomBalls> List<String> getBallsByCondations(boolean isInList, String defType, List<Integer> red, List<Integer> blue,
                                                                                     Map<Integer, Double> redMp, Map<Integer, Double> blueMp, int inCount, T balls) {
         log.info("isInList={},defType={},red={},blue={},redMp={},blueMp={},inCount={}", isInList, defType, red, blue, redMp, blueMp, inCount);
@@ -111,6 +160,58 @@ public class MyLotteryProcessing {
             log.info("Exception==", e);
         }
         return rstList;
+    }
+
+    private static Map<String, List<String>> getMyBallsByCondations(boolean isInList, boolean isOrNotAllSame, String defType, List<Integer> red, List<Integer> blue, Map<Integer, Double> redMp, Map<Integer, Double> blueMp, int sameCount) {
+        log.info("isInList={},isOrNotAllSame={},defType={},red={},blue={},redMp={},blueMp={},sameCount={}", isInList, isOrNotAllSame, defType, red, blue, redMp, blueMp, sameCount);
+        BallEnty entySet, entyStream;
+        RandomBallsSet ballsSet = new RandomBallsSet();
+        RandomBallsStream ballsStream = new RandomBallsStream();
+        int count = 0;
+        do {
+            count++;
+            //entySet = getEntyByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsSet());
+            entySet = getEntyByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, ballsSet);
+            //entyStream = getEntyByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsStream());
+            entyStream = getEntyByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, ballsStream);
+            if (isOrNotAllSame) {
+                if (!entySet.equals(entyStream)) {
+                    continue;
+                }
+            } else {
+                if (entySet.equalsAny(entyStream)) {
+                    continue;
+                }
+            }
+            break;
+        } while (true);
+
+        Map<String, List<String>> retMap = new HashMap<>();
+        retMap.put("entyStream", getMyBallsByCondations(isInList, defType, entyStream, count));
+        if (!isOrNotAllSame) {
+            retMap.put("entySet", getMyBallsByCondations(isInList, defType, entySet, count));
+        }
+        return retMap;
+    }
+
+    private static List<String> getMyBallsByCondations(boolean isInList, String defType, BallEnty enty, int count) {
+        List<String> rstList = new ArrayList<>();
+        try {
+            rstList.add(StringUtils.join("count=", count, ",defType=", defType, ",isInList=", isInList));
+            String entyStr = enty.toString();
+            Collections.sort(enty.getRed());
+            String redStr = enty.getRed().toString();
+            rstList.add(entyStr + redStr);
+        } catch (Exception e) {
+            log.info("Exception==", e);
+        }
+        return rstList;
+    }
+
+    private static <T extends AbstractRandomBalls> BallEnty getEntyByCondations(boolean isInList, String defType, List<Integer> red, List<Integer> blue,
+                                                                                Map<Integer, Double> redMp, Map<Integer, Double> blueMp, int sameCount, T balls) {
+        //log.info("isInList={},defType={},red={},blue={},redMp={},blueMp={},sameCount={}", isInList, defType, red, blue, redMp, blueMp, sameCount);
+        return balls.getBallsIn(isInList, defType, red, blue, redMp, blueMp, sameCount);
     }
 
     public static void main(String[] args) {
