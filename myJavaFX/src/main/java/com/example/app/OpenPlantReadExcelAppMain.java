@@ -16,9 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -43,7 +43,7 @@ public class OpenPlantReadExcelAppMain extends Application {
         this.primaryStage = primaryStage;
 
         hBox1 = FxModuleAssemblyUtils.initMyHBoxToToggleButton("字段格式：","转蛇形","转驼峰");
-        hBox2 = FxModuleAssemblyUtils.initMyHBoxToInPut(new String[]{"加载的sheet-", "开始的行数-", "列数-"}, new String[]{"1", "2", "7"}, 50);
+        hBox2 = FxModuleAssemblyUtils.initMyHBoxToInPut(new String[]{"加载的sheet-", "开始的行数-", "列数-"}, new String[]{"1", "1", "7"}, 50);
         hBox3 = FxModuleAssemblyUtils.initMyHBoxToInPut(new String[]{"所在列数，字段名=", "中文名称=", "是否必填=", "类型=", "说明="}, new String[]{"1", "2", "3", "4", "5"}, 50);
 
         // 创建一个按钮
@@ -51,8 +51,9 @@ public class OpenPlantReadExcelAppMain extends Application {
         openFileButton.setOnAction(e -> showFileSelectionDialog());
 
 
-        Button btnSave = new Button("保存文件");
-        btnSave.setOnAction(e -> saveFile());
+        Button btnClear = new Button("清除text");
+        btnClear.setPrefHeight(50);
+        btnClear.setOnAction(e -> fileContentArea.clear());
 
 
         // 创建一个文本域用于显示文件内容
@@ -61,7 +62,7 @@ public class OpenPlantReadExcelAppMain extends Application {
         fileContentArea.setPrefHeight(300);
 
         // 创建一个布局容器，将按钮和文本域嵌入其中
-        VBox root = new VBox(hBox1, hBox2, hBox3, openFileButton, fileContentArea, btnSave, FxModuleAssemblyUtils.initMyHBoxToCloseButton(primaryStage));
+        VBox root = new VBox(hBox1, hBox2, hBox3, openFileButton, fileContentArea, btnClear, FxModuleAssemblyUtils.initMyHBoxToCloseButton(primaryStage));
         root.setPadding(new Insets(10));
         root.setSpacing(10);
 
@@ -107,24 +108,6 @@ public class OpenPlantReadExcelAppMain extends Application {
             fileContentArea.setText(StringUtils.join(resutlContent, ExcelConvertToJavaBean.newline_default));
         } catch (Exception e) {
             //log.error("Exception", e);
-        }
-    }
-
-    private void saveFile() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("保存文件");
-        FileChooser.ExtensionFilter ft = new FileChooser.ExtensionFilter("文本文件", "*.txt");
-        fileChooser.getExtensionFilters().add(ft);
-        File file = fileChooser.showSaveDialog(null);
-        if (file == null) {
-            //log.warn("取消，放弃写文件");
-            return;
-        }
-        Path path = file.toPath();
-        try (BufferedWriter writer = Files.newBufferedWriter(path)) {
-            writer.write(fileContentArea.getText());
-        } catch (IOException ex) {
-            //log.error("文件写入出错: " + ex.getMessage());
         }
     }
 }

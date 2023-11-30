@@ -161,6 +161,8 @@ public class ExcelConvertToJavaBean {
 
         String filed, name, mustOr, type, desc;
         List<String> resutlContent = new ArrayList<>();
+        resutlContent.add(NEED_LINE_1);
+        resutlContent.add(NEED_LINE_2);
         StringBuilder sbt = null;
 
         for (List<String> line : fileRestList) {
