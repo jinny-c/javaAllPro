@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -138,6 +139,91 @@ public class ExcelConvertToJavaBean {
         }
         Matcher m = chinese.matcher(str);
         return m.find();
+    }
+
+    private static String NEED_LINE_1 = "| 字段名         | 中文名称       | 是否必填 | 类型       | 说明                          |";
+    private static String NEED_LINE_2 = "| ------------- | -------------- | --------| ---------- | ---------------------------- |";
+    private static String NEED_LINE_START = "| ";
+    private static String NEED_LINE_MID = "  |  ";
+    private static String NEED_LINE_END = "  |";
+
+    public static List<String> convertContent(List<List<String>> fileRestList, ListIterator<Integer> iterator, boolean isChange) {
+        int filed1 = iterator.next();
+        int filed2 = iterator.next();
+        int filed3 = iterator.next();
+        int filed4 = iterator.next();
+        int filed5 = iterator.next();
+        filed1 -= 1;
+        filed2 -= 1;
+        filed3 -= 1;
+        filed4 -= 1;
+        filed5 -= 1;
+
+        String filed, name, mustOr, type, desc;
+        List<String> resutlContent = new ArrayList<>();
+        StringBuilder sbt = null;
+
+        for (List<String> line : fileRestList) {
+            try {
+                filed = removeSpacesAndNewLines(line.get(filed1));
+                name = removeSpacesAndNewLines(line.get(filed2));
+                mustOr = removeSpacesAndNewLines(line.get(filed3));
+                type = removeSpacesAndNewLines(line.get(filed4));
+                desc = removeSpacesAndNewLines(line.get(filed5));
+
+                if (StringUtils.isBlank(filed)) {
+                    continue;
+                }
+                if (containsChinese(filed)) {
+                    continue;
+                }
+
+                sbt = new StringBuilder();
+                sbt.append(NEED_LINE_START).append(isChange ? camelToSnake(filed) : snakeToCamel(filed)).append(NEED_LINE_MID);
+                sbt.append(name).append(NEED_LINE_MID);
+                sbt.append(mustOr).append(NEED_LINE_MID);
+                sbt.append(type).append(NEED_LINE_MID);
+                sbt.append(desc).append(NEED_LINE_END);
+
+                resutlContent.add(sbt.toString());
+            } catch (Exception e) {
+            }
+        }
+        return resutlContent;
+    }
+
+    /**
+     * 蛇形转驼峰
+     * my_variable_name --》》myVariableName
+     *
+     * @param snakeCase
+     * @return
+     */
+    public static String snakeToCamel(String snakeCase) {
+        StringBuilder camelCase = new StringBuilder();
+        boolean toUpperCase = false;
+
+        for (char c : snakeCase.toCharArray()) {
+            if (c == '_') {
+                toUpperCase = true;
+            } else {
+                camelCase.append(toUpperCase ? Character.toUpperCase(c) : c);
+                toUpperCase = false;
+            }
+        }
+
+        return camelCase.toString();
+    }
+
+    /**
+     * 驼峰转蛇形
+     * myVariableName --》》my_variable_name
+     *
+     * @param camelCase
+     * @return
+     */
+    public static String camelToSnake(String camelCase) {
+        return camelCase.replaceAll("([a-z])([A-Z])", "$1_$2").toLowerCase();
     }
 
     public static void main(String[] args) {

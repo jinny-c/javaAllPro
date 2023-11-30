@@ -465,7 +465,7 @@ public class ExcelUtils {
     public static List<List<String>> oneSheetRead2007Excel(XSSFWorkbook workbook, int sheet, int start, int cellLength) throws Exception {
         // 得到excel中sheet总数
         int sheetCount = workbook.getNumberOfSheets();
-        if (sheetCount <= sheet) {
+        if (sheetCount < sheet) {
             throw new Exception("Excel文件没有对应sheet");
         }
         // 数据的导出
