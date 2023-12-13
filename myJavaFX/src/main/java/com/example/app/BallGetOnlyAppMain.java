@@ -4,9 +4,10 @@ import com.example.bean.BallsInfo;
 import com.example.my.CommonConvertUtils;
 import com.example.my.CommonExecutorService;
 import com.example.my.FxModuleAssemblyUtils;
+import com.example.service.bean.LotteryResultDto;
 import com.example.utils.BallHistoryCrawlerProcessing;
 import com.example.utils.CommonConstant;
-import com.example.utils.MyLotteryProcessing;
+import com.example.utils.NewLotteryProcessing;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -26,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * @description TODO
+ * @description 无fxml实现
  * @auth chaijd
  * @date 2023/6/7
  */
@@ -55,7 +56,7 @@ public class BallGetOnlyAppMain extends Application {
         toggleHBox.setAlignment(Pos.CENTER);
         toggleButton = FxModuleAssemblyUtils.initMyToggleButton("结果可重复", "结果不重复");
         //toggleButton.setAlignment(Pos.CENTER);
-        HBox numHBox = FxModuleAssemblyUtils.initMyHBoxToNumber(numTextField, "相同数：", 1, 9, 32);
+        HBox numHBox = FxModuleAssemblyUtils.initMyHBoxToNumber(numTextField, "相同数：", 1, 9, -1, 32);
         HBox numHBox2 = FxModuleAssemblyUtils.initMyHBoxToNumber(numTextField2, "取列表数：", 11, 99, 40);
         VBox vBox1 = new VBox(6);
         vBox1.setAlignment(Pos.BOTTOM_LEFT);
@@ -236,10 +237,16 @@ public class BallGetOnlyAppMain extends Application {
                     blueMp = CommonConvertUtils.convertMap(blueChanceText, 16);
                 }
 
-                Map<String, List<String>> rstMap = MyLotteryProcessing.getBallsByExecutor(type, 1, isIn, canRepeat, "04", redLt, blueLt, redMp, blueMp, same);
-                rstMap.forEach((k, v) -> {
-                    contentArea.setText(contentArea.getText() + CommonConstant.line_feed + StringUtils.join(v, CommonConstant.line_feed));
+//                Map<String, List<String>> rstMap = MyLotteryProcessing.getBallsByExecutor(type, 1, isIn, canRepeat, "04", redLt, blueLt, redMp, blueMp, same);
+//                rstMap.forEach((k, v) -> {
+//                    contentArea.setText(contentArea.getText() + CommonConstant.line_feed + StringUtils.join(v, CommonConstant.line_feed));
+//                });
+
+                Map<String, LotteryResultDto> newRetMap = NewLotteryProcessing.getBallsByExecutor(type, isIn, canRepeat, "04", redLt, blueLt, redMp, blueMp, same);
+                newRetMap.forEach((k, v) -> {
+                    contentArea.setText(contentArea.getText() + CommonConstant.line_feed + StringUtils.join(v.convertShow(), CommonConstant.line_feed));
                 });
+
                 return null;
             }
         };

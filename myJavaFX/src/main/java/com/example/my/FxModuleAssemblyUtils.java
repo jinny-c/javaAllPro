@@ -216,6 +216,10 @@ public class FxModuleAssemblyUtils extends ToggleButton {
     }
 
     public static HBox initMyHBoxToNumber(TextField textField, String textMsg, int defval, int max, int prefWidth) {
+        return initMyHBoxToNumber(textField, textMsg, defval, max, 0, prefWidth);
+    }
+
+    public static HBox initMyHBoxToNumber(TextField textField, String textMsg, int defval, int max, int min, int prefWidth) {
         Text txt = new Text(textMsg);
         Button addButton = new Button("+");
         //addButton.setPrefWidth(16);
@@ -232,7 +236,7 @@ public class FxModuleAssemblyUtils extends ToggleButton {
         });
         subtractButton.setOnAction(e -> {
             int currentValue = Integer.parseInt(textField.getText());
-            if (currentValue > 0) {
+            if (currentValue > min) {
                 currentValue--;
             }
             textField.setText(String.valueOf(currentValue));
@@ -241,8 +245,11 @@ public class FxModuleAssemblyUtils extends ToggleButton {
         textField.setPrefWidth(prefWidth);
         // 添加事件监听器以验证输入
         textField.textProperty().addListener((observable, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                textField.setText(newValue.replaceAll("[^\\d]", ""));
+//            if (!newValue.matches("\\d*")) {
+//                textField.setText(newValue.replaceAll("[^\\d]", ""));
+//            }
+            if (!newValue.matches("-?\\d*")) {
+                textField.setText(newValue.replaceAll("[^-\\d]", ""));
             }
         });
 
