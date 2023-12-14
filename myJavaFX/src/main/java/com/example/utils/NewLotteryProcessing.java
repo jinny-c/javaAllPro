@@ -43,7 +43,7 @@ public class NewLotteryProcessing {
                     break;
                 }
                 count++;
-                if (count % 13659200 == 0) {
+                if (count % 1365920 == 0) {
                     log.info("count={}", count);
                 }
             }
@@ -136,6 +136,9 @@ public class NewLotteryProcessing {
         int count = 0;
         do {
             count++;
+            if (count % 1365920 == 0) {
+                log.info("count={}", count);
+            }
             //entySet = getEntyByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsSet());
             entySet = getEntyByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, ballsSet);
             //entyStream = getEntyByCondations(isInList, defType, red, blue, redMp, blueMp, sameCount, new RandomBallsStream());
