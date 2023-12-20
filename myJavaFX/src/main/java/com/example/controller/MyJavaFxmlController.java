@@ -116,10 +116,19 @@ public class MyJavaFxmlController {
             myMainApp.start(new Stage());
         } catch (Exception e) {
         }
-    } @FXML
+    }
+    @FXML
     protected void readExcelAppMainButtonClick() {
         try {
             ReadExcelAppMain myMainApp = new ReadExcelAppMain();
+            myMainApp.start(new Stage());
+        } catch (Exception e) {
+        }
+    }
+    @FXML
+    protected void openPlantReadExcelAppMain() {
+        try {
+            OpenPlantReadExcelAppMain myMainApp = new OpenPlantReadExcelAppMain();
             myMainApp.start(new Stage());
         } catch (Exception e) {
         }

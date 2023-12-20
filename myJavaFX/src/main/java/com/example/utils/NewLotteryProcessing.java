@@ -135,7 +135,7 @@ public class NewLotteryProcessing {
         RandomBallsStream ballsStream = new RandomBallsStream();
         int count = 0;
         do {
-            count++;
+              count++;
             if (count % 1365920 == 0) {
                 log.info("count={}", count);
             }
