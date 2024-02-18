@@ -96,19 +96,19 @@ def result():
     return 123;
 
 result = result()
-
-# 示例用法
-arr = [3, 6, 8, 10, 1, 2, 1,22,11,33,44,333,23,45,67,89,90,80,78,67,76,54,32,13,24,35,46,57,68,79,80,21]
-# 基数排序（Radix Sort）：
-radix_sort(arr)
-print("Radix Sort:", arr)
-# 计数排序（Counting Sort）：
-print("Counting Sort:", counting_sort(arr))
-# 堆排序（Heap Sort）：
-print("Heap Sort:", heap_sort(arr))
-# 归并排序（Merge Sort）：
-print("Merge Sort:", merge_sort(arr))
-# 快速排序（Quick Sort）：
-print("Quick Sort:", quick_sort(arr))
+if result == 1:
+    # 示例用法
+    arr = [3, 6, 8, 10, 1, 2, 1,22,11,33,44,333,23,45,67,89,90,80,78,67,76,54,32,13,24,35,46,57,68,79,80,21]
+    # 基数排序（Radix Sort）：
+    radix_sort(arr)
+    print("Radix Sort:", arr)
+    # 计数排序（Counting Sort）：
+    print("Counting Sort:", counting_sort(arr))
+    # 堆排序（Heap Sort）：
+    print("Heap Sort:", heap_sort(arr))
+    # 归并排序（Merge Sort）：
+    print("Merge Sort:", merge_sort(arr))
+    # 快速排序（Quick Sort）：
+    print("Quick Sort:", quick_sort(arr))
 
 
