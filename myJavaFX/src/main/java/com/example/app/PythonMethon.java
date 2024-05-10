@@ -83,6 +83,8 @@ public class PythonMethon {
         interpreter.set("arr", list);
         interpreter.exec("result = quick_sort(arr)");
         List result = interpreter.get("result", List.class);
+
+        System.out.println("Result from Python: " + result.get(0).getClass());
         System.out.println("Result from Python: " + result);
 
     }
